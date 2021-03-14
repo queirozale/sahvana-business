@@ -1,6 +1,5 @@
 import React, {useState} from "react";
 import { NextPage } from 'next';
-import { useRouter } from 'next/router';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -74,7 +73,6 @@ const SignUp: NextPage = () => {
   const registerUser = async event => {
     event.preventDefault()
     const form = event.target;
-    const router = useRouter();
 
     const res = await fetch('/api/user', {
       body: JSON.stringify({
@@ -92,7 +90,6 @@ const SignUp: NextPage = () => {
 
     const result = await res.json();
     handleServerResponse(true, "Obrigado por se cadastrar na Sahvana Business!", form);
-    router.push('/');
   }
 
   return (
