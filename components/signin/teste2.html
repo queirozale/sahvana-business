@@ -1,0 +1,20 @@
+<html>
+  <head>
+    <h1>opa</h1>
+    <style>
+      input::placeholder {
+        opacity: 0;
+      }
+
+      input:not(:placeholder-shown) ~ label {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="input-field"> 
+      <input type="text" placeholder="placeholder" name="firstname" id="Start" maxlength="30" class="pad" required /> 
+      <label for="Start" id="DITBT">First name</label>
+    </div>
+  </body>
+</html>

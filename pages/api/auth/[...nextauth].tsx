@@ -10,9 +10,6 @@ const options = {
       domain: process.env.AUTH0_DOMAIN
     }),
   ],
-  pages: {
-    signIn: '/auth/signin'
-  }
 };
 
 export default (req: NextApiRequest, res: NextApiResponse): Promise<void> => 

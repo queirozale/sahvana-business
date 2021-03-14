@@ -1,0 +1,34 @@
+<html>
+  <head>
+    <h1>opa</h1>
+    <style>
+      label {
+        position: relative;
+        font-weight: normal;
+      }
+      label.hide::before {
+        opacity: 0;            /* To visually hide the label's pseudoelement */
+        pointer-events: none;  /* To prevent any cursor-based interaction */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="form-group">
+      <label id="search-label">
+        <input id="search-form" class="form-control" placeholder="Search" type="text" name="q" value="">
+      </label>
+    </div>
+  </body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script>
+    $(function() {
+      $('.form-group :input')
+        .focus(function() {
+          $(this).closest('label').addClass('hide');
+        })
+        .blur(function() {
+          $(this).closest('label').removeClass('hide');
+        });
+    });
+  </script>
+</html>

@@ -1,14 +1,10 @@
 import { NextPage } from 'next';
 import { signIn, signOut, useSession } from 'next-auth/client'
 
-import Nav from '../components/nav';
-
 const IndexPage: NextPage = () => {
   const [ session, loading ] = useSession()
   return (
     <div>
-      <Nav />
-
       {!session && 
         <div className="text-3xl">
           Not signed in <br/>

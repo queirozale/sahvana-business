@@ -1,5 +1,6 @@
 import React from 'react';
 import { NextPage } from 'next';
+import Router from 'next/router';
 // import Link from "next/link";
 
 import Avatar from '@material-ui/core/Avatar';
@@ -72,6 +73,28 @@ const useStyles = makeStyles((theme) => ({
 const SignInSide: NextPage = () => {
   const classes = useStyles();
 
+  const findUser = async event => {
+    event.preventDefault()
+    const form = event.target;
+
+    const res = await fetch('/api/findUser', {
+      body: JSON.stringify({
+        email: event.target.email.value,
+        password: event.target.password.value
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST'
+    });
+
+    const result = await res.json();
+
+    if (res.status === 200) {
+      Router.push('/test');
+    }
+  }
+
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
@@ -85,28 +108,26 @@ const SignInSide: NextPage = () => {
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
-          <form className={classes.form} noValidate>
+          <form className={classes.form} onSubmit={findUser}>
             <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
               id="email"
-              label="Email"
               name="email"
-              autoComplete="email"
+              type="email"
+              variant="outlined"
+              fullWidth
+              label="Email"
               autoFocus
+              required
             />
             <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Senha"
-              type="password"
               id="password"
-              autoComplete="current-password"
+              name="password"
+              type="password"
+              variant="outlined"
+              fullWidth
+              label="Password"
+              autoFocus
+              required
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}

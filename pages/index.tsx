@@ -1,19 +1,25 @@
+import Header from "../components/Header/Header";
 import { NextPage } from 'next';
-import { signIn, signOut, useSession } from 'next-auth/client';
-import dynamic from 'next/dynamic';
-
-const DynamicSignIn = dynamic(
-  () => import('../components/signin/signin'),
-  { loading: () => <p>Loading ...</p>, ssr: false }
-)
+import { signIn, signOut, useSession } from 'next-auth/client'
 
 const IndexPage: NextPage = () => {
-  const [ session, loading ] = useSession()
-   return (
-    <div>
-      <DynamicSignIn />
-    </div>
-  );
+  const [ session, loading ] = useSession();
+
+  if (session) {
+    return (
+      <div>
+        <Header />
+        <h1>Home page do usuário</h1>
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        <Header />
+        <h1>Home page genérica</h1>
+      </div>
+    );
+  }
 };
 
 export default IndexPage;

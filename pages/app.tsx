@@ -4,7 +4,7 @@ import { signIn, signOut, useSession } from 'next-auth/client'
 import Nav from '../components/nav';
 
 const AppPage: NextPage = () => {
-  const [ session, loading ] = useSession()
+  const [ session, loading ] = useSession();
   return (
     <div>
       <Nav />
@@ -21,7 +21,6 @@ const AppPage: NextPage = () => {
           <button onClick={(): Promise<void> => signOut()}>Sign out</button>
         </div>
       }
-
       {loading && (
         <div className="text-5xl">
           <h1>CARREGANDO</h1>
