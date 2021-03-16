@@ -14,24 +14,26 @@ export default async (
   res: NextApiResponse<ErrorResponseType | SuccessResponseType>
   ): Promise<void> => {
     if (req.method === "POST") {
-      const { name, surname, email, store, password } = req.body;
+      const { description, size, color, inventory, original_price, promotional_price, tags } = req.body;
         
-      if (!name || !surname || !email || !store || !password) {
+      if (!description || !size || !color || !inventory || !original_price || !promotional_price || !tags) {
         res.status(400).json({ error: "Missing body parameter" });
         return;
       }
       
       const { db } = await connect();
 
-      const response = await db.collection('users').insertOne({
-        name,
-        surname,
-        email,
-        store,
-        password
+      const response = await db.collection('products').insertOne({
+        description,
+        size,
+        color,
+        inventory,
+        original_price,
+        promotional_price,
+        tags
     });
 
-      res.status(200).json({ message: "Registered user" });
+      res.status(200).json({ message: "Registered product" });
     } else {
       res.status(400).json({ error: "Wrong request method" })
     }
