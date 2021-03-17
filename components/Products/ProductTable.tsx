@@ -9,7 +9,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
-import connect from '../../utils/database';
+import useSWR from 'swr';
+import api from '../../utils/api';
 
 const useStyles = makeStyles({
   table: {
@@ -21,12 +22,42 @@ function createData(description, inventory, original_price, promotional_price) {
   return { description, inventory, original_price, promotional_price };
 }
 
-const rows = [
-  response
-];
+// async function queryProducts() {
+//   const res = await fetch('/api/findProduct', {method: 'POST'});
+//   const data = await res.json();
+
+//   if (!data) {
+//     return {
+//       notFound: true,
+//     };
+//   };
+
+//   return {
+//     props: { data }, // will be passed to the page component as props
+//   };
+// };
+
+
+// const rows = queryProducts();
+
+// const rows = [
+//   createData("teste", 10, 1, 2),
+//   createData("teste2", 13, 3, 20)
+// ];
+
+const fetcher = (...args) => fetch(...args).then(res => res.json());
 
 export default function BasicTable() {
   const classes = useStyles();
+  const { data, error } = useSWR('/api/findProduct', fetcher);
+
+  if (error) {
+    console.log(error);
+  } else {
+    console.log(data);
+  }
+
+  // const rows = data.data;
 
   return (
     <TableContainer component={Paper}>
@@ -39,18 +70,20 @@ export default function BasicTable() {
             <TableCell align="right">Preço Promocional</TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.descripition}>
-              <TableCell component="th" scope="row">
-                {row.description}
-              </TableCell>
-              <TableCell align="right">{row.inventory}</TableCell>
-              <TableCell align="right">{row.original_price}</TableCell>
-              <TableCell align="right">{row.promotional_price}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
+        {data && (
+          <TableBody>
+            {data.map((row) => (
+              <TableRow key={row.descripition}>
+                <TableCell component="th" scope="row">
+                  {row.description}
+                </TableCell>
+                <TableCell align="right">{row.inventory}</TableCell>
+                <TableCell align="right">{row.original_price}</TableCell>
+                <TableCell align="right">{row.promotional_price}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        )}
       </Table>
     </TableContainer>
   );

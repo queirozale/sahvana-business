@@ -13,16 +13,9 @@ export default async (
   req: NextApiRequest, 
   res: NextApiResponse<ErrorResponseType | SuccessResponseType>
   ): Promise<void> => {
-    if (req.method === "POST") {
-      const { description } = req.body;
-
-      if (!description) {
-        res.status(400).json({ error: "Missing description on request body"});
-        return;
-      }
-
+    if (req.method === "GET") {
       const { db } = await connect();
-      const response = await db.collection('products').find({ description: description }).toArray();
+      const response = await db.collection('products').find().toArray();
 
       if (!response) {
         res.status(200).json({ error: "Product with this description not found" });
@@ -30,7 +23,8 @@ export default async (
       }
 
       res.status(200).json(response);
+
     } else {
-      res.status(400).json({ error: "Wrong request method" })
+      res.status(400).json({ error: "Wrong request method" });
     }
 };
