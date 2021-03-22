@@ -72,7 +72,7 @@ const SignUp: NextPage = () => {
   };
 
   const registerUser = async event => {
-    event.preventDefault()
+    event.preventDefault();
     const form = event.target;
 
     const res = await fetch('/api/createUser', {

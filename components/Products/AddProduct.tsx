@@ -15,6 +15,10 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
 
 import ImageUpload from "./ImageUpload";
 
@@ -41,6 +45,10 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 160,
     marginBottom: theme.spacing(3)
   },
+  selectEmpty: {
+    marginTop: theme.spacing(0),
+    width: '100%'
+  }
 }));
 
 const ProductForm: NextPage = () => {
@@ -49,6 +57,16 @@ const ProductForm: NextPage = () => {
     submitting: false,
     status: null
   });
+  const [size, setSize] = useState('');
+  const [gender, setGender] = useState('');
+
+  const handleSizeChange = (event) => {
+    setSize(event.target.value);
+  };
+
+  const handleGenderChange = (event) => {
+    setGender(event.target.value);
+  };
 
   const handleServerResponse = (ok, msg, form) => {
     setServerState({
@@ -60,7 +78,7 @@ const ProductForm: NextPage = () => {
     }
   };
 
-  const registerUser = async event => {
+  const registerProduct = async event => {
     event.preventDefault()
     const form = event.target;
 
@@ -94,7 +112,7 @@ const ProductForm: NextPage = () => {
             <Typography gutterBottom variant="h5" component="h2" className={classes.typography}>
               Adicione seu produto
             </Typography>
-        <form className={classes.form} onSubmit={registerUser}>
+        <form className={classes.form} onSubmit={registerProduct}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -110,17 +128,46 @@ const ProductForm: NextPage = () => {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
+              <Select
+                id="gender"
+                name="gender"
+                value={gender}
+                onChange={handleGenderChange}
+                displayEmpty
+                className={classes.selectEmpty}
+                variant="outlined"
+                required
+                autoFocus
+              >
+                <MenuItem value="">
+                  <em>Gênero</em>
+                </MenuItem>
+                <MenuItem value={"Masculino"}>Masculino</MenuItem>
+                <MenuItem value={"Feminino"}>Feminino</MenuItem>
+                <MenuItem value={"Unissex"}>Unissex</MenuItem>
+              </Select>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Select
                 id="size"
                 name="size"
-                type="text"
+                value={size}
+                onChange={handleSizeChange}
+                displayEmpty
+                className={classes.selectEmpty}
                 variant="outlined"
-                fullWidth
-                label="Tamanho"
-                autoFocus
                 required
-                autoComplete="off"
-              />
+                autoFocus
+              >
+                <MenuItem value="">
+                  <em>Tamanho</em>
+                </MenuItem>
+                <MenuItem value={"PP"}>PP</MenuItem>
+                <MenuItem value={"P"}>P</MenuItem>
+                <MenuItem value={"M"}>M</MenuItem>
+                <MenuItem value={"G"}>G</MenuItem>
+                <MenuItem value={"GG"}>GG</MenuItem>
+              </Select>
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -135,7 +182,7 @@ const ProductForm: NextPage = () => {
                 autoComplete="off"
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} sm={6}>
               <TextField
                 id="inventory"
                 name="inventory"
@@ -186,6 +233,8 @@ const ProductForm: NextPage = () => {
                 fullWidth
                 label="Tags"
                 autoFocus
+                multiline
+                rows={4}
                 required
                 autoComplete="off"
               />

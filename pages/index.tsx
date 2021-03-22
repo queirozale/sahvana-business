@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { NextPage } from 'next';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -27,22 +28,40 @@ const useStyles = makeStyles(() => ({
 const IndexPage: NextPage = () => {
   const [ session, loading ] = useSession();
   const classes = useStyles();
+  const [ edit, setEdit ] = useState(false);
+
+  const handleClickEdit= (event) => {
+    setEdit(true);
+  };
+
+  const handleCloseEdit= (event) => {
+    setEdit(false);
+  };
+
 
   if (session) {
     return (
-      <div>
+      <div style={{backgroundColor: '#eeeeee'}}>
         <Header />
         <h1>Home page do usuário</h1>
-        <Link href="/adicionar_produto">
-          <Button color="primary">
-            Adcionar produto
+          <Link href="/adicionar_produto">
+            <Button color="primary">
+              Adcionar produto
+            </Button>
+          </Link>
+          <Button color="primary" onClick={handleClickEdit}>
+            Editar dados
           </Button>
-        </Link>
+          {edit && (
+            <Button color="primary" onClick={handleCloseEdit}>
+              Salvar alterações
+            </Button>
+          )}
         <Grid container spacing={5} className={classes.root}>
           <Grid item xs={12} sm={6}>
-            <ProductTable />
+            <ProductTable editMode={edit} />
           </Grid>
-          <Grid item xs={12} sm={6} style={{'backgroundColor': 'blue'}}>
+          <Grid item xs={12} sm={6}>
             <Box display="flex" justifyContent="center">
               <MediaCard />
             </Box>
