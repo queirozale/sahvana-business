@@ -85,6 +85,7 @@ const ProductForm: NextPage = () => {
     const res = await fetch('/api/registerProduct', {
       body: JSON.stringify({
         description: event.target.description.value,
+        gender: event.target.gender.value,
         size: event.target.size.value,
         color: event.target.color.value,
         inventory: event.target.inventory.value,

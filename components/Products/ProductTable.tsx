@@ -88,13 +88,17 @@ export default function BasicTable(props) {
 
   const [rows, setRows] = useState(data);
   const [deletedRows, setDeletedRows] = useState([]);
+  const [showInfo, setShowInfo] = useState();
 
   const handleRowSelection = (e) => {
-    console.log(e.data.id);
-    if (!deletedRows.includes(e.data.id)) {
-      setDeletedRows(deletedRows => [...deletedRows, e.data.id]);
+    if (editMode) {
+      if (!deletedRows.includes(e.data.id)) {
+        setDeletedRows(deletedRows => [...deletedRows, e.data.id]);
+      } else {
+        setDeletedRows(deletedRows.filter(item => item !== e.data.id));
+      }
     } else {
-      setDeletedRows(deletedRows.filter(item => item !== e.data.id));
+      setShowInfo(e.data.id)
     }
  };
 
@@ -130,14 +134,14 @@ export default function BasicTable(props) {
         columns={columns} 
         pageSize={5} 
         getRowId={(data) => data._id} 
-        checkboxSelection
+        checkboxSelection={editMode}
         onRowSelected={e => handleRowSelection(e)}
         />
       )}
       <Button variant="contained" color="primary" onClick={handlePurge}>
         Purge
       </Button>
-      <Button variant="contained" color="primary" onClick={handleDelete}>
+      <Button variant="contained" color="primary">
         Delete
       </Button>
     </div>

@@ -1,10 +1,8 @@
-import CustomPaginationActionsTable from "../components/Products/Table";
+import SearchBar from "material-ui-search-bar";
 
 const Test = () => {
   return (
-    <div>
-      <CustomPaginationActionsTable />
-    </div>
+    <SearchBar />
   );
 };
 
