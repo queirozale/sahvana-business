@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -8,6 +8,13 @@ import Typography from '@material-ui/core/Typography';
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
+import CreateIcon from '@material-ui/icons/Create';
+
+import SimpleAddDialog from "./AddDialog";
+import SimpleRemoveDialog from "./RemoveDialog";
+import SimpleEditDialog from "./EditDialog";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,13 +44,60 @@ const useStyles = makeStyles((theme) => ({
   },
   attribute : {
     paddingBottom: theme.spacing(1),
-  }
+  },
+  smallAddIcon: {
+    width: 18,
+    height: 18,
+    color: '#36bf58'
+  },
+  smallRemoveIcon: {
+    width: 18,
+    height: 18,
+    color: '#f74545'
+  },
+  smallEditIcon: {
+    width: 18,
+    height: 18
+  },
+  mediumDeleteIcon: {
+    width: 20,
+    height: 20,
+    color: '#f74545'
+  },
 }));
 
 export default function ProductInfo(props) {
   const classes = useStyles();
   const theme = useTheme();
   const data = props.data;
+  const [openAdd, setOpenAdd] = useState(false);
+  const [openRemove, setOpenRemove] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+  const dialog_title = data.description;
+
+  const handleClickAddOpen = (event) => {
+    setOpenAdd(true);
+  };
+
+  const handleAddClose = () => {
+    setOpenAdd(false);
+  };
+
+  const handleClickRemoveOpen = (event) => {
+    setOpenRemove(true);
+  };
+
+  const handleRemoveClose = () => {
+    setOpenRemove(false);
+  };
+
+  const handleClickEditOpen = (event) => {
+    setOpenEdit(true);
+  };
+
+  const handleEditClose = () => {
+    setOpenEdit(false);
+  };
 
   return (
     <Card className={classes.root}>
@@ -64,18 +118,34 @@ export default function ProductInfo(props) {
             Tamanho: {data.size}
           </Typography>
           <Typography variant="subtitle1" color="textSecondary" className={classes.attribute}>
-            Tamanho: {data.color}
+            Cor: {data.color}
           </Typography>
           <Typography variant="subtitle1" color="textSecondary" className={classes.attribute}>
-            Tamanho: {data.inventory}
+            Estoque: 
+            <IconButton onClick={e => handleClickRemoveOpen(e)}>
+                <RemoveCircleOutlineIcon className={classes.smallRemoveIcon} />
+            </IconButton>
+            {data.inventory} 
+            <IconButton onClick={e => handleClickAddOpen(e)}>
+              <AddCircleOutlineIcon className={classes.smallAddIcon} />
+            </IconButton>
           </Typography>
           <Typography variant="subtitle1" color="textSecondary" className={classes.attribute}>
-            Tamanho: {data.original_price}
+            Preço Original: {data.original_price}
+            <IconButton onClick={e => handleClickEditOpen(e)}>
+              <CreateIcon className={classes.smallEditIcon} />
+            </IconButton>
           </Typography>
           <Typography variant="subtitle1" color="textSecondary" className={classes.attribute}>
-            Tamanho: {data.promotional_price}
+            Preço Promocional: {data.promotional_price}
+            <IconButton onClick={e => handleClickEditOpen(e)}>
+              <CreateIcon className={classes.smallEditIcon} />
+            </IconButton>
           </Typography>
         </CardContent>
+        <SimpleAddDialog title={dialog_title} open={openAdd} onClose={handleAddClose} />
+        <SimpleRemoveDialog title={dialog_title} open={openRemove} onClose={handleRemoveClose} />
+        <SimpleEditDialog title={dialog_title} open={openEdit} onClose={handleEditClose} />
       </div>
     </Card>
   );

@@ -10,6 +10,7 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import SearchBar from "material-ui-search-bar";
 import CircularProgress from '@material-ui/core/CircularProgress';
+import StorefrontIcon from '@material-ui/icons/Storefront';
 
 import { signIn, signOut, useSession } from 'next-auth/client';
 
@@ -19,6 +20,9 @@ import ProductTable from "../components/Products/ProductTable";
 import RecipeReviewCard from "../components/Products/ProductCard";
 import ProductCard from "../components/Products/ProductCard";
 import ProductInfo from "../components/Products/ProductInfo";
+import SimpleAddDialog from "../components/Products/AddDialog";
+import SimpleRemoveDialog from "../components/Products/RemoveDialog";
+import DeleteRowDialog from "../components/Products/DeleteRowDialog";
 
 import { DataGrid } from '@material-ui/data-grid';
 import useSWR from 'swr';
@@ -27,6 +31,17 @@ const useStyles = makeStyles(() => ({
   main: {
     backgroundColor: '#eeeeee',
     height:'720px'
+  },
+  title: {
+    paddingTop: '20px',
+    paddingBottom: '10px', 
+    paddingLeft: '15px',
+    paddingRight: '15px',
+  },
+  subTitle: {
+    paddingBottom: '15px', 
+    paddingLeft: '15px',
+    paddingRight: '15px',
   },
   root: {
     display: 'flex',
@@ -39,20 +54,10 @@ const useStyles = makeStyles(() => ({
     minWidth: 500,
     backgroundColor: 'white'
   },
-  smallAddIcon: {
-    width: 18,
-    height: 18,
-    color: '#36bf58'
-  },
-  smallRemoveIcon: {
-    width: 18,
-    height: 18,
-    color: '#f74545'
-  },
-  mediumDeleteIcon: {
-    width: 20,
-    height: 20,
-    color: '#f74545'
+  titleIcon: {
+    width: 30,
+    height: 30,
+    marginRight: '10px'
   },
   paginationLinks: {
     marginTop: '10px',
@@ -153,7 +158,13 @@ const IndexPage: NextPage = () => {
     return (
       <div className={classes.main}>
         <Header />
-        <h1>Home page do usuário</h1>
+        <Typography variant="h4" component="h4" className={classes.title}>
+          <StorefrontIcon className={classes.titleIcon} />
+          Gerenciamento de produtos
+        </Typography>
+        <Typography variant="h6" color="textSecondary" className={classes.subTitle}>
+          Potencialize suas vendas com uma boa gestão da informação dos produtos
+        </Typography>
         {data ?
         <div>
           <Grid container spacing={5} className={classes.root}>

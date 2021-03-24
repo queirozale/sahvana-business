@@ -173,15 +173,15 @@ export default function BasicTable(props) {
 //                   </TableCell>
 //                   <TableCell align="right">
 //                     {editMode && (
-//                     <IconButton onClick={e => handleClickRemoveOpen(e, row.descripition)}>
-//                         <RemoveCircleOutlineIcon className={classes.smallRemoveIcon} />
-//                     </IconButton>
+                    // <IconButton onClick={e => handleClickRemoveOpen(e, row.descripition)}>
+                    //     <RemoveCircleOutlineIcon className={classes.smallRemoveIcon} />
+                    // </IconButton>
 //                     )}
 //                     {row.inventory}
 //                     {editMode && (
-//                     <IconButton onClick={e => handleClickAddOpen(e, row.descripition)}>
-//                       <AddCircleOutlineIcon className={classes.smallAddIcon} />
-//                     </IconButton>
+                    // <IconButton onClick={e => handleClickAddOpen(e, row.descripition)}>
+                    //   <AddCircleOutlineIcon className={classes.smallAddIcon} />
+                    // </IconButton>
 //                     )}
 //                   </TableCell>
 //                   <TableCell align="right">{row.original_price}</TableCell>
