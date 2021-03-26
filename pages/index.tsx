@@ -25,6 +25,11 @@ import ProductInfo from "../components/Products/ProductInfo";
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { DataGrid, GridToolbarContainer, GridDensitySelector } from '@material-ui/data-grid';
+import clsx from 'clsx';
+import Drawer from '@material-ui/core/Drawer';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import MailIcon from '@material-ui/icons/Mail';
 
 import { signIn, signOut, useSession } from 'next-auth/client';
 
@@ -128,7 +133,8 @@ const IndexPage: NextPage = () => {
   const [search, setSearch] = useState();
 
   const [open, setOpen] = useState(false);
-  
+
+
   function CustomToolbar() {
     return (
       <GridToolbarContainer className={classes.actions}>
