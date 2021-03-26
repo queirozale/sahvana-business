@@ -11,20 +11,26 @@ import Typography from '@material-ui/core/Typography';
 import SearchBar from "material-ui-search-bar";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import StorefrontIcon from '@material-ui/icons/Storefront';
+import Dialog from '@material-ui/core/Dialog';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItem from '@material-ui/core/ListItem';
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import CloseIcon from '@material-ui/icons/Close';
+import Slide from '@material-ui/core/Slide';
+import IconButton from '@material-ui/core/IconButton';
+import ProductInfo from "../components/Products/ProductInfo";
+import Tooltip from '@material-ui/core/Tooltip';
+import DeleteIcon from '@material-ui/icons/Delete';
+import { DataGrid, GridToolbarContainer, GridDensitySelector } from '@material-ui/data-grid';
 
 import { signIn, signOut, useSession } from 'next-auth/client';
 
-import MediaCard from '../components/Products/AddProductCard';
 import Header from "../components/Header/Header";
-import ProductTable from "../components/Products/ProductTable";
-import RecipeReviewCard from "../components/Products/ProductCard";
-import ProductCard from "../components/Products/ProductCard";
-import ProductInfo from "../components/Products/ProductInfo";
-import SimpleAddDialog from "../components/Products/AddDialog";
-import SimpleRemoveDialog from "../components/Products/RemoveDialog";
-import DeleteRowDialog from "../components/Products/DeleteRowDialog";
+import MediaCard from '../components/Products/AddProductCard';
 
-import { DataGrid } from '@material-ui/data-grid';
 import useSWR from 'swr';
 
 const useStyles = makeStyles(() => ({
@@ -73,7 +79,22 @@ const useStyles = makeStyles(() => ({
     left: '50%',
     marginTop: '-50px',
     marginLeft: '-100px'
-  }
+  },
+  actions: {
+    backgroundColor: '#ef5350',
+    opacity: 0.8,
+    height: '45px'
+  },
+  selectMessage: {
+    alignItems: 'center'
+  },
+  appBar: {
+    position: 'relative',
+  },
+  titleDialog: {
+    marginLeft: '10px',
+    flex: 1,
+  },
 }));
 
 function Copyright() {
@@ -89,7 +110,10 @@ function Copyright() {
   );
 };
 
-// {isDisplayed ? <HelloReact hello={hello} /> : null}
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
 
 const fetcher = (...args) => fetch(...args).then(res => res.json());
 
@@ -103,6 +127,22 @@ const IndexPage: NextPage = () => {
   const [showInfo, setShowInfo] = useState();
   const [search, setSearch] = useState();
 
+  const [open, setOpen] = useState(false);
+  
+  function CustomToolbar() {
+    return (
+      <GridToolbarContainer className={classes.actions}>
+        <Tooltip title="Delete">
+          <IconButton aria-label="Delete" onClick={handleCloseEdit}>
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Cancel">
+          <Button onClick={handleCloseEdit}>Cancelar</Button>
+        </Tooltip>
+      </GridToolbarContainer>
+    );
+  };
   const handleRowSelection = (e) => {
     if (edit) {
       if (!deletedRows.includes(e.data.id)) {
@@ -144,10 +184,17 @@ const IndexPage: NextPage = () => {
     
   // } 
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const columns = [
     { field: '_id', headerName: 'ID', width: 70, hide: true },
-    { field: 'description', headerName: 'Descrição', width: 250 },
+    { field: 'description', headerName: 'Descrição', width: 220 },
     { field: 'inventory', headerName: 'Estoque', width: 110, type: 'number' },
     { field: 'original_price', headerName: 'Preço Original', width: 150, type: 'number' },
     { field: 'promotional_price', headerName: 'Preço Promocional', width: 180, type: 'number' },
@@ -171,32 +218,6 @@ const IndexPage: NextPage = () => {
             <Grid item xs={12} sm={6}>
                 <div style={{ height: 400, width: '100%' }}>
                   <Box display="flex" flexDirection="row-reverse" mb={1}>
-                    {/* <Box>
-                      <Link href="/adicionar_produto">
-                        <Button color="primary">
-                          Adcionar produto
-                        </Button>
-                      </Link>
-                    </Box>
-                    <Box>
-                      <Button color="primary" onClick={handleClickEdit}>
-                        Deletar produtos
-                      </Button>
-                      {edit && (
-                        <div>
-                          <Box component="div" display="inline" p={1} m={1} bgcolor="background.paper">
-                            <Button color="primary" onClick={handleCloseEdit}>
-                                Deletar
-                            </Button>
-                          </Box>
-                          <Box component="div" display="inline" p={1} m={1} bgcolor="background.paper">
-                          <Button color="primary" onClick={handleCloseEdit}>
-                            Cancelar
-                          </Button>
-                          </Box>
-                        </div>
-                      )}
-                    </Box> */}
                     <Box>
                       <SearchBar 
                       className={classes.searchBar} 
@@ -205,7 +226,24 @@ const IndexPage: NextPage = () => {
                       onRequestSearch={() => console.log(search)}
                       />
                     </Box>
+                    <Box mr={5}>
+                      <Button color="primary" onClick={handleClickOpen}>
+                        Adcionar produto
+                      </Button>
+                    </Box>
+                    <Box mr={5}>
+                      <Button color="primary" onClick={handleClickEdit}>
+                        Deletar produtos
+                      </Button>
+                    </Box>
                   </Box>
+                  {/* <div className={classes.actions}>
+                    <Tooltip title="Delete">
+                      <IconButton aria-label="Delete">
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </div> */}
                   <DataGrid 
                   className={classes.table}
                   rows={data} 
@@ -219,6 +257,11 @@ const IndexPage: NextPage = () => {
                       { columnField: 'description', operatorValue: 'contains', value: search },
                     ],
                   }}
+                  components={
+                    edit ? 
+                    {Toolbar: CustomToolbar}
+                    : false
+                  }
                   />
                     {/* <Button variant="contained" color="primary" onClick={handlePurge}>
                       Purge
@@ -229,11 +272,10 @@ const IndexPage: NextPage = () => {
                 </div>
             </Grid>
             <Grid item xs={12} sm={6}>
-              {/* <ProductInfo data={showInfo} /> */}
-              {showInfo ? <ProductInfo data={showInfo} /> : <p>Selecione um produto</p>}
-              {/* <Box display="flex" justifyContent="center">
-                {showInfo ? <ProductCard data={showInfo} /> : null}
-              </Box> */}
+              {showInfo ? 
+              <ProductInfo data={showInfo} /> 
+              :
+              <p>Selecione um produto</p>}
             </Grid>
             <Grid item xs={12}>
               <Box mt={5}>
@@ -247,6 +289,36 @@ const IndexPage: NextPage = () => {
           <CircularProgress />
         </div>
         }
+      <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
+        <AppBar className={classes.appBar}>
+          <Toolbar>
+            <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
+              <CloseIcon />
+            </IconButton>
+            <Typography variant="h6" className={classes.titleDialog}>
+              Adicionar produtos
+            </Typography>
+            <Button autoFocus color="inherit" onClick={handleClose}>
+              Salvar
+            </Button>
+          </Toolbar>
+        </AppBar>
+        <Grid container spacing={5} className={classes.root}>
+          <Grid item xs={12} sm={6}>
+            <p>Imagem</p>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Box display="flex" justifyContent="center">
+              <MediaCard />
+            </Box>
+          </Grid>
+          <Grid item xs={12}>
+            <Box mt={5}>
+            <Copyright />
+            </Box>
+          </Grid>
+        </Grid>
+      </Dialog>
       </div>
     );
   } else {
