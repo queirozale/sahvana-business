@@ -13,14 +13,14 @@ import Link from '@material-ui/core/Link';
 import Navigator from '../components/Template/Navigator';
 import Content from '../components/Template/Content';
 import Header from '../components/Template/Header';
-import Products from '../components/Template/produtoComponent';
+import Products from '../components/Template/ProductContent';
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+      <Link color="inherit" href="https://sahvana.com/">
+        Sahvana
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -188,14 +188,30 @@ function Home(props: PaperbaseProps) {
               variant="temporary"
               open={mobileOpen}
               onClose={handleDrawerToggle}
+              activations={{
+                'Perfil': false,
+                'Contato': false,
+                'Cadastro': true,
+                'Histórico': false,
+                'Pedidos': false
+              }}
             />
           </Hidden>
           <Hidden xsDown implementation="css">
-            <Navigator PaperProps={{ style: { width: drawerWidth } }} />
+            <Navigator 
+            PaperProps={{ style: { width: drawerWidth } }}
+            activations={{
+              'Perfil': false,
+              'Contato': false,
+              'Cadastro': true,
+              'Histórico': false,
+              'Pedidos': false
+            }}
+             />
           </Hidden>
         </nav>
         <div className={classes.app}>
-          <Header onDrawerToggle={handleDrawerToggle} title={'Deu certo'} />
+          <Header onDrawerToggle={handleDrawerToggle} title={'Produtos'} />
           <main className={classes.main}>
             <Products />
           </main>

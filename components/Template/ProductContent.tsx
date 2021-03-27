@@ -30,6 +30,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import MediaCard from '../Products/AddProduct';
+import ProductInfo from '../Products/ProductInfo';
 
 import { signIn, signOut, useSession } from 'next-auth/client';
 
@@ -197,7 +198,7 @@ const Products: NextPage = () => {
 
   const columns = [
     { field: '_id', headerName: 'ID', width: 70, hide: true },
-    { field: 'description', headerName: 'Descrição', width: 220 },
+    { field: 'description', headerName: 'Descrição', width: 150 },
     { field: 'inventory', headerName: 'Estoque', width: 110, type: 'number' },
     { field: 'original_price', headerName: 'Preço Original', width: 150, type: 'number' },
     { field: 'promotional_price', headerName: 'Preço Promocional', width: 180, type: 'number' },

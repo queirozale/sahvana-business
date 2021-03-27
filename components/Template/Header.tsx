@@ -15,13 +15,18 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core/styles';
+import { signIn, signOut, useSession } from 'next-auth/client';
 
 const lightColor = 'rgba(255, 255, 255, 0.7)';
 
 const styles = (theme: Theme) =>
   createStyles({
+    appBar: {
+      background: "#F2790F"
+    },
     secondaryBar: {
       zIndex: 0,
+      background: "#F2790F"
     },
     menuButton: {
       marginLeft: -theme.spacing(1),
@@ -49,10 +54,11 @@ interface HeaderProps extends WithStyles<typeof styles> {
 function Header(props: HeaderProps) {
   const { classes, onDrawerToggle } = props;
   const title = props.title;
+  const [ session, loading ] = useSession();
 
   return (
     <React.Fragment>
-      <AppBar color="primary" position="sticky" elevation={0}>
+      <AppBar position="sticky" elevation={0} className={classes.appBar}>
         <Toolbar>
           <Grid container spacing={1} alignItems="center">
             <Hidden smUp>
@@ -69,20 +75,24 @@ function Header(props: HeaderProps) {
             </Hidden>
             <Grid item xs />
             <Grid item>
-              <Link className={classes.link} href="#" variant="body2">
-                Go to docs
-              </Link>
+              {session && 
+                session.user.email
+              }
             </Grid>
             <Grid item>
-              <Tooltip title="Alerts • No alerts">
-                <IconButton color="inherit">
-                  <NotificationsIcon />
-                </IconButton>
-              </Tooltip>
+              {!session &&
+                <Button onClick={(): Promise<void> => signIn("auth0")} color="inherit">Login</Button>
+              }
+            </Grid>
+            <Grid item>
+              {session && 
+              // Signed in as {session.user.email} <br/>
+                <Button onClick={(): Promise<void> => signOut()} color="inherit">Log out</Button>
+              }
             </Grid>
             <Grid item>
               <IconButton color="inherit" className={classes.iconButtonAvatar}>
-                <Avatar src="/static/images/avatar/1.jpg" alt="My Avatar" />
+                <Avatar>A</Avatar>
               </IconButton>
             </Grid>
           </Grid>

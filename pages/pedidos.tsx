@@ -11,7 +11,7 @@ import Hidden from '@material-ui/core/Hidden';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import Navigator from '../components/Template/Navigator';
-import HomeContent from '../components/Template/HomeContent';
+import Content from '../components/Template/Content';
 import Header from '../components/Template/Header';
 
 function Copyright() {
@@ -192,7 +192,7 @@ function Home(props: PaperbaseProps) {
                 'Contato': false,
                 'Cadastro': false,
                 'Histórico': false,
-                'Pedidos': false
+                'Pedidos': true
               }}
             />
           </Hidden>
@@ -204,15 +204,15 @@ function Home(props: PaperbaseProps) {
               'Contato': false,
               'Cadastro': false,
               'Histórico': false,
-              'Pedidos': false
+              'Pedidos': true
             }}
             />
           </Hidden>
         </nav>
         <div className={classes.app}>
-          <Header onDrawerToggle={handleDrawerToggle} title={'Início'} />
+          <Header onDrawerToggle={handleDrawerToggle} title={'Pedidos'} />
           <main className={classes.main}>
-            <HomeContent />
+            <Content />
           </main>
           <footer className={classes.footer}>
             <Copyright />
