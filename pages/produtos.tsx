@@ -13,6 +13,7 @@ import Link from '@material-ui/core/Link';
 import Navigator from '../components/Template/Navigator';
 import Content from '../components/Template/Content';
 import Header from '../components/Template/Header';
+import Products from '../components/Template/produtoComponent';
 
 function Copyright() {
   return (
@@ -196,7 +197,7 @@ function Home(props: PaperbaseProps) {
         <div className={classes.app}>
           <Header onDrawerToggle={handleDrawerToggle} title={'Deu certo'} />
           <main className={classes.main}>
-            <Content />
+            <Products />
           </main>
           <footer className={classes.footer}>
             <Copyright />

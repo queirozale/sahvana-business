@@ -18,6 +18,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import PersonIcon from '@material-ui/icons/Person';
 import HistoryIcon from '@material-ui/icons/History';
+import HomeIcon from '@material-ui/icons/Home';
+import Link from '@material-ui/core/Link';
 
 import { NextPage } from 'next';
 import { signIn, signOut, useSession } from 'next-auth/client';
@@ -52,24 +54,37 @@ const Header: NextPage = () => {
       role="presentation"
     >
       <List>
+        <ListItem button key={'Home'}>
+          <ListItemIcon><HomeIcon /></ListItemIcon>
+          <Link color="inherit" href="/">
+            <ListItemText primary={'Home'} />
+          </Link>
+        </ListItem>
         <ListItem button key={'Perfil'}>
           <ListItemIcon><PersonIcon /></ListItemIcon>
-          <ListItemText primary={'Perfil'} />
+          <Link color="inherit" href="/perfil">
+            <ListItemText primary={'Perfil'} />
+          </Link>
         </ListItem>
         <Divider />
         <ListItem button key={'Produtos'}>
           <ListItemIcon><ListAltIcon /></ListItemIcon>
-          <ListItemText primary={'Produtos'} />
+          <Link color="inherit" href="/produtos">
+            <ListItemText primary={'Produtos'} />
+          </Link>
         </ListItem>
-  
         <ListItem button key={'Histórico de Alteração'}>
           <ListItemIcon><HistoryIcon /></ListItemIcon>
-          <ListItemText primary={'Histórico de Alteração'} />
+          <Link color="inherit" href="/historico">
+            <ListItemText primary={'Histórico de Alteração'} />
+          </Link>
         </ListItem>
         <Divider />
         <ListItem button key={'Contato'}>
           <ListItemIcon><MailIcon /></ListItemIcon>
-          <ListItemText primary={'Contato'} />
+          <Link color="inherit" href="/contato">
+            <ListItemText primary={'Contato'} />
+          </Link>
         </ListItem>
       </List>
     </div>
