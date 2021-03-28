@@ -100,18 +100,6 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://sahvana.com/">
-        Sahvana
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-};
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -273,11 +261,6 @@ const Products: NextPage = () => {
               :
               <p>Selecione um produto</p>}
             </Grid>
-            <Grid item xs={12}>
-              <Box mt={5}>
-              <Copyright />
-              </Box>
-            </Grid>
           </Grid>
         </div>
         :
@@ -306,11 +289,6 @@ const Products: NextPage = () => {
           <Grid item xs={12} sm={6}>
             <Box display="flex" justifyContent="center">
               <MediaCard />
-            </Box>
-          </Grid>
-          <Grid item xs={12}>
-            <Box mt={5}>
-            <Copyright />
             </Box>
           </Grid>
         </Grid>

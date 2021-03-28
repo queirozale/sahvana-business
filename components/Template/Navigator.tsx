@@ -135,23 +135,25 @@ function Navigator(props: NavigatorProps) {
               </ListItemText>
             </ListItem>
             {children.map(({ id: childId, icon, active }) => (
-              <Link color="inherit" href={"/" + routes[childId]}>
-                <ListItem
-                  key={childId}
-                  button
-                  className={clsx(classes.item, active && classes.itemActiveItem)}
-                  onClick={(e) => handleClickIcon(e, childId)}
-                >
-                  <ListItemIcon className={classes.itemIcon}>{icon}</ListItemIcon>
-                  <ListItemText
-                    classes={{
-                      primary: classes.itemPrimary,
-                    }}
+              <React.Fragment key={childId}>
+                <Link color="inherit" href={"/" + routes[childId]}>
+                  <ListItem
+                    key={childId}
+                    button
+                    className={clsx(classes.item, active && classes.itemActiveItem)}
+                    onClick={(e) => handleClickIcon(e, childId)}
                   >
-                    {childId}
-                  </ListItemText>
-                </ListItem>
-              </Link>
+                    <ListItemIcon className={classes.itemIcon}>{icon}</ListItemIcon>
+                    <ListItemText
+                      classes={{
+                        primary: classes.itemPrimary,
+                      }}
+                    >
+                      {childId}
+                    </ListItemText>
+                  </ListItem>
+                </Link>
+              </React.Fragment>
             ))}
             <Divider className={classes.divider} />
           </React.Fragment>

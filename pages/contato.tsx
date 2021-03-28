@@ -13,6 +13,7 @@ import Link from '@material-ui/core/Link';
 import Navigator from '../components/Template/Navigator';
 import Content from '../components/Template/Content';
 import Header from '../components/Template/Header';
+import ContactContet from '../components/Template/ContactContent';
 
 function Copyright() {
   return (
@@ -25,7 +26,7 @@ function Copyright() {
       {'.'}
     </Typography>
   );
-}
+};
 
 let theme = createMuiTheme({
   palette: {
@@ -157,7 +158,7 @@ const styles = createStyles({
   },
   main: {
     flex: 1,
-    padding: theme.spacing(6, 4),
+    padding: theme.spacing(1, 4),
     background: '#eaeff1',
   },
   footer: {
@@ -212,7 +213,7 @@ function Home(props: PaperbaseProps) {
         <div className={classes.app}>
           <Header onDrawerToggle={handleDrawerToggle} title={'Contato'} />
           <main className={classes.main}>
-            <Content />
+            <ContactContet />
           </main>
           <footer className={classes.footer}>
             <Copyright />

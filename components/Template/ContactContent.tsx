@@ -11,7 +11,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import RefreshIcon from '@material-ui/icons/Refresh';
-import Checkout from './Profile/Checkout';
+import SignUp from './Contact/SendMail';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -40,14 +40,14 @@ const styles = (theme: Theme) =>
 
 export interface ContentProps extends WithStyles<typeof styles> {}
 
-function ProfileContent(props: ContentProps) {
+function ContactContent(props: ContentProps) {
   const { classes } = props;
 
   return (
     <Paper className={classes.paper} elevation={0}>
-      <Checkout />
+      <SignUp />
     </Paper>
   );
 }
 
-export default withStyles(styles)(ProfileContent);
+export default withStyles(styles)(ContactContent);

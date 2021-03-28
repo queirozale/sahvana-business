@@ -50,10 +50,10 @@ const imageGallery = [
 const styles = theme => ({
   root: {
     backgroundColor: theme.palette.background.paper,
-    width: 500,
+    width: 200,
     display: "flex",
     justifyContent: "center",
-    alignItems: "flex-end"
+    alignItems: "flex-end",
   },
   icon: {
     margin: theme.spacing.unit * 2
@@ -80,7 +80,7 @@ const styles = theme => ({
   },
   button: {
     color: blue[900],
-    margin: 10
+    margin: 10,
   },
   secondaryButton: {
     color: "gray",
@@ -99,7 +99,7 @@ const styles = theme => ({
   },
   searchInput: {
     marginLeft: 8,
-    flex: 1
+    flex: 1,
   },
   searchIconButton: {
     padding: 10
@@ -156,7 +156,7 @@ class ImageUploadCard extends React.Component {
 
     return (
       <React.Fragment>
-        <CardContent>
+        {/* <CardContent> */}
           <Grid container justify="center" alignItems="center">
             <input
               accept="image/*"
@@ -171,14 +171,8 @@ class ImageUploadCard extends React.Component {
                 <AddPhotoAlternateIcon />
               </Fab>
             </label>
-            <Fab className={classes.button} onClick={this.handleSearchClick}>
-              <SearchIcon />
-            </Fab>
-            <Fab className={classes.button} onClick={this.handleGalleryClick}>
-              <CollectionsIcon />
-            </Fab>
           </Grid>
-        </CardContent>
+        {/* </CardContent> */}
       </React.Fragment>
     );
   }
@@ -224,7 +218,7 @@ class ImageUploadCard extends React.Component {
     const { classes } = this.props;
 
     return (
-      <Paper className={classes.searchRoot} elevation={1}>
+      <Paper className={classes.searchRoot} elevation={0}>
         <InputBase className={classes.searchInput} placeholder="Image URL" />
         <IconButton
           className={classes.button}

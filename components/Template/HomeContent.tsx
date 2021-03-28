@@ -13,6 +13,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import SimpleCard from './Card';
 import Demo from './Chart';
+import Dashboard from './Dashboard/Dashboard';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -30,7 +31,7 @@ const styles = (theme: Theme) =>
     },
     paper: {
       maxWidth: 1200,
-      height: 480,
+      height: '100%',
       margin: 'auto',
       overflow: 'hidden',
       backgroundColor: '#eaeff1'
@@ -44,22 +45,7 @@ function HomeContent(props: ContentProps) {
 
   return (
     <Paper className={classes.paper} elevation={0}>
-      <Grid container className={classes.root} spacing={2}>
-        <Grid item xs={12}>
-          <Grid container justify="left" spacing={2}>
-            {[0, 1, 2].map((value) => (
-              <Grid key={value} item>
-                <Paper className={classes.paperCard}>
-                  Métrica {value}
-                </Paper>
-              </Grid>
-            ))}
-          </Grid>
-        </Grid>
-        <Grid item xs={12}>
-          <Demo />
-        </Grid>
-      </Grid>
+      <Dashboard />
     </Paper>
   );
 }

@@ -11,7 +11,8 @@ import IconButton from '@material-ui/core/IconButton';
 import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import RefreshIcon from '@material-ui/icons/Refresh';
-import Checkout from './Profile/Checkout';
+import SettingsIcon from '@material-ui/icons/Settings';
+
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -19,35 +20,33 @@ const styles = (theme: Theme) =>
       maxWidth: 936,
       margin: 'auto',
       overflow: 'hidden',
-      backgroundColor: '#eaeff1'
+      background: '#eaeff1',
+      position: 'absolute',
+      top: '50%',
+      left: '50%'
+      // transform: 'translateY(-50%)'
     },
-    searchBar: {
-      borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
+    message: {
+      fontSize: 20
     },
-    searchInput: {
-      fontSize: theme.typography.fontSize,
-    },
-    block: {
-      display: 'block',
-    },
-    addUser: {
-      marginRight: theme.spacing(1),
-    },
-    contentWrapper: {
-      margin: '40px 16px',
-    },
+    gearIcon :{
+      height: '40px',
+      width: '40px'
+    }
   });
 
 export interface ContentProps extends WithStyles<typeof styles> {}
 
-function ProfileContent(props: ContentProps) {
+function Content(props: ContentProps) {
   const { classes } = props;
 
   return (
     <Paper className={classes.paper} elevation={0}>
-      <Checkout />
+      <Typography variant="body2" color="textSecondary" align="center" className={classes.message}>
+        <SettingsIcon className={classes.gearIcon} /> Estamos trabalhando nisso
+      </Typography>
     </Paper>
   );
-}
+};
 
-export default withStyles(styles)(ProfileContent);
+export default withStyles(styles)(Content);
