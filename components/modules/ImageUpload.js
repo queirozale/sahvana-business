@@ -66,7 +66,7 @@ const styles = theme => ({
     margin: 10
   },
   typography: {
-    margin: theme.spacing.unit * 2,
+    margin: theme.spacing(2),
     backgroundColor: "default"
   },
 

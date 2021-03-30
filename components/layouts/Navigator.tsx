@@ -60,19 +60,32 @@ const styles = (theme: Theme) =>
   });
 
 export interface NavigatorProps extends Omit<DrawerProps, 'classes'>, WithStyles<typeof styles> {
-  activeIcons: object;
   iconType: string;
   routes: object;
   childId: string;
-  activations: object;
-}
+  activations: {
+    Perfil: boolean;
+    Contato: boolean;
+    Cadastro: boolean;
+    Histórico: boolean;
+    Pedidos: boolean;
+  };
+};
+
+interface ProductData {
+  Perfil: boolean;
+  Contato: boolean;
+  Cadastro: boolean;
+  Histórico: boolean;
+  Pedidos: boolean;
+};
 
 function Navigator(props: NavigatorProps) {
   const { classes, ...other } = props;
   const activations = props.activations;
-  const [activeIcons, setActiveIcons] = useState(activations);
+  const [activeIcons, setActiveIcons] = useState<ProductData | any>(activations);
 
-  const handleClickIcon = (event, iconType) => {
+  const handleClickIcon = (_event: any, iconType: string) => {
     setActiveIcons({ ...setActiveIcons, [iconType]: true });
   };
 
@@ -80,16 +93,16 @@ function Navigator(props: NavigatorProps) {
     {
       id: 'Sobre a loja',
       children: [
-        { id: 'Perfil', icon: <PersonIcon />, active: activeIcons['Perfil'] },
-        { id: 'Contato', icon: <MailIcon />, active: activeIcons['Contato']  },
+        { id: 'Perfil', icon: <PersonIcon />, active: activeIcons.Perfil },
+        { id: 'Contato', icon: <MailIcon />, active: activeIcons.Contato  },
       ],
     },
     {
       id: 'Produtos',
       children: [
-        { id: 'Cadastro', icon: <ListAltIcon />, active: activeIcons['Cadastro']  },
-        { id: 'Histórico', icon: <HistoryIcon />, active: activeIcons['Histórico']  },
-        { id: 'Pedidos', icon: <PresentToAllIcon />, active: activeIcons['Pedidos']  },
+        { id: 'Cadastro', icon: <ListAltIcon />, active: activeIcons.Cadastro  },
+        { id: 'Histórico', icon: <HistoryIcon />, active: activeIcons.Histórico  },
+        { id: 'Pedidos', icon: <PresentToAllIcon />, active: activeIcons.Pedidos  },
       ],
     },
   ];
