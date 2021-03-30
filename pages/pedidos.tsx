@@ -10,10 +10,10 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Hidden from '@material-ui/core/Hidden';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
-import Navigator from '../components/Template/Navigator';
-import Content from '../components/Template/Content';
-import Header from '../components/Template/Header';
-import WorkingContent from '../components/Template/WorkingContent';
+import Navigator from '../components/layouts/Navigator';
+import Content from '../components/layouts/Content';
+import Header from '../components/layouts/Header';
+import WorkingContent from '../components/layouts/WorkingContent';
 
 function Copyright() {
   return (

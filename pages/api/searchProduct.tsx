@@ -12,13 +12,6 @@ export default async (
   res: NextApiResponse<ErrorResponseType | object[]>
   ): Promise<void> => {
     if (req.method === "GET") {
-      // const { _id } = req.body;
-
-      // if (!_id) {
-      //   res.status(400).json({ error: "Missing _id on request body"});
-      //   return;
-      // }
-
       const { db } = await connect();
       const response = await db.collection('products').findOne({ _id: new ObjectID("605388dde69dd28150c87fe6") });
 

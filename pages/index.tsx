@@ -10,9 +10,9 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Hidden from '@material-ui/core/Hidden';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
-import Navigator from '../components/Template/Navigator';
-import HomeContent from '../components/Template/HomeContent';
-import Header from '../components/Template/Header';
+import Navigator from '../components/layouts/Navigator';
+import HomeContent from '../components/layouts/HomeContent';
+import Header from '../components/layouts/Header';
 
 function Copyright() {
   return (
