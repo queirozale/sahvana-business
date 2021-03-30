@@ -63,36 +63,47 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ProductInfo(props) {
+interface ProductInfoProps {
+  data: {
+    description: string;
+    gender: string;
+    size: string;
+    color: string;
+    inventory: number;
+    original_price: number;
+    promotional_price: number;
+  };
+}
+
+export default function ProductInfo(props: ProductInfoProps) {
   const classes = useStyles();
-  const theme = useTheme();
   const data = props.data;
   const [openAdd, setOpenAdd] = useState(false);
   const [openRemove, setOpenRemove] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const dialog_title = data.description;
 
-  const handleClickAddOpen = (event) => {
+  const handleClickAddOpen = (_event: any) => {
     setOpenAdd(true);
   };
 
-  const handleAddClose = () => {
+  const handleAddClose = (_event: any) => {
     setOpenAdd(false);
   };
 
-  const handleClickRemoveOpen = (event) => {
+  const handleClickRemoveOpen = (_event: any) => {
     setOpenRemove(true);
   };
 
-  const handleRemoveClose = () => {
+  const handleRemoveClose = (_event: any) => {
     setOpenRemove(false);
   };
 
-  const handleClickEditOpen = (event) => {
+  const handleClickEditOpen = (_event: any) => {
     setOpenEdit(true);
   };
 
-  const handleEditClose = () => {
+  const handleEditClose = (_event: any) => {
     setOpenEdit(false);
   };
 

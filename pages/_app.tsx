@@ -12,8 +12,10 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector('#jss-server-side');
     if (jssStyles) {
-      jssStyles.parentElement.removeChild(jssStyles);
-    }
+      if (jssStyles.parentElement !== null) {
+        jssStyles.parentElement.removeChild(jssStyles);
+      };
+    };
   }, []);
 
   return (

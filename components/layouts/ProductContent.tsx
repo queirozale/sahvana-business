@@ -17,6 +17,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { DataGrid, GridToolbarContainer } from '@material-ui/data-grid';
+import { TransitionProps } from '@material-ui/core/transitions';
 
 import MediaCard from '../modules/Products/AddProduct';
 import ProductInfo from '../modules/Products/ProductInfo';
@@ -89,11 +90,12 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-
-const Transition = React.forwardRef(function Transition(props, ref) {
+const Transition = React.forwardRef(function Transition(
+  props: TransitionProps & { children?: React.ReactElement<any, any> },
+  ref: React.Ref<unknown>,
+) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-
 
 const fetcher = (...args: [input: RequestInfo, init?: RequestInit | undefined]) => fetch(...args).then(res => res.json());
 
@@ -102,9 +104,17 @@ const Products: NextPage = () => {
   const classes = useStyles();
   const [ edit, setEdit ] = useState(false);
   const { data, error } = useSWR('/api/findProduct', fetcher);
-  const [deletedRows, setDeletedRows] = useState([]);
-  const [showInfo, setShowInfo] = useState();
-  const [search, setSearch] = useState();
+  const [deletedRows, setDeletedRows] = useState(Array());
+  const [showInfo, setShowInfo] = useState({
+    description: "",
+    gender: "",
+    size: "",
+    color: "",
+    inventory: 0,
+    original_price: 0,
+    promotional_price: 0
+  });
+  const [search, setSearch] = useState("");
 
   const [open, setOpen] = useState(false);
 
@@ -123,9 +133,22 @@ const Products: NextPage = () => {
       </GridToolbarContainer>
     );
   };
-  const handleRowSelection = (e) => {
+  
+  const handleRowSelection = (e: MessageEvent) => {
+    const data = e.data as {
+      color: string;
+      description: string;
+      gender: string;
+      id: string;
+      inventory: string;
+      original_price: string;
+      promotional_price: string;
+      size: string;
+      tags: string;
+      _id: string
+    };
     if (edit) {
-      if (!deletedRows.includes(e.data.id)) {
+      if (!deletedRows.includes(data.id)) {
         setDeletedRows(deletedRows => [...deletedRows, e.data.id]);
       } else {
         setDeletedRows(deletedRows.filter(item => item !== e.data.id));
@@ -133,13 +156,18 @@ const Products: NextPage = () => {
     } else {
       setShowInfo(e.data)
     }
+
+    console.log(e.data);
+    console.log(typeof(e));
+    console.log(typeof(e.data));
+    console.log(e);
   };
 
-  const handleClickEdit= (event) => {
+  const handleClickEdit= (_event: any) => {
     setEdit(true);
   };
 
-  const handleCloseEdit= (event) => {
+  const handleCloseEdit= (_event: any) => {
     setEdit(false);
   };
 
@@ -173,7 +201,7 @@ const Products: NextPage = () => {
                       <SearchBar 
                       className={classes.searchBar} 
                       value={search}
-                      onChange={(newValue) => setSearch(newValue)}
+                      onChange={(newValue: string) => setSearch(newValue)}
                       onRequestSearch={() => console.log(search)}
                       />
                     </Box>
@@ -202,16 +230,16 @@ const Products: NextPage = () => {
                     ],
                   }}
                   components={
-                    edit ? 
-                    {Toolbar: CustomToolbar}
-                    : false
+                    edit ? {Toolbar: CustomToolbar}
+                    :
+                    undefined
                   }
                   />
                 </div>
             </Grid>
             <Grid item xs={12} sm={6}>
-              {showInfo ? 
-              <ProductInfo data={showInfo} /> 
+              {showInfo.description.length > 0 ? 
+                <ProductInfo data={showInfo} /> 
               :
               <p>Selecione um produto</p>}
             </Grid>
