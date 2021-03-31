@@ -16,7 +16,7 @@ import Slide from '@material-ui/core/Slide';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { DataGrid, GridToolbarContainer } from '@material-ui/data-grid';
+import { DataGrid, GridToolbarContainer  } from '@material-ui/data-grid';
 import { TransitionProps } from '@material-ui/core/transitions';
 
 import MediaCard from '../modules/Products/AddProduct';
@@ -187,7 +187,6 @@ const Products: NextPage = () => {
     { field: 'promotional_price', headerName: 'Preço Promocional', width: 180, type: 'number' },
   ];
 
-
   if (session) {
     return (
       <div className={classes.main}>
@@ -223,7 +222,7 @@ const Products: NextPage = () => {
                   pageSize={5} 
                   getRowId={(data) => data._id} 
                   checkboxSelection={edit}
-                  onRowSelected={e => handleRowSelection(e)}
+                  // onRowSelected={e => handleRowSelection(e)}
                   filterModel={{
                     items: [
                       { columnField: 'description', operatorValue: 'contains', value: search },
