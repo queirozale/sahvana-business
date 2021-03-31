@@ -22,7 +22,7 @@ export default async (
         return;
       }
 
-      res.status(200).json(response);
+      res.status(200).json({ message: "Product found" });
 
     } else {
       res.status(400).json({ error: "Wrong request method" });
