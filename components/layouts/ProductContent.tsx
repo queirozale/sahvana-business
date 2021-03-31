@@ -104,15 +104,7 @@ const Products: NextPage = () => {
   const [ edit, setEdit ] = useState(false);
   const { data, error } = useSWR('/api/findProduct', fetcher);
   const [deletedRows, setDeletedRows] = useState(Array());
-  const [showInfo, setShowInfo] = useState({
-    description: "",
-    gender: "",
-    size: "",
-    color: "",
-    inventory: 0,
-    original_price: 0,
-    promotional_price: 0
-  });
+  const [showInfo, setShowInfo] = useState();
   const [search, setSearch] = useState("");
 
   const [open, setOpen] = useState(false);
@@ -155,11 +147,6 @@ const Products: NextPage = () => {
     } else {
       setShowInfo(e.data)
     }
-
-    console.log(e.data);
-    console.log(typeof(e));
-    console.log(typeof(e.data));
-    console.log(e);
   };
 
   const handleClickEdit= (_event: any) => {
@@ -221,7 +208,7 @@ const Products: NextPage = () => {
                   pageSize={5} 
                   getRowId={(data) => data._id} 
                   checkboxSelection={edit}
-                  // onRowSelected={e => handleRowSelection(e)}
+                  onRowSelected={e => handleRowSelection(e)}
                   filterModel={{
                     items: [
                       { columnField: 'description', operatorValue: 'contains', value: search },
@@ -236,7 +223,7 @@ const Products: NextPage = () => {
                 </div>
             </Grid>
             <Grid item xs={12} sm={6}>
-              {showInfo.description.length > 0 ? 
+              {showInfo ? 
                 <ProductInfo data={showInfo} /> 
               :
               <p>Selecione um produto</p>}
