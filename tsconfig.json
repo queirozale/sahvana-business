@@ -4,11 +4,8 @@
     "lib": [
       "dom",
       "dom.iterable",
-      "esnext",
+      "esnext"
     ],
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "strictNullChecks": true,
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -28,5 +25,5 @@
   ],
   "exclude": [
     "node_modules"
-  ],
+  ]
 }
