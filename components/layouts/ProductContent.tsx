@@ -19,7 +19,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { DataGrid, GridToolbarContainer  } from '@material-ui/data-grid';
 import { TransitionProps } from '@material-ui/core/transitions';
 
-import MediaCard from '../modules/Products/AddProduct';
+import ProductForm from '../modules/Products/AddProduct';
 import ProductInfo from '../modules/Products/ProductInfo';
 
 import { signIn, signOut, useSession } from 'next-auth/client';
@@ -269,7 +269,7 @@ const Products: NextPage = () => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <Box display="flex" justifyContent="center">
-              <MediaCard />
+              ToDo
             </Box>
           </Grid>
         </Grid>
