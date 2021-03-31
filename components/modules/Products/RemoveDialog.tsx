@@ -50,8 +50,8 @@ function SimpleRemoveDialog(props: SimpleRemoveDialogProps) {
   const classes = useStyles();
   const { onClose, title, open } = props;
 
-  const handleClose = () => {
-    onClose();
+  const handleClose = (_event: any) => {
+    onClose(_event);
   };
 
 
