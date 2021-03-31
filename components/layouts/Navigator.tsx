@@ -61,7 +61,6 @@ const styles = (theme: Theme) =>
 
 export interface NavigatorProps extends Omit<DrawerProps, 'classes'>, WithStyles<typeof styles> {
   iconType: string;
-  routes: object;
   childId: string;
   activations: {
     Perfil: boolean;
@@ -79,6 +78,10 @@ interface ProductData {
   Histórico: boolean;
   Pedidos: boolean;
 };
+
+interface Routes {
+  [key: string]: string;
+}
 
 function Navigator(props: NavigatorProps) {
   const { classes, ...other } = props;
@@ -107,7 +110,7 @@ function Navigator(props: NavigatorProps) {
     },
   ];
 
-  const routes = {
+  const routes: Routes = {
     'Perfil': 'perfil',
     'Contato': 'contato',
     'Cadastro': 'produtos',
