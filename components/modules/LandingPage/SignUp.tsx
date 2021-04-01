@@ -1,20 +1,26 @@
 import React, {useState} from "react";
 import { NextPage } from 'next';
-import Router from 'next/router';
 
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import EmailIcon from '@material-ui/icons/Email';
+import PhoneIcon from '@material-ui/icons/Phone';
+import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import Snackbar from '@material-ui/core/Snackbar';
+
+import { useForm, ValidationError } from '@formspree/react';
+
+function Alert(props: AlertProps) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 
 const useStyles = makeStyles((theme) => ({
@@ -33,11 +39,15 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
-    backgroundColor: "#DAC48E"
+    backgroundColor: "#DAC48E",
+    width: '70%'
   },
   logo: {
     maxWidth: 160,
     marginBottom: theme.spacing(3)
+  },
+  title: {
+    paddingBottom: theme.spacing(3),
   },
   signUp: {
     backgroundColor: 'white',
@@ -51,113 +61,95 @@ const useStyles = makeStyles((theme) => ({
 
 const SignUp: NextPage = () => {
   const classes = useStyles();
-  const [serverState, setServerState] = useState({
-    submitting: false,
-    status: null
-  });
+  const [state, handleSubmit] = useForm("xgerewgn");
+  const [open, setOpen] = useState(true);
 
-  const handleServerResponse = (ok, msg, form) => {
-    setServerState({
-      submitting: false,
-      status: { ok, msg }
-    });
-    if (ok) {
-      form.reset();
-    }
+  const handleClose = () => {
+    setOpen(false);
   };
-
-  const registerUser = async event => {
-    event.preventDefault();
-    const form = event.target;
-
-    const res = await fetch('/api/createUser', {
-      body: JSON.stringify({
-        name: event.target.name.value,
-        surname: event.target.surname.value,
-        email: event.target.email.value,
-        store: event.target.store.value
-      }),
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      method: 'POST'
-    });
-
-    const result = await res.json();
-    if (res.status === 200){
-      handleServerResponse(true, alert("Obrigado por se cadastrar na Sahvana Business!"), form);
-      // Router.push('/');
-    }
-  }
 
   return (
     <Container component="main" maxWidth="xs" className={classes.signUp}>
       <CssBaseline />
       <div className={classes.paper}>
-      <Typography variant="h4" component="h5">Cadastre-se</Typography>
-        <form className={classes.form} onSubmit={registerUser}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+      <Typography variant="h4" component="h5" className={classes.title}>Cadastre-se</Typography>
+        <form className={classes.form} onSubmit={handleSubmit}>
+          <Grid container spacing={5}>
+            <Grid item xs={12}>
               <TextField
                 name="name"
                 id="name"
                 type="text"
-                variant="outlined"
+                // variant="outlined"
                 fullWidth
                 label="Nome"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <AccountCircle />
+                    </InputAdornment>
+                  ),
+                }}
                 autoFocus
                 required
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                id="surname"
-                name="surname"
-                type="text"
-                variant="outlined"
-                fullWidth
-                label="Sobrenome"
-                autoFocus
-                required
-              />
-            </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  id="email"
+                  name="email"
+                  type="email"
+                  fullWidth
+                  label="Email"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <EmailIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                  autoFocus
+                  required
+                />
+              </Grid>
             <Grid item xs={12}>
               <TextField
-                id="store"
-                name="store"
+                id="phone"
+                name="phone"
                 type="text"
-                variant="outlined"
                 fullWidth
-                label="Loja"
+                label="Celular"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <PhoneIcon />
+                    </InputAdornment>
+                  ),
+                }}
                 autoFocus
                 required
               />
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                id="email"
-                name="email"
-                type="email"
-                variant="outlined"
+            <Grid item xs={12} style={{textAlign: "center"}}>
+              <Button
+                type="submit"
                 fullWidth
-                label="Email"
-                autoFocus
-                required
-              />
+                variant="contained"
+                className={classes.submit}
+              >
+                Começar o cadastro
+              </Button>
+              {state.submitting && (
+                <LinearProgress />
+              )}
             </Grid>
           </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            className={classes.submit}
-          >
-            Cadastrar
-          </Button>
-          {serverState.status && (
-                    <p className={!serverState.status.ok ? "errorMsg" : ""}>
-                      {serverState.status.msg}
-                    </p>
+          {state.succeeded && (
+              <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="success">
+                  Vamos entrar em contato com você!
+                </Alert>
+              </Snackbar>
           )}
         </form>
       </div>

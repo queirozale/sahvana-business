@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
     },
     menuButton: {
-      marginRight: theme.spacing(2),
+      // marginRight: theme.spacing(2),
     },
     title: {
       flexGrow: 1,
@@ -21,14 +21,15 @@ const useStyles = makeStyles((theme: Theme) =>
     appBar: {
       background: 'transparent', 
       boxShadow: 'none',
-      marginTop: theme.spacing(2),
+      paddingTop: theme.spacing(2),
+      paddingRight: theme.spacing(5),
+      paddingLeft: theme.spacing(5),
+      marginBottom: theme.spacing(10),
     },
     logo: {
       maxHeight: '35px',
-      marginLeft: theme.spacing(15),
     },
     loginButton: {
-      marginRight: theme.spacing(8),
       backgroundColor: 'white',
       color: '#596A23'
     },
@@ -46,27 +47,29 @@ export default function Header() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" className={classes.appBar}>
-        <Toolbar>
-          <Link href="https://sahvana.com/">
-            <img src="sahvana_logo.png" className={classes.logo} />
-          </Link>
-          <Typography variant="h6" className={classes.title}>
-            
-          </Typography>
-          {!session &&
-            <Button onClick={(): Promise<void> => signIn("auth0")} color="inherit" className={classes.loginButton}>Entrar</Button>
-          }
-          {session && 
-            <div>
-              <Link href="/home">
-                <Button className={classes.accessButton}>Acessar</Button>
-              </Link>
-              <Button onClick={(): Promise<void> => signOut()} color="inherit" className={classes.loginButton}>Sair</Button>
-            </div>
-          }
-        </Toolbar>
-      </AppBar>
+      <React.Fragment>
+        <AppBar position="sticky" className={classes.appBar} elevation={0}>
+          <Toolbar>
+            <Link href="https://sahvana.com/">
+              <img src="sahvana_logo.png" className={classes.logo} />
+            </Link>
+            <Typography variant="h6" className={classes.title}>
+              
+            </Typography>
+            {!session &&
+              <Button onClick={(): Promise<void> => signIn("auth0")} color="inherit" className={classes.loginButton}>Entrar</Button>
+            }
+            {session && 
+              <div>
+                <Link href="/home">
+                  <Button className={classes.accessButton}>Acessar</Button>
+                </Link>
+                <Button onClick={(): Promise<void> => signOut()} color="inherit" className={classes.loginButton}>Sair</Button>
+              </div>
+            }
+          </Toolbar>
+        </AppBar>
+      </React.Fragment>
     </div>
   );
 };
