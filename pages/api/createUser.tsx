@@ -14,9 +14,9 @@ export default async (
   res: NextApiResponse<ErrorResponseType | SuccessResponseType>
   ): Promise<void> => {
     if (req.method === "POST") {
-      const { name, surname, email, store, password } = req.body;
+      const { name, surname, email, store } = req.body;
         
-      if (!name || !surname || !email || !store || !password) {
+      if ( !name || !surname || !email || !store ) {
         res.status(400).json({ error: "Missing body parameter" });
         return;
       }
@@ -27,8 +27,7 @@ export default async (
         name,
         surname,
         email,
-        store,
-        password
+        store
     });
 
       res.status(200).json({ message: "Registered user" });

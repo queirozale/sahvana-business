@@ -1,226 +1,72 @@
 import React from 'react';
-import {
-  createMuiTheme,
-  createStyles,
-  ThemeProvider,
-  withStyles,
-  WithStyles,
-} from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Hidden from '@material-ui/core/Hidden';
+
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
-import Navigator from '../components/layouts/Navigator';
-import HomeContent from '../components/layouts/HomeContent';
-import Header from '../components/layouts/Header';
 
-function Copyright() {
+import Header from '../components/modules/LandingPage/Header';
+import SignUp from '../components/modules/LandingPage/SignUp';
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    paper: {
+      margin: 'auto',
+      overflow: 'hidden',
+      height: '722px',
+      backgroundImage: `url(${"savana.jpg"})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      opacity: 0.75,
+      backgroundColor: '#D8D8D8',
+    },
+    root: {
+      display: 'flex'
+    },
+    title: {
+      fontFamily: 'GalanoGrotesqueDEMO-Bold',
+      marginLeft: theme.spacing(30),
+      marginTop: theme.spacing(10),
+      color: '#000000'
+    },
+    description: {
+      fontFamily: 'Poppins',
+      marginLeft: theme.spacing(30),
+      marginTop: theme.spacing(10),
+      color: '#000000'
+    },
+    form: {
+      marginTop: theme.spacing(10),
+    }
+  }),
+);
+
+const Home = () => {
+  const classes = useStyles();
+
   return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://sahvana.com/">
-        Sahvana
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
+    <div>
+    <Paper className={classes.paper}>
+      <Header />
+      <Grid container spacing={5} className={classes.root}>
+        <Grid item xs={12} sm={6}>
+        <Typography variant="h2" component="h3" className={classes.title}>
+          Venda mais com sua loja na Sahvana
+        </Typography>
+        <Typography variant="h6" className={classes.description} gutterBottom>
+          Profissionalizamos suas vendas de vestuário online e te apresentamos para novos clientes.
+        </Typography>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <div className={classes.form}>
+            <SignUp />  
+          </div>
+        </Grid>
+      </Grid>
+    </Paper>
+    </div>
   );
-}
-
-let theme = createMuiTheme({
-  palette: {
-    primary: {
-      light: '#63ccff',
-      main: '#009be5',
-      dark: '#006db3',
-    },
-  },
-  typography: {
-    h5: {
-      fontWeight: 500,
-      fontSize: 26,
-      letterSpacing: 0.5,
-    },
-  },
-  shape: {
-    borderRadius: 8,
-  },
-  props: {
-    MuiTab: {
-      disableRipple: true,
-    },
-  },
-  mixins: {
-    toolbar: {
-      minHeight: 48,
-    },
-  },
-});
-
-theme = {
-  ...theme,
-  overrides: {
-    MuiDrawer: {
-      paper: {
-        backgroundColor: '#18202c',
-      },
-    },
-    MuiButton: {
-      label: {
-        textTransform: 'none',
-      },
-      contained: {
-        boxShadow: 'none',
-        '&:active': {
-          boxShadow: 'none',
-        },
-      },
-    },
-    MuiTabs: {
-      root: {
-        marginLeft: theme.spacing(1),
-      },
-      indicator: {
-        height: 3,
-        borderTopLeftRadius: 3,
-        borderTopRightRadius: 3,
-        backgroundColor: theme.palette.common.white,
-      },
-    },
-    MuiTab: {
-      root: {
-        textTransform: 'none',
-        margin: '0 16px',
-        minWidth: 0,
-        padding: 0,
-        [theme.breakpoints.up('md')]: {
-          padding: 0,
-          minWidth: 0,
-        },
-      },
-    },
-    MuiIconButton: {
-      root: {
-        padding: theme.spacing(1),
-      },
-    },
-    MuiTooltip: {
-      tooltip: {
-        borderRadius: 4,
-      },
-    },
-    MuiDivider: {
-      root: {
-        backgroundColor: '#404854',
-      },
-    },
-    MuiListItemText: {
-      primary: {
-        fontWeight: theme.typography.fontWeightMedium,
-      },
-    },
-    MuiListItemIcon: {
-      root: {
-        color: 'inherit',
-        marginRight: 0,
-        '& svg': {
-          fontSize: 20,
-        },
-      },
-    },
-    MuiAvatar: {
-      root: {
-        width: 32,
-        height: 32,
-      },
-    },
-  },
 };
 
-const drawerWidth = 256;
-
-const styles = createStyles({
-  root: {
-    display: 'flex',
-    minHeight: '100vh',
-  },
-  drawer: {
-    [theme.breakpoints.up('sm')]: {
-      width: drawerWidth,
-      flexShrink: 0,
-    },
-  },
-  app: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  main: {
-    flex: 1,
-    padding: theme.spacing(1, 4),
-    background: '#eaeff1',
-  },
-  footer: {
-    padding: theme.spacing(2),
-    background: '#eaeff1',
-  },
-});
-
-export interface PaperbaseProps extends WithStyles<typeof styles> {}
-
-function Home(props: PaperbaseProps) {
-  const { classes } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
-
-  return (
-    <ThemeProvider theme={theme}>
-      <div className={classes.root}>
-        <CssBaseline />
-        <nav className={classes.drawer}>
-          <Hidden smUp implementation="js">
-            <Navigator
-              PaperProps={{ style: { width: drawerWidth } }}
-              variant="temporary"
-              open={mobileOpen}
-              onClose={handleDrawerToggle}
-              activations={{
-                'Perfil': false,
-                'Contato': false,
-                'Cadastro': false,
-                'Histórico': false,
-                'Pedidos': false
-              }}
-            />
-          </Hidden>
-          <Hidden xsDown implementation="css">
-            <Navigator 
-            PaperProps={{ style: { width: drawerWidth } }} 
-            activations={{
-              'Perfil': false,
-              'Contato': false,
-              'Cadastro': false,
-              'Histórico': false,
-              'Pedidos': false
-            }}
-            />
-          </Hidden>
-        </nav>
-        <div className={classes.app}>
-          <Header onDrawerToggle={handleDrawerToggle} title={'Início'} />
-          <main className={classes.main}>
-            <HomeContent />
-          </main>
-          <footer className={classes.footer}>
-            <Copyright />
-          </footer>
-        </div>
-      </div>
-    </ThemeProvider>
-  );
-}
-
-export default withStyles(styles)(Home);
+export default Home;
