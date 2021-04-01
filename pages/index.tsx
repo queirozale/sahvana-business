@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme: Theme) =>
       margin: 'auto',
       overflow: 'hidden',
       minHeight: '100vh',
-      backgroundColor: 'rgb(64, 64, 64, 0.5)',
+      backgroundColor: 'rgb(64, 64, 64, 0.3)',
       backgroundImage: `url(${"savana3.png"})`,
       backgroundSize: 'cover',
       backgroundPosition: 'center',
@@ -43,6 +43,8 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     form: {
       marginBottom: theme.spacing(10),
+      paddingLeft: theme.spacing(10),
+      paddingRight: theme.spacing(10),
     },
     descriptionText: {
       textAlign: "right",
@@ -62,7 +64,7 @@ const Home = () => {
       <Header />
       <Grid container spacing={5} className={classes.root}>
         <Grid item xs={12} sm={6} className={classes.descriptionText}>
-          <Typography variant="h2" component="h3" className={classes.title}>
+          <Typography variant="h3" component="h4" className={classes.title}>
             Venda mais com sua loja na Sahvana
           </Typography>
           <Typography variant="h6" className={classes.description} gutterBottom>
