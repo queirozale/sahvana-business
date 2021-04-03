@@ -14,15 +14,7 @@ import clsx from 'clsx';
 import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import Drawer, { DrawerProps } from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import HomeIcon from '@material-ui/icons/Home';
-import Box from '@material-ui/core/Box';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
 import ImageUpload from "../ImageUpload";
@@ -95,10 +87,92 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
   const [options2, setOptions2] = useState([]);
   const [options3, setOptions3] = useState([]);
   const [optionValues, setOptionValues] = useState([]);
-  
-  const handleSubmit = () => {
-    console.log(variantTypes);
+  const [collection, setCollection] = useState('');
+  const [category, setCategory] = useState('');
+  const [subcategory, setSubcategory] = useState('');
+  const [categoriesItems, setCategoriesItems] = useState([]);
+  const [subcategoriesItems, setSubcategoriesItems] = useState([]);
+
+  const categoriesOptions = {
+    'Masculino': [],
+    'Feminino': [
+      "Roupas",
+      "Sapatos",
+      "Bolsas",
+      "Moda praia",
+      "Fitness",
+      "Bijoux",
+      "Jóias",
+      "Acessórios",
+      "Underwear"
+    ]
   };
+
+  const subcategoriesOptions = {
+    'Roupas': [
+      'Blusa',
+      'Saia',
+      'Calça',
+      'Short',
+      'Macacões',
+      'Casacos',
+      'Vestidos',
+      'Kimono'
+    ],
+    'Sapatos': [
+      'Bota',
+      'Sandália',
+      'Flatas',
+      'Tênis'
+    ],
+    'Bolsas': [
+      'Bags',
+      'Bolsas',
+      'Carteira',
+      'Pochete',
+      'Mochila',
+      'Bolsa de praia',
+      'Necessaire'
+    ],
+    'Moda praia': [
+      'Biquini',
+      'Calcinha',
+      'Maiô e body',
+      'Top',
+      'Saídas de praia'
+    ],
+    'Fitness': [
+      'Blusa',
+      'Calça',
+      'Short',
+      'Conjunto',
+      'Tênis'
+    ],
+    'Bijoux': [
+      'Anel',
+      'Brinco',
+      'Colar',
+      'Pulseiras & braceletes',
+      'Acessórios para cabelo'
+    ],
+    'Jóias': [
+      'Anel',
+      'Brinco',
+      'Colar',
+      'Pulseiras & braceletes',
+      'Acessórios para cabelo'
+    ],
+    'Acessórios': [
+      'Acessórios de cabelo',
+      'Cachecol & lenços',
+      'Tiara',
+      'Cinto',
+      'Chapéu',
+      'Óculos',
+      'Pequenos acessórios',
+      'Relógio'
+    ]
+  }
 
   const handleCheckBox = () => {
     setVariant(!variant);
@@ -162,6 +236,20 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
     setOptionValues(generateOptionsCombinations());
   };
 
+  const handleCollectionChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setCollection(event.target.value as string);
+    setCategoriesItems(categoriesOptions[event.target.value as string]);
+  };
+
+  const handleCategoryChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setCategory(event.target.value as string);
+    setSubcategoriesItems(subcategoriesOptions[event.target.value as string]);
+  };
+
+  const handleSubcategoryChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setSubcategory(event.target.value as string);
+  };
+
   const registerProduct = async event => {
     event.preventDefault();
     const form = event.target;
@@ -178,7 +266,6 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
     });
 
     const result = await res.json();
-
   };
 
   return (
@@ -219,6 +306,65 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
                     required
                   />
                 </Grid>
+                <Grid item xs={12}>
+                  <Typography className={classes.title} component="h5" variant="h6" align="left">
+                    Tags
+                  </Typography>
+                  <Select
+                    labelId="gender"
+                    id="gender"
+                    value={collection}
+                    onChange={handleCollectionChange}
+                    inputProps={{ 'aria-label': 'Without label' }}
+                    fullWidth
+                    displayEmpty
+                    variant="outlined"
+                  >
+                    <MenuItem value="">
+                      <em>Coleção</em>
+                    </MenuItem>
+                    <MenuItem value={"Masculino"}>Masculino</MenuItem>
+                    <MenuItem value={"Feminino"}>Feminino</MenuItem>
+                  </Select>
+                </Grid>
+                <Grid item xs={12}>
+                  <Select
+                    labelId="gender"
+                    id="gender"
+                    value={category}
+                    onChange={handleCategoryChange}
+                    inputProps={{ 'aria-label': 'Without label' }}
+                    fullWidth
+                    displayEmpty
+                    variant="outlined"
+                  >
+                    <MenuItem value="">
+                      <em>Categoria</em>
+                    </MenuItem>
+                    {categoriesItems.map(option => (
+                        <MenuItem key={option} value={option}>{option}</MenuItem>
+                    ))}
+                  </Select>
+                </Grid>
+                <Grid item xs={12}>
+                  <Select
+                    labelId="gender"
+                    id="gender"
+                    value={subcategory}
+                    onChange={handleSubcategoryChange}
+                    inputProps={{ 'aria-label': 'Without label' }}
+                    fullWidth
+                    displayEmpty
+                    variant="outlined"
+                  >
+                    <MenuItem value="">
+                      <em>Sub-Categoria</em>
+                    </MenuItem>
+                    {subcategoriesItems.map(option => (
+                      <MenuItem key={option} value={option}>{option}</MenuItem>
+                    ))}
+                  </Select>
+                </Grid>
                 {/* <Grid item xs={12} sm={6}>
                   <ImageUpload cardName="Input Image" />
                 </Grid> */}
@@ -233,7 +379,7 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
               <Grid container spacing={4}>
                 <Grid item xs={12}>
                   <FormControlLabel
-                    control={<Checkbox color="primary" name="saveCard" value="yes" />}
+                    control={<Checkbox color="primary" name="checkVariant" value={variant} />}
                     label="Este produto tem várias opções, como tamanhos ou cores diferentes"
                     onChange={handleCheckBox}
                   />
@@ -291,6 +437,34 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
                     </Grid>
                   </React.Fragment>
                 ))}
+                {!variant && (
+                  <div>
+                    <Grid container spacing={4}>
+                      <Grid item xs={12} sm={6}>
+                        Preço
+                        <TextField
+                            id="price"
+                            name="price"
+                            variant="outlined"
+                            fullWidth
+                            label="R$ 00,00"
+                            required
+                          />
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        Quantidade
+                        <TextField
+                          id="inventory"
+                          name="inventory"
+                          variant="outlined"
+                          fullWidth
+                          label="0"
+                          required
+                        />
+                      </Grid>
+                    </Grid>
+                  </div>
+                )}
               </Grid>
             </Paper>
           </Grid>
