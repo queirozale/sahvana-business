@@ -43,12 +43,14 @@ const styles = (theme: Theme) =>
 interface HeaderProps extends WithStyles<typeof styles> {
   onDrawerToggle: () => void;
   title: string;
+  avatarLetter: string;
 }
 
 function Header(props: HeaderProps) {
   const { classes, onDrawerToggle } = props;
   const title = props.title;
   const [ session, loading ] = useSession();
+  const avatarLetter = props.avatarLetter;
 
   return (
     <React.Fragment>
@@ -86,7 +88,7 @@ function Header(props: HeaderProps) {
             </Grid>
             <Grid item>
               <IconButton color="inherit" className={classes.iconButtonAvatar}>
-                <Avatar>A</Avatar>
+                <Avatar>{avatarLetter}</Avatar>
               </IconButton>
             </Grid>
           </Grid>

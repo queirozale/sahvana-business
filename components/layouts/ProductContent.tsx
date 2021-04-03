@@ -20,15 +20,14 @@ import { DataGrid, GridToolbarContainer  } from '@material-ui/data-grid';
 import { TransitionProps } from '@material-ui/core/transitions';
 
 import ProductInfo from '../modules/Products/ProductInfo';
-
-import { signIn, signOut, useSession } from 'next-auth/client';
+import AddProductForm from '../modules/Products/AddProductForm';
 
 import useSWR from 'swr';
 
 const useStyles = makeStyles(() => ({
   main: {
     backgroundColor: '#eeeeee',
-    height:'720px'
+    minHeight: '100vh',
   },
   title: {
     paddingTop: '20px',
@@ -82,6 +81,7 @@ const useStyles = makeStyles(() => ({
   },
   appBar: {
     position: 'relative',
+    backgroundColor: '#F28729',
   },
   titleDialog: {
     marginLeft: '10px',
@@ -99,7 +99,6 @@ const Transition = React.forwardRef(function Transition(
 const fetcher = (...args: [input: RequestInfo, init?: RequestInit | undefined]) => fetch(...args).then(res => res.json());
 
 const Products: NextPage = () => {
-  const [ session, loading ] = useSession();
   const classes = useStyles();
   const [ edit, setEdit ] = useState(false);
   const { data, error } = useSWR('/api/findProduct', fetcher);
@@ -173,69 +172,69 @@ const Products: NextPage = () => {
     { field: 'promotional_price', headerName: 'Preço Promocional', width: 180, type: 'number' },
   ];
 
-  if (session) {
-    return (
-      <div className={classes.main}>
-        {data ?
-        <div>
-          <Grid container spacing={5} className={classes.root}>
-            <Grid item xs={12} sm={6}>
-                <div style={{ height: 400, width: '100%' }}>
-                  <Box display="flex" flexDirection="row-reverse" mb={1}>
-                    <Box>
-                      <SearchBar 
-                      className={classes.searchBar} 
-                      value={search}
-                      onChange={(newValue: string) => setSearch(newValue)}
-                      onRequestSearch={() => console.log(search)}
-                      />
-                    </Box>
-                    <Box mr={5}>
-                      <Button color="primary" onClick={handleClickOpen}>
-                        Adcionar produto
-                      </Button>
-                    </Box>
-                    <Box mr={5}>
-                      <Button color="primary" onClick={handleClickEdit}>
-                        Deletar produtos
-                      </Button>
-                    </Box>
+  return (
+    <div className={classes.main}>
+      {data ?
+      <div>
+        <Grid container spacing={5} className={classes.root}>
+          <Grid item xs={12} sm={6}>
+              <div style={{ height: 400, width: '100%' }}>
+                <Box display="flex" flexDirection="row-reverse" mb={1}>
+                  <Box>
+                    <SearchBar 
+                    className={classes.searchBar} 
+                    value={search}
+                    onChange={(newValue: string) => setSearch(newValue)}
+                    onRequestSearch={() => console.log(search)}
+                    />
                   </Box>
-                  <DataGrid 
-                  className={classes.table}
-                  rows={data} 
-                  columns={columns} 
-                  pageSize={5} 
-                  getRowId={(data) => data._id} 
-                  checkboxSelection={edit}
-                  onRowSelected={e => handleRowSelection(e)}
-                  filterModel={{
-                    items: [
-                      { columnField: 'description', operatorValue: 'contains', value: search },
-                    ],
-                  }}
-                  components={
-                    edit ? {Toolbar: CustomToolbar}
-                    :
-                    undefined
-                  }
-                  />
-                </div>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              {showInfo ? 
-                <ProductInfo data={showInfo} /> 
-              :
-              <p>Selecione um produto</p>}
-            </Grid>
+                  <Box mr={5}>
+                    <Button color="primary" onClick={handleClickOpen}>
+                      Adcionar produto
+                    </Button>
+                  </Box>
+                  <Box mr={5}>
+                    <Button color="primary" onClick={handleClickEdit}>
+                      Deletar produtos
+                    </Button>
+                  </Box>
+                </Box>
+                <DataGrid 
+                className={classes.table}
+                rows={data} 
+                columns={columns} 
+                pageSize={5} 
+                getRowId={(data) => data._id} 
+                checkboxSelection={edit}
+                onRowSelected={e => handleRowSelection(e)}
+                filterModel={{
+                  items: [
+                    { columnField: 'description', operatorValue: 'contains', value: search },
+                  ],
+                }}
+                components={
+                  edit ? {Toolbar: CustomToolbar}
+                  :
+                  undefined
+                }
+                />
+              </div>
           </Grid>
-        </div>
-        :
-        <div className={classes.loading}>
-          <CircularProgress />
-        </div>
-        }
-      <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
+          <Grid item xs={12} sm={6}>
+            {showInfo ? 
+              <ProductInfo data={showInfo} /> 
+            :
+            <p>Selecione um produto</p>}
+          </Grid>
+        </Grid>
+      </div>
+      :
+      <div className={classes.loading}>
+        <CircularProgress />
+      </div>
+      }
+    <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
+      <div className={classes.main}>
         <AppBar className={classes.appBar}>
           <Toolbar>
             <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
@@ -244,31 +243,13 @@ const Products: NextPage = () => {
             <Typography variant="h6" className={classes.titleDialog}>
               Adicionar produtos
             </Typography>
-            <Button autoFocus color="inherit" onClick={handleClose}>
-              Salvar
-            </Button>
           </Toolbar>
         </AppBar>
-        <Grid container spacing={5} className={classes.root}>
-          <Grid item xs={12} sm={6}>
-            <p>Imagem</p>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Box display="flex" justifyContent="center">
-              ToDo
-            </Box>
-          </Grid>
-        </Grid>
-      </Dialog>
+        <AddProductForm />
       </div>
-    );
-  } else {
-    return (
-      <div>
-        <h1>Home page genérica</h1>
-      </div>
-    );
-  }
+    </Dialog>
+    </div>
+  );
 };
 
 export default Products;

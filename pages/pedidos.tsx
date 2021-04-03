@@ -10,10 +10,14 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Hidden from '@material-ui/core/Hidden';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 import Navigator from '../components/layouts/Navigator';
-import Content from '../components/layouts/Content';
 import Header from '../components/layouts/Header';
 import WorkingContent from '../components/layouts/WorkingContent';
+import LandingPage from '../components/layouts/LandingPage';
+
+import { useSession } from 'next-auth/client';
 
 function Copyright() {
   return (
@@ -171,23 +175,37 @@ export interface PaperbaseProps extends WithStyles<typeof styles> {}
 
 function Home(props: PaperbaseProps) {
   const { classes } = props;
+  const [ session, loading ] = useSession();
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
-  return (
-    <ThemeProvider theme={theme}>
-      <div className={classes.root}>
-        <CssBaseline />
-        <nav className={classes.drawer}>
-          <Hidden smUp implementation="js">
-            <Navigator
-              PaperProps={{ style: { width: drawerWidth } }}
-              variant="temporary"
-              open={mobileOpen}
-              onClose={handleDrawerToggle}
+  if (session) {
+    return (
+      <ThemeProvider theme={theme}>
+        <div className={classes.root}>
+          <CssBaseline />
+          <nav className={classes.drawer}>
+            <Hidden smUp implementation="js">
+              <Navigator
+                PaperProps={{ style: { width: drawerWidth } }}
+                variant="temporary"
+                open={mobileOpen}
+                onClose={handleDrawerToggle}
+                activations={{
+                  'Perfil': false,
+                  'Contato': false,
+                  'Cadastro': false,
+                  'Histórico': false,
+                  'Pedidos': true
+                }}
+              />
+            </Hidden>
+            <Hidden xsDown implementation="css">
+              <Navigator 
+              PaperProps={{ style: { width: drawerWidth } }} 
               activations={{
                 'Perfil': false,
                 'Contato': false,
@@ -195,33 +213,32 @@ function Home(props: PaperbaseProps) {
                 'Histórico': false,
                 'Pedidos': true
               }}
-            />
-          </Hidden>
-          <Hidden xsDown implementation="css">
-            <Navigator 
-            PaperProps={{ style: { width: drawerWidth } }} 
-            activations={{
-              'Perfil': false,
-              'Contato': false,
-              'Cadastro': false,
-              'Histórico': false,
-              'Pedidos': true
-            }}
-            />
-          </Hidden>
-        </nav>
-        <div className={classes.app}>
-          <Header onDrawerToggle={handleDrawerToggle} title={'Pedidos'} />
-          <main className={classes.main}>
-            <WorkingContent />
-          </main>
-          <footer className={classes.footer}>
-            <Copyright />
-          </footer>
+              />
+            </Hidden>
+          </nav>
+          <div className={classes.app}>
+            <Header onDrawerToggle={handleDrawerToggle} title={'Pedidos'} />
+            <main className={classes.main}>
+              <WorkingContent />
+            </main>
+            <footer className={classes.footer}>
+              <Copyright />
+            </footer>
+          </div>
         </div>
-      </div>
-    </ThemeProvider>
-  );
+      </ThemeProvider>
+    );
+  } else if (loading) {
+    return (
+      <CircularProgress />
+    );
+  } 
+  else {
+    return (
+      <LandingPage />
+    );
+  }
+
 }
 
 export default withStyles(styles)(Home);

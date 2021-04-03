@@ -1,19 +1,33 @@
 import React, { useState } from 'react';
+
+import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import InputLabel from '@material-ui/core/InputLabel';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Button from '@material-ui/core/Button';
 
-import ImageUpload from "../ImageUpload";
+import ImageUpload from "../../ImageUpload";
 
-export default function AddressForm() {
+const useStyles = makeStyles((theme) => ({
+  submitBtn: {
+    backgroundColor: 'rgb(242, 135, 41, 0.7)',
+    color: 'white'
+  }
+}));
+
+export default function AccountForm() {
+  const classes = useStyles();
+
   return (
     <React.Fragment>
-      <Typography variant="h6" gutterBottom>
-        Sobre a sua loja
-      </Typography>
       <Grid container spacing={3}>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12}>
+        <Typography variant="h6" gutterBottom>
+          Sobre a loja
+        </Typography>
           <TextField
             required
             id="firstName"
@@ -23,12 +37,12 @@ export default function AddressForm() {
             autoComplete="given-name"
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        {/* <Grid item xs={12} sm={6}>
           <InputLabel>
           Logo
           </InputLabel>
           <ImageUpload cardName="Input Image" />
-        </Grid>
+        </Grid> */}
         <Grid item xs={12}>
           <TextField
             required
@@ -71,6 +85,26 @@ export default function AddressForm() {
             fullWidth
             autoComplete="shipping postal-code"
           />
+        </Grid>
+        <Grid item xs={12}>
+        <Typography variant="h6" gutterBottom>
+          Escolha a forma de entrega
+        </Typography>
+          <FormControlLabel
+            control={<Checkbox color="primary" name="saveCard" value="yes" />}
+            label="Retirada em loja"
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <FormControlLabel
+            control={<Checkbox color="primary" name="saveCard" value="yes" />}
+            label="Expresso (grande Vitória)"
+          />
+        </Grid>
+        <Grid item xs={12} style={{textAlign: "center"}}>
+          <Button className={classes.submitBtn}>
+            Completar perfil
+          </Button>
         </Grid>
       </Grid>
     </React.Fragment>

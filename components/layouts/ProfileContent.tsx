@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState }  from 'react';
 
 import Paper from '@material-ui/core/Paper';
 import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 
-import Checkout from '../modules/Profile/CompleteProfile';
+import CompleteProfile from '../modules/Profile/Checkout/CompleteProfile';
+import LayoutTextFields from '../modules/Profile/ViewProfile';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -34,10 +36,23 @@ export interface ContentProps extends WithStyles<typeof styles> {}
 
 function ProfileContent(props: ContentProps) {
   const { classes } = props;
+  const [completed, setCompleted] = useState(false);
+
+  function handleClick() {
+    setCompleted(!completed);
+  };
 
   return (
     <Paper className={classes.paper} elevation={0}>
-      <Checkout />
+      <Button onClick={handleClick}>
+        Change
+      </Button>
+      {completed && (
+        <LayoutTextFields />
+      )}
+      {!completed && (
+        <CompleteProfile />
+      )}
     </Paper>
   );
 }

@@ -69,6 +69,7 @@ export interface NavigatorProps extends Omit<DrawerProps, 'classes'>, WithStyles
     Histórico: boolean;
     Pedidos: boolean;
   };
+  brand: string;
 };
 
 interface ProductData {
@@ -87,6 +88,7 @@ function Navigator(props: NavigatorProps) {
   const { classes, ...other } = props;
   const activations = props.activations;
   const [activeIcons, setActiveIcons] = useState<ProductData | any>(activations);
+  const brand = props.brand;
 
   const handleClickIcon = (_event: any, iconType: string) => {
     setActiveIcons({ ...setActiveIcons, [iconType]: true });
@@ -123,9 +125,9 @@ function Navigator(props: NavigatorProps) {
     <Drawer variant="permanent" {...other}>
       <List disablePadding>
         <ListItem className={clsx(classes.firebase, classes.item, classes.itemCategory)}>
-          Sahvana
+          {brand}
         </ListItem>
-        <Link color="inherit" href="/">
+        <Link color="inherit" href="/home">
           <ListItem className={clsx(classes.item, classes.itemCategory)}>
             <ListItemIcon className={classes.itemIcon}>
               <HomeIcon />
