@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   createMuiTheme,
   createStyles,
@@ -171,18 +171,48 @@ const styles = createStyles({
   },
 });
 
+// const fetcher = (...args: [input: RequestInfo, init?: RequestInit | undefined]) => fetch(...args).then(res => res.json());
+// const fetcher = params => url => post(url, params);
+
 export interface PaperbaseProps extends WithStyles<typeof styles> {}
 
 function Home(props: PaperbaseProps) {
   const { classes } = props;
   const [ session, loading ] = useSession();
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [completed, setCompleted] = useState(false);
+  
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-
+  
+  // const findUser = async () => {
+    //   const res = await fetch('/api/findUser', {
+      //     body: JSON.stringify({
+        //       email: session.user.email,
+        //     }),
+        //     headers: {
+          //       'Content-Type': 'application/json'
+          //     },
+          //     method: 'POST'
+          //   });
+          
+          //   const result = await res.json();
+          //   if (res.status === 200){
+            //     setCompleted(true);
+            //   };
+            
+            //   return result;
+            // };
+            
   if (session) {
+    const email = session.user.email;
+    // const { data, error } = useSWR('/api/findUser', fetcher({email: email}));
+    // console.log(data)
+  
+    // const result = findUser();
+    // {data && setCompleted(true)}
+    
     return (
       <ThemeProvider theme={theme}>
         <div className={classes.root}>
@@ -201,7 +231,7 @@ function Home(props: PaperbaseProps) {
                   'Histórico': false,
                   'Pedidos': false
                 }}
-              />
+                />
             </Hidden>
             <Hidden xsDown implementation="css">
               <Navigator 
@@ -219,7 +249,7 @@ function Home(props: PaperbaseProps) {
           <div className={classes.app}>
             <Header onDrawerToggle={handleDrawerToggle} title={'Perfil'} />
             <main className={classes.main}>
-              <ProfileContent />
+              <ProfileContent email={session.user.email} />
             </main>
             <footer className={classes.footer}>
               <Copyright />

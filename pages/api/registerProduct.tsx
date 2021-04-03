@@ -14,9 +14,9 @@ export default async (
   res: NextApiResponse<ErrorResponseType | SuccessResponseType>
   ): Promise<void> => {
     if (req.method === "POST") {
-      const { description, gender, size, color, inventory, original_price, promotional_price, tags } = req.body;
+      const { title, variantProperties } = req.body;
         
-      if (!description || !gender || !size || !color || !inventory || !original_price || !promotional_price || !tags) {
+      if (!title || !variantProperties) {
         res.status(400).json({ error: "Missing body parameter" });
         return;
       }
@@ -24,14 +24,8 @@ export default async (
       const { db } = await connect();
 
       const response = await db.collection('products').insertOne({
-        description,
-        gender,
-        size,
-        color,
-        inventory,
-        original_price,
-        promotional_price,
-        tags
+        title,
+        variantProperties
     });
 
       res.status(200).json({ message: "Registered product" });

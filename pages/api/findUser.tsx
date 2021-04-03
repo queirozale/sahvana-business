@@ -14,22 +14,22 @@ export default async (
   res: NextApiResponse<ErrorResponseType | SuccessResponseType>
   ): Promise<void> => {
     if (req.method === "POST") {
-      const { email, password } = req.body;
+      const { email } = req.body;
 
-      if (!email || !password) {
+      if (!email) {
         res.status(400).json({ error: "Missing email on request body"});
         return;
       }
 
       const { db } = await connect();
-      const response = await db.collection('users').findOne({ email, password })
+      const response = await db.collection('users').findOne({ email })
 
       if (!response) {
-        res.status(200).json({ error: "User with this email not found" });
+        res.status(404).json({ error: "User with this email not found" });
         return;
       }
 
-      res.status(200).json({ message: "User found" });
+      res.status(200).json(response);
     } else {
       res.status(400).json({ error: "Wrong request method" })
     }

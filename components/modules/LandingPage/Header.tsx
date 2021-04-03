@@ -61,7 +61,7 @@ export default function Header() {
             }
             {session && 
               <div>
-                <Link href="/home">
+                <Link href="/perfil">
                   <Button className={classes.accessButton}>Acessar</Button>
                 </Link>
                 <Button onClick={(): Promise<void> => signOut()} color="inherit" className={classes.loginButton}>Sair</Button>

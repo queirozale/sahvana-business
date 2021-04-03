@@ -35,7 +35,6 @@ createStyles({
     marginLeft: theme.spacing(2),
     marginRight: theme.spacing(2),
     [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
-      width: 1500,
       marginLeft: 'auto',
       marginRight: 'auto',
     },
@@ -43,6 +42,7 @@ createStyles({
   paperFirstRow: {
     marginTop: theme.spacing(3),
     padding: theme.spacing(2),
+    maxWidth: 950,
     [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
       marginTop: theme.spacing(6),
       padding: theme.spacing(3),
@@ -90,21 +90,14 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
   const { classes, ...other } = props;
   const [variant, setVariant] = useState(false);
   const [options, setOptions] = useState([1]);
-  const [variantType1, setVariantType1] = useState('');
-  const [variantType2, setVariantType2] = useState('');
-  const [variantType3, setVariantType3] = useState('');
-  const [variantTypes, setVariantTypes] = useState({
-    1: variantType1, 
-    2: variantType2, 
-    3: variantType3
-  })
+  const [variantTypes, setVariantTypes] = useState({1: '', 2: '', 3: ''})
   const [options1, setOptions1] = useState([]);
   const [options2, setOptions2] = useState([]);
   const [options3, setOptions3] = useState([]);
   const [optionValues, setOptionValues] = useState([]);
   
   const handleSubmit = () => {
-    console.log(variantTypes)
+    console.log(variantTypes);
   };
 
   const handleCheckBox = () => {
@@ -122,10 +115,7 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
   };
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>, option: number) => {
-    const variantTypesCopy =  variantTypes;
-    variantTypesCopy[option] = event.target.value as string;
-    console.log('variants: ', variantTypesCopy)
-    setVariantTypes(variantTypesCopy);
+    setVariantTypes({...variantTypes, [option]: event.target.value as string});
   };
 
   const generateOptionsCombinations = () => {
@@ -158,7 +148,7 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
     }
 
     return optionsCombinations;
-  }
+  };
 
   const handleOptionChange = (e, option) => {
     if (option === 1) {
@@ -169,7 +159,26 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
       setOptions3(e.target.value.split(','));
     }
 
-    setOptionValues(generateOptionsCombinations())
+    setOptionValues(generateOptionsCombinations());
+  };
+
+  const registerProduct = async event => {
+    event.preventDefault();
+    const form = event.target;
+
+    const res = await fetch('/api/registerProduct', {
+      body: JSON.stringify({
+        title: event.target.title.value,
+        variantProperties: event.target.description.value,
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST'
+    });
+
+    const result = await res.json();
+
   };
 
   return (
@@ -179,7 +188,7 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
       {/* <Typography className={classes.title} component="h1" variant="h4" align="center">
         Form
       </Typography> */}
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={registerProduct}>
         <Grid container spacing={5} className={classes.root}>
           <Grid item xs={12} sm={4}>
             <Paper className={classes.paperFirstRow}>
@@ -265,6 +274,7 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
                           onChange={(e) => handleOptionChange(e, option)}
                           autoFocus
                           required
+                          autoComplete='off'
                         />
                         </Grid>
                       </Grid>
@@ -333,7 +343,7 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
           )}
           <Grid item xs={12} sm={12} style={{textAlign: "center"}}>
             <Button
-            onClick={handleSubmit}
+            type="submit"
             fullWidth
             variant="contained"
             className={classes.submitBtn}

@@ -4,8 +4,11 @@ import Paper from '@material-ui/core/Paper';
 import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 
+import { signIn, signOut, useSession } from 'next-auth/client';
+import useSWR from 'swr';
+
 import CompleteProfile from '../modules/Profile/Checkout/CompleteProfile';
-import LayoutTextFields from '../modules/Profile/ViewProfile';
+import Profile from '../modules/Profile/ViewProfile';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -32,25 +35,43 @@ const styles = (theme: Theme) =>
     },
   });
 
-export interface ContentProps extends WithStyles<typeof styles> {}
+// const fetcher = params => url => post(url, params);
+
+// const fetcher = (...args: [input: RequestInfo, init?: RequestInit | undefined]) => fetch(...args).then(res => res.json());
+
+export interface ContentProps extends WithStyles<typeof styles> {
+  email: string;
+}
 
 function ProfileContent(props: ContentProps) {
   const { classes } = props;
-  const [completed, setCompleted] = useState(false);
+  const email = props.email;
+  const fetcher = async () => {
+      const res = await fetch('/api/findUser', {
+          body: JSON.stringify({
+              email: email,
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+              },
+              method: 'POST'
+            });
+          
+      return await res.json();
+  };
 
-  function handleClick() {
-    setCompleted(!completed);
+  const { data, error} = useSWR('/api/findUser', fetcher);
+
+  const handleClick = () => {
+    console.log(data);
   };
 
   return (
     <Paper className={classes.paper} elevation={0}>
-      <Button onClick={handleClick}>
-        Change
-      </Button>
-      {completed && (
-        <LayoutTextFields />
+      {data && (
+        <Profile userData={data} />
       )}
-      {!completed && (
+      {!data && (
         <CompleteProfile />
       )}
     </Paper>
