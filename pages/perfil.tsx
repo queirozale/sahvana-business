@@ -185,33 +185,9 @@ function Home(props: PaperbaseProps) {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-  
-  // const findUser = async () => {
-    //   const res = await fetch('/api/findUser', {
-      //     body: JSON.stringify({
-        //       email: session.user.email,
-        //     }),
-        //     headers: {
-          //       'Content-Type': 'application/json'
-          //     },
-          //     method: 'POST'
-          //   });
-          
-          //   const result = await res.json();
-          //   if (res.status === 200){
-            //     setCompleted(true);
-            //   };
-            
-            //   return result;
-            // };
             
   if (session) {
     const email = session.user.email;
-    // const { data, error } = useSWR('/api/findUser', fetcher({email: email}));
-    // console.log(data)
-  
-    // const result = findUser();
-    // {data && setCompleted(true)}
     
     return (
       <ThemeProvider theme={theme}>

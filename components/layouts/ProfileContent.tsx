@@ -46,6 +46,8 @@ export interface ContentProps extends WithStyles<typeof styles> {
 function ProfileContent(props: ContentProps) {
   const { classes } = props;
   const email = props.email;
+  const [userFound, setUserFound] = useState(false);
+  
   const fetcher = async () => {
       const res = await fetch('/api/findUser', {
           body: JSON.stringify({
@@ -57,6 +59,10 @@ function ProfileContent(props: ContentProps) {
               method: 'POST'
             });
           
+      if (res.status === 200){
+        setUserFound(true);
+      }
+
       return await res.json();
   };
 
@@ -68,10 +74,10 @@ function ProfileContent(props: ContentProps) {
 
   return (
     <Paper className={classes.paper} elevation={0}>
-      {data && (
+      {userFound && (
         <Profile userData={data} />
       )}
-      {!data && (
+      {!userFound && (
         <CompleteProfile />
       )}
     </Paper>
