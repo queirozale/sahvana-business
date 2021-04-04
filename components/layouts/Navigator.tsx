@@ -15,6 +15,9 @@ import PersonIcon from '@material-ui/icons/Person';
 import HistoryIcon from '@material-ui/icons/History';
 import PresentToAllIcon from '@material-ui/icons/PresentToAll';
 import Link from '@material-ui/core/Link';
+import { useSession } from 'next-auth/client';
+
+import useSWR from 'swr';
 
 
 const styles = (theme: Theme) =>
@@ -69,7 +72,6 @@ export interface NavigatorProps extends Omit<DrawerProps, 'classes'>, WithStyles
     Histórico: boolean;
     Pedidos: boolean;
   };
-  brand: string;
 };
 
 interface ProductData {
@@ -88,7 +90,24 @@ function Navigator(props: NavigatorProps) {
   const { classes, ...other } = props;
   const activations = props.activations;
   const [activeIcons, setActiveIcons] = useState<ProductData | any>(activations);
-  const brand = props.brand;
+  const [ session, loading ] = useSession();
+
+
+  const fetcher = async () => {
+    const res = await fetch('/api/findUser', {
+        body: JSON.stringify({
+            email: session.user.email,
+          }),
+          headers: {
+              'Content-Type': 'application/json'
+            },
+            method: 'POST'
+          });
+
+    return await res.json();
+  };
+
+  const { data, error} = useSWR('/api/findUser', fetcher);
 
   const handleClickIcon = (_event: any, iconType: string) => {
     setActiveIcons({ ...setActiveIcons, [iconType]: true });
@@ -124,9 +143,11 @@ function Navigator(props: NavigatorProps) {
   return (
     <Drawer variant="permanent" {...other}>
       <List disablePadding>
-        <ListItem className={clsx(classes.firebase, classes.item, classes.itemCategory)}>
-          {brand}
-        </ListItem>
+        {data && (
+          <ListItem className={clsx(classes.firebase, classes.item, classes.itemCategory)}>
+            {data.store}
+          </ListItem>
+        )}
         <Link color="inherit" href="/home">
           <ListItem className={clsx(classes.item, classes.itemCategory)}>
             <ListItemIcon className={classes.itemIcon}>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   createMuiTheme,
   createStyles,
@@ -11,6 +11,7 @@ import Hidden from '@material-ui/core/Hidden';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Button from '@material-ui/core/Button';
 
 import Navigator from '../components/layouts/Navigator';
 import Header from '../components/layouts/Header';
@@ -176,11 +177,12 @@ export interface PaperbaseProps extends WithStyles<typeof styles> {}
 function Home(props: PaperbaseProps) {
   const { classes } = props;
   const [ session, loading ] = useSession();
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
 
   if (session) {
     return (

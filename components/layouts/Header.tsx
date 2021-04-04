@@ -1,4 +1,5 @@
 import React from 'react';
+
 import AppBar from '@material-ui/core/AppBar';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -9,7 +10,11 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core/styles';
+
 import { signIn, signOut, useSession } from 'next-auth/client';
+
+import useSWR from 'swr';
+
 
 const lightColor = 'rgba(255, 255, 255, 0.7)';
 
@@ -43,14 +48,29 @@ const styles = (theme: Theme) =>
 interface HeaderProps extends WithStyles<typeof styles> {
   onDrawerToggle: () => void;
   title: string;
-  avatarLetter: string;
 }
 
 function Header(props: HeaderProps) {
   const { classes, onDrawerToggle } = props;
   const title = props.title;
   const [ session, loading ] = useSession();
-  const avatarLetter = props.avatarLetter;
+
+
+  const fetcher = async () => {
+    const res = await fetch('/api/findUser', {
+        body: JSON.stringify({
+            email: session.user.email,
+          }),
+          headers: {
+              'Content-Type': 'application/json'
+            },
+            method: 'POST'
+          });
+
+    return await res.json();
+  };
+
+  const { data, error} = useSWR('/api/findUser', fetcher);
 
   return (
     <React.Fragment>
@@ -88,7 +108,10 @@ function Header(props: HeaderProps) {
             </Grid>
             <Grid item>
               <IconButton color="inherit" className={classes.iconButtonAvatar}>
-                <Avatar>{avatarLetter}</Avatar>
+                {data?
+                  <Avatar>{data.store[0]}</Avatar>  
+                :
+                <Avatar>S</Avatar>}
               </IconButton>
             </Grid>
           </Grid>
