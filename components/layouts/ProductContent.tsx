@@ -167,9 +167,8 @@ const Products: NextPage = () => {
   const columns = [
     { field: '_id', headerName: 'ID', width: 70, hide: true },
     { field: 'title', headerName: 'Título', width: 150 },
-    { field: 'variantProperties', headerName: 'Estoque', width: 110 },
+    { field: 'total_inventory', headerName: 'Estoque Total', width: 150, type: 'number' },
     { field: 'original_price', headerName: 'Preço Original', width: 150, type: 'number' },
-    { field: 'promotional_price', headerName: 'Preço Promocional', width: 180, type: 'number' },
   ];
 
   return (

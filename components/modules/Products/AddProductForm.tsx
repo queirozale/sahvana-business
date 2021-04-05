@@ -17,6 +17,8 @@ import Drawer, { DrawerProps } from '@material-ui/core/Drawer';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 
+import tagOptions from './TagOptions';
+
 import ImageUpload from "../ImageUpload";
 
 const styles = (theme: Theme) => 
@@ -92,87 +94,12 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
   const [subcategory, setSubcategory] = useState('');
   const [categoriesItems, setCategoriesItems] = useState([]);
   const [subcategoriesItems, setSubcategoriesItems] = useState([]);
-
-  const categoriesOptions = {
-    'Masculino': [],
-    'Feminino': [
-      "Roupas",
-      "Sapatos",
-      "Bolsas",
-      "Moda praia",
-      "Fitness",
-      "Bijoux",
-      "Jóias",
-      "Acessórios",
-      "Underwear"
-    ]
-  };
-
-  const subcategoriesOptions = {
-    'Roupas': [
-      'Blusa',
-      'Saia',
-      'Calça',
-      'Short',
-      'Macacões',
-      'Casacos',
-      'Vestidos',
-      'Kimono'
-    ],
-    'Sapatos': [
-      'Bota',
-      'Sandália',
-      'Flatas',
-      'Tênis'
-    ],
-    'Bolsas': [
-      'Bags',
-      'Bolsas',
-      'Carteira',
-      'Pochete',
-      'Mochila',
-      'Bolsa de praia',
-      'Necessaire'
-    ],
-    'Moda praia': [
-      'Biquini',
-      'Calcinha',
-      'Maiô e body',
-      'Top',
-      'Saídas de praia'
-    ],
-    'Fitness': [
-      'Blusa',
-      'Calça',
-      'Short',
-      'Conjunto',
-      'Tênis'
-    ],
-    'Bijoux': [
-      'Anel',
-      'Brinco',
-      'Colar',
-      'Pulseiras & braceletes',
-      'Acessórios para cabelo'
-    ],
-    'Jóias': [
-      'Anel',
-      'Brinco',
-      'Colar',
-      'Pulseiras & braceletes',
-      'Acessórios para cabelo'
-    ],
-    'Acessórios': [
-      'Acessórios de cabelo',
-      'Cachecol & lenços',
-      'Tiara',
-      'Cinto',
-      'Chapéu',
-      'Óculos',
-      'Pequenos acessórios',
-      'Relógio'
-    ]
-  }
+  const [originalPrice, setOriginalPrice] = useState('');
+  const categoriesOptions = tagOptions.categoriesOptions;
+  const subcategoriesOptionsMale = tagOptions.subcategoriesOptionsMale;
+  const subcategoriesOptionsFemale = tagOptions.subcategoriesOptionsFemale;
+  const subcategoriesOptionsUnissex = tagOptions.subcategoriesOptionsUnissex;
+  // const [variantPrices, setVariantPrices] = useState({});
 
   const handleCheckBox = () => {
     setVariant(!variant);
@@ -243,21 +170,72 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
 
   const handleCategoryChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setCategory(event.target.value as string);
-    setSubcategoriesItems(subcategoriesOptions[event.target.value as string]);
+    if (collection === "Masculino") {
+      setSubcategoriesItems(subcategoriesOptionsMale[event.target.value as string]);
+    } else if (collection === "Feminino") {
+      setSubcategoriesItems(subcategoriesOptionsFemale[event.target.value as string]);
+    } else {
+      setSubcategoriesItems(subcategoriesOptionsUnissex[event.target.value as string]);
+    }
   };
 
   const handleSubcategoryChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setSubcategory(event.target.value as string);
   };
 
+  const handleOriginalPriceChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setOriginalPrice(event.target.value as string);
+  };
+
   const registerProduct = async event => {
     event.preventDefault();
     const form = event.target;
 
+    const inputOption1 = event.target.inputOption1? event.target.inputOption1.value : null;
+    const variantType1 = event.target.variantType1? event.target.variantType1.value : null;
+
+    const inputOption2 = event.target.inputOption2? event.target.inputOption2.value : null;
+    const variantType2 = event.target.variantType2? event.target.variantType2.value : null;
+
+    const inputOption3 = event.target.inputOption3? event.target.inputOption3.value : null;
+    const variantType3 = event.target.variantType3? event.target.variantType3.value : null;
+
+    // setVariantTypes({...variantTypes, [option]: event.target.value as string});
+    // optionValues.map(item => (
+    //   setVariantPrices({...variantPrices, [item]: event.target.price_P.value})
+    // ))
+
+    var variantPrices = {}
+    var variantInventories = {}
+
+    optionValues.map(item => (
+      variantPrices[item] = event.target['price_' + item].value
+    ))
+
+    optionValues.map(item => (
+      variantInventories[item] = event.target['inventory_' + item].value
+    ))
+
     const res = await fetch('/api/registerProduct', {
+
       body: JSON.stringify({
         title: event.target.title.value,
-        variantProperties: event.target.description.value,
+        description: event.target.description.value,
+        total_inventory: event.target.inventory.value,
+        original_price: event.target.original_price.value, 
+        promotional_price: event.target.promotional_price.value,
+        gender: event.target.gender.value,
+        category: event.target.category.value,
+        subcategory: event.target.subcategory.value,
+        has_variant: event.target.has_variant.value,
+        variantType1: variantType1,
+        inputOption1: inputOption1,
+        variantType2: variantType2,
+        inputOption2: inputOption2,
+        variantType3: variantType3,
+        inputOption3: inputOption3,
+        variantPrices: variantPrices,
+        variantInventories: variantInventories
       }),
       headers: {
         'Content-Type': 'application/json'
@@ -311,8 +289,8 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
                     Tags
                   </Typography>
                   <Select
-                    labelId="gender"
                     id="gender"
+                    name="gender"
                     value={collection}
                     onChange={handleCollectionChange}
                     inputProps={{ 'aria-label': 'Without label' }}
@@ -325,12 +303,13 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
                     </MenuItem>
                     <MenuItem value={"Masculino"}>Masculino</MenuItem>
                     <MenuItem value={"Feminino"}>Feminino</MenuItem>
+                    <MenuItem value={"Unissex"}>Unissex</MenuItem>
                   </Select>
                 </Grid>
                 <Grid item xs={12}>
                   <Select
-                    labelId="gender"
-                    id="gender"
+                    id="category"
+                    name="category"
                     value={category}
                     onChange={handleCategoryChange}
                     inputProps={{ 'aria-label': 'Without label' }}
@@ -348,8 +327,8 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
                 </Grid>
                 <Grid item xs={12}>
                   <Select
-                    labelId="gender"
-                    id="gender"
+                    id="subcategory"
+                    name="subcategory"
                     value={subcategory}
                     onChange={handleSubcategoryChange}
                     inputProps={{ 'aria-label': 'Without label' }}
@@ -377,9 +356,42 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
                 Variantes
               </Typography>
               <Grid container spacing={4}>
+                <Grid item xs={12} sm={4}>
+                  <TextField
+                    id="inventory"
+                    name="inventory"
+                    variant="outlined"
+                    fullWidth
+                    label="Quantidade Total"
+                    defaultValue="0"
+                    required
+                  />
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                  <TextField
+                    id="original_price"
+                    name="original_price"
+                    variant="outlined"
+                    fullWidth
+                    label="Preço Original"
+                    value={originalPrice}
+                    onChange={handleOriginalPriceChange}
+                    required
+                  />
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                  <TextField
+                    id="promotional_price"
+                    name="promotional_price"
+                    variant="outlined"
+                    fullWidth
+                    label="Preço Promocional"
+                    required
+                  />
+                </Grid>
                 <Grid item xs={12}>
                   <FormControlLabel
-                    control={<Checkbox color="primary" name="checkVariant" value={variant} />}
+                    control={<Checkbox color="primary" id="has_variant" name="has_variant" value={variant} />}
                     label="Este produto tem várias opções, como tamanhos ou cores diferentes"
                     onChange={handleCheckBox}
                   />
@@ -395,6 +407,8 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
                       <Grid container spacing={4}>
                         <Grid item xs={12} sm={4}>
                           <Select
+                            id={"variantType" + option}
+                            name={"variantType" + option}
                             value={variantTypes[option]}
                             onChange={e => handleChange(e, option)}
                             displayEmpty
@@ -437,34 +451,6 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
                     </Grid>
                   </React.Fragment>
                 ))}
-                {!variant && (
-                  <div>
-                    <Grid container spacing={4}>
-                      <Grid item xs={12} sm={6}>
-                        Preço
-                        <TextField
-                            id="price"
-                            name="price"
-                            variant="outlined"
-                            fullWidth
-                            label="R$ 00,00"
-                            required
-                          />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        Quantidade
-                        <TextField
-                          id="inventory"
-                          name="inventory"
-                          variant="outlined"
-                          fullWidth
-                          label="0"
-                          required
-                        />
-                      </Grid>
-                    </Grid>
-                  </div>
-                )}
               </Grid>
             </Paper>
           </Grid>
@@ -491,21 +477,22 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
                       </Grid>
                       <Grid item xs={12} sm={4}>
                         <TextField
-                          id="price"
-                          name="price"
+                          id={"price_" + item}
+                          name={"price_" + item}
                           variant="outlined"
                           fullWidth
-                          label="R$ 00,00"
+                          defaultValue={originalPrice}
                           required
                         />
                       </Grid>
                       <Grid item xs={12} sm={4}>
                         <TextField
-                          id="inventory"
-                          name="inventory"
+                          id={"inventory_" + item}
+                          name={"inventory_" + item}
                           variant="outlined"
                           fullWidth
-                          label="0"
+                          label="Quantidade"
+                          defaultValue="0"
                           required
                         />
                       </Grid>

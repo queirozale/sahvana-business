@@ -65,6 +65,7 @@ const useStyles = makeStyles((theme) => ({
 
 interface ProductInfoProps {
   data: {
+    title: string;
     description: string;
     gender: string;
     size: string;
@@ -72,6 +73,15 @@ interface ProductInfoProps {
     inventory: number;
     original_price: number;
     promotional_price: number;
+    category: string;
+    subcategory: string;
+    variantType1: string;
+    variantType2: string;
+    variantType3: string;
+    inputOption1: string;
+    inputOption2: string;
+    inputOption3: string;
+    total_inventory: number;
   };
 }
 
@@ -81,7 +91,7 @@ export default function ProductInfo(props: ProductInfoProps) {
   const [openAdd, setOpenAdd] = useState(false);
   const [openRemove, setOpenRemove] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
-  const dialog_title = data.description;
+  const dialog_title = data.title;
 
   const handleClickAddOpen = (_event: any) => {
     setOpenAdd(true);
@@ -117,23 +127,38 @@ export default function ProductInfo(props: ProductInfoProps) {
       <div className={classes.details}>
         <CardContent className={classes.content}>
           <Typography component="h5" variant="h5"  className={classes.attribute}>
-            {data.description}
+            {data.title}
           </Typography>
           <Typography variant="subtitle1" color="textSecondary" className={classes.attribute}>
             Gênero: {data.gender}
           </Typography>
           <Typography variant="subtitle1" color="textSecondary" className={classes.attribute}>
-            Tamanho: {data.size}
+            Categoria: {data.category}
           </Typography>
           <Typography variant="subtitle1" color="textSecondary" className={classes.attribute}>
-            Cor: {data.color}
+            Sub-categoria: {data.subcategory}
           </Typography>
+          {data.variantType1 && (
+            <Typography variant="subtitle1" color="textSecondary" className={classes.attribute}>
+              {data.variantType1}: {data.inputOption1}
+            </Typography>
+          )}
+          {data.variantType2 && (
+            <Typography variant="subtitle1" color="textSecondary" className={classes.attribute}>
+              {data.variantType2}: {data.inputOption2}
+            </Typography>
+          )}
+          {data.variantType3 && (
+            <Typography variant="subtitle1" color="textSecondary" className={classes.attribute}>
+              {data.variantType3}: {data.inputOption3}
+            </Typography>
+          )}
           <Typography variant="subtitle1" color="textSecondary" className={classes.attribute}>
-            Estoque: 
+            Estoque total: 
             <IconButton onClick={e => handleClickRemoveOpen(e)}>
                 <RemoveCircleOutlineIcon className={classes.smallRemoveIcon} />
             </IconButton>
-            {data.inventory} 
+            {data.total_inventory} 
             <IconButton onClick={e => handleClickAddOpen(e)}>
               <AddCircleOutlineIcon className={classes.smallAddIcon} />
             </IconButton>
