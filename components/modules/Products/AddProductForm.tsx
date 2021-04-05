@@ -16,6 +16,7 @@ import Divider from '@material-ui/core/Divider';
 import Drawer, { DrawerProps } from '@material-ui/core/Drawer';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
+import Router from 'next/router';
 
 import tagOptions from './TagOptions';
 
@@ -200,11 +201,6 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
     const inputOption3 = event.target.inputOption3? event.target.inputOption3.value : null;
     const variantType3 = event.target.variantType3? event.target.variantType3.value : null;
 
-    // setVariantTypes({...variantTypes, [option]: event.target.value as string});
-    // optionValues.map(item => (
-    //   setVariantPrices({...variantPrices, [item]: event.target.price_P.value})
-    // ))
-
     var variantPrices = {}
     var variantInventories = {}
 
@@ -244,6 +240,7 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
     });
 
     const result = await res.json();
+    Router.reload();
   };
 
   return (
