@@ -10,12 +10,12 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
-import clsx from 'clsx';
 import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import Drawer, { DrawerProps } from '@material-ui/core/Drawer';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
+
 import Router from 'next/router';
 
 import tagOptions from './TagOptions';
@@ -188,7 +188,7 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
     setOriginalPrice(event.target.value as string);
   };
 
-  const registerProduct = async event => {
+  const createProduct = async event => {
     event.preventDefault();
     const form = event.target;
 
@@ -209,15 +209,15 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
     ))
 
     optionValues.map(item => (
-      variantInventories[item] = event.target['inventory_' + item].value
+      variantInventories[item] = Number(event.target['inventory_' + item].value)
     ))
 
-    const res = await fetch('/api/registerProduct', {
+    const res = await fetch('/api/createProduct', {
 
       body: JSON.stringify({
         title: event.target.title.value,
         description: event.target.description.value,
-        total_inventory: event.target.inventory.value,
+        total_inventory: Number(event.target.inventory.value),
         original_price: event.target.original_price.value, 
         promotional_price: event.target.promotional_price.value,
         gender: event.target.gender.value,
@@ -250,7 +250,7 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
       {/* <Typography className={classes.title} component="h1" variant="h4" align="center">
         Form
       </Typography> */}
-      <form onSubmit={registerProduct}>
+      <form onSubmit={createProduct}>
         <Grid container spacing={5} className={classes.root}>
           <Grid item xs={12} sm={4}>
             <Paper className={classes.paperFirstRow}>

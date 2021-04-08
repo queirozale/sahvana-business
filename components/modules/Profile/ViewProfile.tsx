@@ -124,7 +124,7 @@ export default function Profile(props: ProfileProps) {
         succeeded: true
       });
       form.reset();
-      Router.push('/home');
+      Router.reload();
     } else {
       setServerState({
         submitting: false,
@@ -162,7 +162,7 @@ export default function Profile(props: ProfileProps) {
         succeeded: true
       });
       form.reset();
-      Router.push('/home');
+      Router.reload();
     } else {
       setServerState({
         submitting: false,

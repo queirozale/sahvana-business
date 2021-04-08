@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { NextPage } from 'next';
-import { makeStyles } from '@material-ui/core/styles';
+import Router from 'next/router';
 
+import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
@@ -17,7 +18,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { DataGrid, GridToolbarContainer  } from '@material-ui/data-grid';
-import { TransitionProps } from '@material-ui/core/transitions';
+
 
 import ProductInfo from '../modules/Products/ProductInfo';
 import AddProductForm from '../modules/Products/AddProductForm';
@@ -86,7 +87,7 @@ const useStyles = makeStyles(() => ({
   titleDialog: {
     marginLeft: '10px',
     flex: 1,
-  },
+  }
 }));
 
 const Transition = React.forwardRef(function Transition(
@@ -103,17 +104,17 @@ const Products: NextPage = () => {
   const [ edit, setEdit ] = useState(false);
   const { data, error } = useSWR('/api/findProduct', fetcher);
   const [deletedRows, setDeletedRows] = useState(Array());
-  const [showInfo, setShowInfo] = useState();
   const [search, setSearch] = useState("");
-
+  
   const [open, setOpen] = useState(false);
-
-
+  const [showInfo, setShowInfo] = useState(false);
+  const [infoData, setInfoData] = useState(null);
+  
   function CustomToolbar() {
     return (
       <GridToolbarContainer className={classes.actions}>
         <Tooltip title="Delete">
-          <IconButton aria-label="Delete" onClick={handleCloseEdit}>
+          <IconButton aria-label="Delete" onClick={deleteProduct}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>
@@ -144,7 +145,8 @@ const Products: NextPage = () => {
         setDeletedRows(deletedRows.filter(item => item !== e.data.id));
       }
     } else {
-      setShowInfo(e.data)
+      setInfoData(e.data)
+      setShowInfo(!showInfo);
     }
   };
 
@@ -156,6 +158,24 @@ const Products: NextPage = () => {
     setEdit(false);
   };
 
+  const deleteProduct = async event => {
+    event.preventDefault();
+
+    const res = await fetch('/api/deleteProduct', {
+
+      body: JSON.stringify({
+        ids: deletedRows,
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST'
+    });
+
+    const result = await res.json();
+    Router.reload();
+  };
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -164,89 +184,107 @@ const Products: NextPage = () => {
     setOpen(false);
   };
 
+  const handleCloseInfo = () => {
+    setShowInfo(false);
+  }
+
   const columns = [
     { field: '_id', headerName: 'ID', width: 70, hide: true },
     { field: 'title', headerName: 'Título', width: 150 },
+    { field: 'gender', headerName: 'Gênero', width: 150 },
+    { field: 'category', headerName: 'Categoria', width: 150 },
+    { field: 'subcategory', headerName: 'Sub-Categoria', width: 150 },
     { field: 'total_inventory', headerName: 'Estoque Total', width: 150, type: 'number' },
     { field: 'original_price', headerName: 'Preço Original', width: 150, type: 'number' },
+    { field: 'promotional_price', headerName: 'Preço Promocional', width: 200, type: 'number' },
   ];
 
   return (
     <div className={classes.main}>
       {data ?
-      <div>
-        <Grid container spacing={5} className={classes.root}>
-          <Grid item xs={12} sm={6}>
-              <div style={{ height: 400, width: '100%' }}>
-                <Box display="flex" flexDirection="row-reverse" mb={1}>
-                  <Box>
-                    <SearchBar 
-                    className={classes.searchBar} 
-                    value={search}
-                    onChange={(newValue: string) => setSearch(newValue)}
-                    onRequestSearch={() => console.log(search)}
-                    />
-                  </Box>
-                  <Box mr={5}>
-                    <Button color="primary" onClick={handleClickOpen}>
-                      Adcionar produto
-                    </Button>
-                  </Box>
-                  <Box mr={5}>
-                    <Button color="primary" onClick={handleClickEdit}>
-                      Deletar produtos
-                    </Button>
-                  </Box>
-                </Box>
-                <DataGrid 
-                className={classes.table}
-                rows={data} 
-                columns={columns} 
-                pageSize={5} 
-                getRowId={(data) => data._id} 
-                checkboxSelection={edit}
-                onRowSelected={e => handleRowSelection(e)}
-                filterModel={{
-                  items: [
-                    { columnField: 'title', operatorValue: 'contains', value: search },
-                  ],
-                }}
-                components={
-                  edit ? {Toolbar: CustomToolbar}
-                  :
-                  undefined
-                }
-                />
-              </div>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            {showInfo ? 
-              <ProductInfo data={showInfo} /> 
-            :
-            <p>Selecione um produto</p>}
-          </Grid>
+      <Grid container spacing={1} className={classes.root}>
+        <Grid item xs={12}>
+          <Box display="flex" flexDirection="row-reverse">
+            <Box>
+              <SearchBar 
+              className={classes.searchBar} 
+              value={search}
+              onChange={(newValue: string) => setSearch(newValue)}
+              onRequestSearch={() => console.log(search)}
+              />
+            </Box>
+            <Box mr={5}>
+              <Button color="primary" variant="outlined" onClick={handleClickOpen}>
+                Adcionar produto
+              </Button>
+            </Box>
+            <Box mr={2}>
+              <Button color="primary" variant="outlined" onClick={handleClickEdit}>
+                Deletar produtos
+              </Button>
+            </Box>
+          </Box>
         </Grid>
-      </div>
+        <Grid item xs={12} style={{ height: 400, width: '100%' }}>
+          <DataGrid 
+            className={classes.table}
+            rows={data} 
+            columns={columns} 
+            pageSize={5} 
+            getRowId={(data) => data._id} 
+            checkboxSelection={edit}
+            onRowSelected={e => handleRowSelection(e)}
+            filterModel={{
+              items: [
+                { columnField: 'title', operatorValue: 'contains', value: search },
+              ],
+            }}
+            components={
+              edit ? {Toolbar: CustomToolbar}
+              :
+              undefined
+            }
+            />
+        </Grid>
+      </Grid>
       :
       <div className={classes.loading}>
         <CircularProgress />
       </div>
       }
-    <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
-      <div className={classes.main}>
-        <AppBar className={classes.appBar}>
-          <Toolbar>
-            <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
-              <CloseIcon />
-            </IconButton>
-            <Typography variant="h6" className={classes.titleDialog}>
-              Adicionar produtos
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        <AddProductForm />
-      </div>
-    </Dialog>
+
+      <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
+        <div className={classes.main}>
+          <AppBar className={classes.appBar}>
+            <Toolbar>
+              <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
+                <CloseIcon />
+              </IconButton>
+              <Typography variant="h6" className={classes.titleDialog}>
+                Adicionar produtos
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <AddProductForm />
+        </div>
+      </Dialog>
+
+      <Dialog fullScreen open={showInfo} onClose={handleCloseInfo} TransitionComponent={Transition}>
+        <div>
+          <AppBar className={classes.appBar}>
+            <Toolbar>
+              <IconButton edge="start" color="inherit" onClick={handleCloseInfo} aria-label="close">
+                <CloseIcon />
+              </IconButton>
+              <Typography variant="h6" className={classes.titleDialog}>
+                Informações dos produtos
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <ProductInfo data={infoData} />
+        </div>
+      </Dialog>
+
     </div>
   );
 };

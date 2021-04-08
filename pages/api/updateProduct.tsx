@@ -18,44 +18,34 @@ export default async (
     if (req.method === "POST") {
       const session = await getSession({ req });
 
-      if (!session) {
-        res.status(400).json({ error: "Please login first"});
-        return;
-      }
+      // if (!session) {
+      //   res.status(400).json({ error: "Please login first"});
+      //   return;
+      // }
 
-      const { store, email, address, city, state, description, storePickup, expressDelivery } = req.body;
+      const { title, change_inventory } = req.body;
 
-
-      if ( !store ||!email || !address || !city || !state  || !description || !storePickup  || !expressDelivery ) {
+      if ( !title || !change_inventory ) {
         res.status(400).json({ error: "Missing body parameter" });
         return;
       }
 
       const { db } = await connect();
-      const query = { "email": email };
+      const query = { "title": title };
       const update = {
-        "$set": {
-          "store": store,
-          "email": email,
-          "address": address,
-          "city": city,
-          "state": state,
-          "description": description,
-          "storePickup": storePickup,
-          "expressDelivery": expressDelivery
+        "$inc": {
+          "total_inventory": change_inventory,
         }
       };
 
-      const userExists = await db.collection('users').findOne(query)
+      const userExists = await db.collection('products').findOne(query)
 
       if (!userExists) {
-        res.status(200).json({ error: `User ${store} with email ${email} does not exist` });
+        res.status(200).json({ error: `Product with title ${title} does not exist` });
         return;
       }
 
-
-      await db.collection('users').updateOne(query, update);
-
+      await db.collection('products').updateOne(query, update);
 
       res.status(200).json({ message: "Successfully updated" });
     } else {
