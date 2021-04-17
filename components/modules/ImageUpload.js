@@ -213,7 +213,7 @@ class ImageUploadCard extends React.Component {
       fileReader: undefined,
       filename: filename
     });
-    this.props.setImage(this.state.selectedFile);
+    this.props.setImage(this.state.selectedFile[0]);
   }
 
   handleSeachClose = event => {
