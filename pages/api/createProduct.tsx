@@ -27,7 +27,7 @@ interface ProductInterface {
   inputOption3: string;
   variantPrices: object;
   variantInventories: object;
-  image: string;
+  image: Array<string>;
 }
 
 export default async (
@@ -37,20 +37,20 @@ export default async (
     if (req.method === "POST") {
       const product: ProductInterface = req.body;
         
-      // if (
-      //   !product.title || 
-      //   !product.description || 
-      //   !product.total_inventory || 
-      //   !product.original_price || 
-      //   !product.promotional_price ||
-      //   !product.gender ||
-      //   !product.category ||
-      //   !product.subcategory ||
-      //   !product.has_variant
-      // ) {
-      //   res.status(400).json({ error: "Missing body parameter" });
-      //   return;
-      // }
+      if (
+        !product.title || 
+        !product.description || 
+        !product.total_inventory || 
+        !product.original_price || 
+        !product.promotional_price ||
+        !product.gender ||
+        !product.category ||
+        !product.subcategory ||
+        !product.has_variant
+      ) {
+        res.status(400).json({ error: "Missing body parameter" });
+        return;
+      }
       
       const { db } = await connect();
 
