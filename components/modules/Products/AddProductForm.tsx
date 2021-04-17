@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { NextPage } from 'next';
+import Router from 'next/router';
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -15,8 +16,10 @@ import Divider from '@material-ui/core/Divider';
 import Drawer, { DrawerProps } from '@material-ui/core/Drawer';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
+import Box from '@material-ui/core/Box';
 
-import Router from 'next/router';
+import ImageUploadCard from '../ImageUpload';
+
 
 import tagOptions from './TagOptions';
 
@@ -45,7 +48,10 @@ createStyles({
   },
   paperSecondRow: {
     padding: theme.spacing(2),
+    maxWidth: 950,
+    minWidth: 400,
     [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
+      minWidth: 950,
       padding: theme.spacing(3),
     },
   },
@@ -72,10 +78,9 @@ createStyles({
   submitBtn: {
     backgroundColor: 'rgb(242, 135, 41, 0.7)',
     color: 'white',
-    width: '10%',
-    [theme.breakpoints.down('sm')]: {
-      width: '20%',
-    },
+  },
+  mediaArea: {
+    padding: theme.spacing(2),
   }
 });
 
@@ -231,8 +236,14 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
         variantType3: variantType3,
         inputOption3: inputOption3,
         variantPrices: variantPrices,
-        variantInventories: variantInventories
-      }),
+        variantInventories: variantInventories,
+        imageFiles: [
+          imageFile1,
+          imageFile2,
+          imageFile3,
+          imageFile4
+        
+        ]}),
       headers: {
         'Content-Type': 'application/json'
       },
@@ -243,16 +254,50 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
     Router.reload();
   };
 
+  const [imageFile1, setImageFile1] = useState(null);
+  const [imageFile2, setImageFile2] = useState(null);
+  const [imageFile3, setImageFile3] = useState(null);
+  const [imageFile4, setImageFile4] = useState(null);
+
+  const setImage1 = (selectedFile) => {
+    setImageFile1(selectedFile);
+  };
+
+  const setImage2 = (selectedFile) => {
+    setImageFile2(selectedFile);
+  };
+
+  const setImage3 = (selectedFile) => {
+    setImageFile3(selectedFile);
+  };
+
+  const setImage4 = (selectedFile) => {
+    setImageFile4(selectedFile);
+  };
+
+  const handleTest = () => {
+    console.log({
+      imageFile1,
+      imageFile2,
+      imageFile3,
+      imageFile4
+    });
+  }
+
   return (
     <React.Fragment>
     <CssBaseline />
     <main className={classes.layout}>
-      {/* <Typography className={classes.title} component="h1" variant="h4" align="center">
-        Form
-      </Typography> */}
       <form onSubmit={createProduct}>
-        <Grid container spacing={5} className={classes.root}>
-          <Grid item xs={12} sm={4}>
+        <Grid 
+        container 
+        spacing={4}   
+        direction="column"
+        alignItems="center"
+        justify="center"
+        className={classes.root}
+        >
+          <Grid item xs={12}>
             <Paper className={classes.paperFirstRow}>
               <Typography className={classes.title} component="h4" variant="h5" align="left">
                 Produto
@@ -264,7 +309,7 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
                     name="title"
                     variant="outlined"
                     fullWidth
-                    label="Título"
+                    label="Nome do produto"
                     required
                   />
                 </Grid>
@@ -281,6 +326,30 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
                     required
                   />
                 </Grid>
+                <Grid item xs={12}>
+                  <Typography className={classes.title} component="h5" variant="h6" align="left">
+                    Media
+                  </Typography>
+                  <Box display="flex" justifyContent="center" border={1} className={classes.mediaArea} borderRadius={5}>
+                    <Grid container>
+                      <Grid item xs={3}>
+                        <ImageUploadCard setImage={setImage1} />
+                      </Grid>
+                      <Grid item xs={3}>
+                        <ImageUploadCard setImage={setImage2} />
+                      </Grid>
+                      <Grid item xs={3}>
+                        <ImageUploadCard setImage={setImage3} />
+                      </Grid>
+                      <Grid item xs={3}>
+                        <ImageUploadCard setImage={setImage4} />
+                      </Grid>
+                    </Grid>
+                  </Box>
+                </Grid>
+                <Button onClick={handleTest}>
+                  TESTA AI PO
+                </Button>
                 <Grid item xs={12}>
                   <Typography className={classes.title} component="h5" variant="h6" align="left">
                     Tags
@@ -341,14 +410,11 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
                     ))}
                   </Select>
                 </Grid>
-                {/* <Grid item xs={12} sm={6}>
-                  <ImageUpload cardName="Input Image" />
-                </Grid> */}
               </Grid>
             </Paper>
           </Grid>
-          <Grid item xs={12} sm={8}>
-            <Paper className={classes.paperFirstRow}>
+          <Grid item xs={12}>
+            <Paper className={classes.paperSecondRow}>
               <Typography className={classes.title} component="h4" variant="h5" align="left">
                 Variantes
               </Typography>
@@ -388,7 +454,14 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
                 </Grid>
                 <Grid item xs={12}>
                   <FormControlLabel
-                    control={<Checkbox color="primary" id="has_variant" name="has_variant" value={variant} />}
+                    control={
+                      <Checkbox
+                        color="primary" 
+                        id="has_variant" 
+                        name="has_variant" 
+                        value={variant} 
+                      />
+                    }
                     label="Este produto tem várias opções, como tamanhos ou cores diferentes"
                     onChange={handleCheckBox}
                   />
@@ -452,52 +525,52 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
             </Paper>
           </Grid>
           {variant && (
-            <Grid item xs={12}>
-              <Paper className={classes.paperSecondRow}>
-                <Grid container spacing={4}>
-                  <Grid item xs={12} sm={4}>
-                    Variante
-                  </Grid>
-                  <Grid item xs={12} sm={4}>
-                    Preço
-                  </Grid>
-                  <Grid item xs={12} sm={4}>
-                    Quantidade
-                  </Grid>
-                  {optionValues.length > 0 && 
-                  optionValues.map((item) => (
-                    <React.Fragment key={item}>
-                      <Grid item xs={12} sm={4}>
-                        <InputLabel>
-                          {item}
-                        </InputLabel>
-                      </Grid>
-                      <Grid item xs={12} sm={4}>
-                        <TextField
-                          id={"price_" + item}
-                          name={"price_" + item}
-                          variant="outlined"
-                          fullWidth
-                          defaultValue={originalPrice}
-                          required
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={4}>
-                        <TextField
-                          id={"inventory_" + item}
-                          name={"inventory_" + item}
-                          variant="outlined"
-                          fullWidth
-                          label="Quantidade"
-                          defaultValue="0"
-                          required
-                        />
-                      </Grid>
-                    </React.Fragment>
-                  ))}
+          <Grid item xs={12}>
+            <Paper className={classes.paperSecondRow}>
+              <Grid container spacing={4}>
+                <Grid item xs={12} sm={4}>
+                  Variante
                 </Grid>
-              </Paper>
-            </Grid>
+                <Grid item xs={12} sm={4}>
+                  Preço
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                  Quantidade
+                </Grid>
+                {optionValues.length > 0 && 
+                optionValues.map((item) => (
+                  <React.Fragment key={item}>
+                    <Grid item xs={12} sm={4}>
+                      <InputLabel>
+                        {item}
+                      </InputLabel>
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                      <TextField
+                        id={"price_" + item}
+                        name={"price_" + item}
+                        variant="outlined"
+                        fullWidth
+                        defaultValue={originalPrice}
+                        required
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                      <TextField
+                        id={"inventory_" + item}
+                        name={"inventory_" + item}
+                        variant="outlined"
+                        fullWidth
+                        label="Quantidade"
+                        defaultValue="0"
+                        required
+                      />
+                    </Grid>
+                  </React.Fragment>
+                ))}
+              </Grid>
+            </Paper>
+          </Grid>
           )}
           <Grid item xs={12} sm={12} style={{textAlign: "center"}}>
             <Button

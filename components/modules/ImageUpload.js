@@ -1,5 +1,5 @@
 // imports the React Javascript Library
-import React from "react";
+import React, { useEffect } from "react";
 //Card
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -13,15 +13,19 @@ import blue from "@material-ui/core/colors/blue";
 
 import SearchIcon from "@material-ui/icons/Search";
 import AddPhotoAlternateIcon from "@material-ui/icons/AddPhotoAlternate";
+import AddToPhotosIcon from '@material-ui/icons/AddToPhotos';
+import IconButton from '@material-ui/core/IconButton';
+import AddIcon from '@material-ui/icons/Add';
 
 // Search
 import Paper from "@material-ui/core/Paper";
 import InputBase from "@material-ui/core/InputBase";
 import Divider from "@material-ui/core/Divider";
-import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import CloseIcon from "@material-ui/icons/Close";
 import ReplayIcon from "@material-ui/icons/Replay";
+
+import Button from '@material-ui/core/Button';
 
 //Tabs
 import { withStyles } from "@material-ui/core/styles";
@@ -91,14 +95,22 @@ const styles = theme => ({
 });
 
 class ImageUploadCard extends React.Component {
-  state = {
-    mainState: "initial", // initial, search, gallery, uploaded
-    imageUploaded: 0,
-    selectedFile: null
+  // state = {
+  //   mainState: "initial", // initial, search, gallery, uploaded
+  //   imageUploaded: 0,
+  //   selectedFile: null
+  // };
+  constructor(props) {
+    super(props);
+    this.state = {
+      mainState: "initial", // initial, search, gallery, uploaded
+      imageUploaded: 0,
+      selectedFile: null
+    };
   };
+  
 
   handleUploadClick = event => {
-    console.log();
     var file = event.target.files[0];
     const reader = new FileReader();
     var url = reader.readAsDataURL(file);
@@ -108,7 +120,6 @@ class ImageUploadCard extends React.Component {
         selectedFile: [reader.result]
       });
     }.bind(this);
-    console.log(url); // Would see a path?
 
     this.setState({
       mainState: "uploaded",
@@ -137,7 +148,7 @@ class ImageUploadCard extends React.Component {
       <React.Fragment>
         {/* <CardContent> */}
           <Grid container justify="center" alignItems="center">
-            <input
+            {/* <input
               accept="image/*"
               className={classes.input}
               id="contained-button-file"
@@ -149,7 +160,24 @@ class ImageUploadCard extends React.Component {
               <Fab component="span" className={classes.button}>
                 <AddPhotoAlternateIcon />
               </Fab>
-            </label>
+            </label> */}
+
+            <Button
+              variant="contained"
+              component="label"
+              >
+                <AddIcon />
+              <input
+                accept="image/*"
+                className={classes.input}
+                id="contained-button-file"
+                multiple
+                type="file"
+                type="file"
+                onChange={this.handleUploadClick} 
+                hidden
+              />
+            </Button>
           </Grid>
         {/* </CardContent> */}
       </React.Fragment>
@@ -185,6 +213,7 @@ class ImageUploadCard extends React.Component {
       fileReader: undefined,
       filename: filename
     });
+    this.props.setImage(this.state.selectedFile);
   }
 
   handleSeachClose = event => {
@@ -264,7 +293,9 @@ class ImageUploadCard extends React.Component {
 
   renderUploadedState() {
     const { classes, theme } = this.props;
-
+    this.props.setImage(this.state.selectedFile);
+    
+    
     return (
       <React.Fragment>
         <CardActionArea onClick={this.imageResetHandler}>
@@ -279,16 +310,20 @@ class ImageUploadCard extends React.Component {
   }
 
   imageResetHandler = event => {
-    console.log("Click!");
     this.setState({
       mainState: "initial",
       selectedFile: null,
       imageUploaded: 0
     });
+    // this.props.setImage(null);
   };
 
   render() {
     const { classes, theme } = this.props;
+
+    const createProduct = async event => {
+      console.log(this.state.selectedFile[0]);
+    };
 
     return (
       <React.Fragment>

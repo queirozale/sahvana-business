@@ -20,8 +20,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { DataGrid, GridToolbarContainer  } from '@material-ui/data-grid';
 
 
-import ProductInfo from '../modules/Products/ProductInfo';
 import AddProductForm from '../modules/Products/AddProductForm';
+import ProductInfo from '../modules/Products/ProductInfo';
 
 import useSWR from 'swr';
 
@@ -90,6 +90,28 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
+interface Data {
+  title: string;
+  description: string;
+  total_inventory: number;
+  original_price: number;
+  promotional_price: number;
+  gender: string;
+  category: string;
+  subcategory: string;
+  has_variant: boolean;
+  variantType1: string;
+  inputOption1: string;
+  variantType2: string;
+  inputOption2: string;
+  variantType3: string;
+  inputOption3: string;
+  variantPrices: object;
+  variantInventories: object;
+  id: string;
+  id_: string;
+}
+
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & { children?: React.ReactElement<any, any> },
   ref: React.Ref<unknown>,
@@ -108,7 +130,7 @@ const Products: NextPage = () => {
   
   const [open, setOpen] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
-  const [infoData, setInfoData] = useState(null);
+  const [infoData, setInfoData] = useState<Data>(null);
   
   function CustomToolbar() {
     return (
@@ -126,18 +148,7 @@ const Products: NextPage = () => {
   };
   
   const handleRowSelection = (e: MessageEvent) => {
-    const data = e.data as {
-      color: string;
-      description: string;
-      gender: string;
-      id: string;
-      inventory: string;
-      original_price: string;
-      promotional_price: string;
-      size: string;
-      tags: string;
-      _id: string
-    };
+    const data = e.data as Data;
     if (edit) {
       if (!deletedRows.includes(data.id)) {
         setDeletedRows(deletedRows => [...deletedRows, e.data.id]);
@@ -215,7 +226,7 @@ const Products: NextPage = () => {
             </Box>
             <Box mr={5}>
               <Button color="primary" variant="outlined" onClick={handleClickOpen}>
-                Adcionar produto
+                Adicionar produto
               </Button>
             </Box>
             <Box mr={2}>
@@ -270,14 +281,14 @@ const Products: NextPage = () => {
       </Dialog>
 
       <Dialog fullScreen open={showInfo} onClose={handleCloseInfo} TransitionComponent={Transition}>
-        <div>
+        <div className={classes.main}>
           <AppBar className={classes.appBar}>
             <Toolbar>
               <IconButton edge="start" color="inherit" onClick={handleCloseInfo} aria-label="close">
                 <CloseIcon />
               </IconButton>
               <Typography variant="h6" className={classes.titleDialog}>
-                Informações dos produtos
+                Informações do produto
               </Typography>
             </Toolbar>
           </AppBar>

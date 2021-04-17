@@ -12,6 +12,8 @@ import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import Divider from '@material-ui/core/Divider';
 
+import Router from 'next/router';
+
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -53,6 +55,24 @@ function SimpleAddDialog(props: SimpleAddDialogProps) {
     onClose(_event);
   };
 
+  const addInventory = async event => {
+    event.preventDefault();
+
+    const res = await fetch('/api/updateProduct', {
+
+      body: JSON.stringify({
+        title: event.target.title.value,
+        change_inventory: Number(event.target.change_inventory.value),
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST'
+    });
+
+    const result = await res.json();
+    // Router.reload();
+  };
 
   return (
     <Dialog onClose={handleClose} aria-labelledby="simple-dialog-title" open={open}>
@@ -64,12 +84,12 @@ function SimpleAddDialog(props: SimpleAddDialogProps) {
               <Typography gutterBottom variant="h6" component="h2">
                 { title }
               </Typography>
-          <form className={classes.form}>
+          <form className={classes.form} onSubmit={addInventory}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
-                  name="add_units"
-                  id="add_units"
+                  name="change_inventory"
+                  id="change_inventory"
                   type="text"
                   variant="outlined"
                   fullWidth
