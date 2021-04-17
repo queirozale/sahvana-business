@@ -251,7 +251,7 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
     });
 
     const result = await res.text();
-    Router.reload();
+    // Router.reload();
   };
 
   const [imageFile1, setImageFile1] = useState(null);
@@ -274,15 +274,6 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
   const setImage4 = (selectedFile) => {
     setImageFile4(selectedFile);
   };
-
-  const handleTest = () => {
-    console.log({
-      imageFile1,
-      imageFile2,
-      imageFile3,
-      imageFile4
-    });
-  }
 
   return (
     <React.Fragment>
@@ -347,9 +338,6 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
                     </Grid>
                   </Box>
                 </Grid>
-                <Button onClick={handleTest}>
-                  TESTA AI PO
-                </Button>
                 <Grid item xs={12}>
                   <Typography className={classes.title} component="h5" variant="h6" align="left">
                     Tags
