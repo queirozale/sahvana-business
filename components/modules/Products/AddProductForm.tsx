@@ -250,7 +250,7 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
       method: 'POST'
     });
 
-    const result = await res.json();
+    const result = await res.text();
     Router.reload();
   };
 
