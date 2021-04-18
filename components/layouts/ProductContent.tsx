@@ -124,7 +124,7 @@ const fetcher = (...args: [input: RequestInfo, init?: RequestInit | undefined]) 
 const Products: NextPage = () => {
   const classes = useStyles();
   const [ edit, setEdit ] = useState(false);
-  const { data, error } = useSWR('http://127.0.0.1:5000/api/find_product', fetcher);
+  const { data, error } = useSWR('https://sahvana-admin.herokuapp.com/api/find_product', fetcher);
   const [deletedRows, setDeletedRows] = useState(Array());
   const [search, setSearch] = useState("");
   
