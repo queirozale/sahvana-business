@@ -217,7 +217,7 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
       variantInventories[item] = Number(event.target['inventory_' + item].value)
     ))
 
-    const res = await fetch('/api/createProduct', {
+    const res = await fetch('https://sahvana-admin.herokuapp.com/api/create_product', {
 
       body: JSON.stringify({
         title: event.target.title.value,
@@ -251,7 +251,7 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
     });
 
     const result = await res.text();
-    // Router.reload();
+    Router.reload();
   };
 
   const [imageFile1, setImageFile1] = useState(null);
