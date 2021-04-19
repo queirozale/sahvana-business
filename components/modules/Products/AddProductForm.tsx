@@ -244,7 +244,6 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
           imageFile4
         
         ],
-        weight: 
       }),
       headers: {
         'Content-Type': 'application/json'
