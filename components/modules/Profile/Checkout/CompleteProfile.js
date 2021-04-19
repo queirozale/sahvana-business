@@ -37,7 +37,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CompleProfile() {
   const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(0);
 
   return (
     <React.Fragment>

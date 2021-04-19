@@ -52,6 +52,23 @@ export default function AccountForm() {
     setOpen(false);
   };
 
+  const computeWeight = (event) => {
+    var weight = 0;
+    const expressDelivery = event.target.expressDelivery.value;
+    const storePickup = event.target.storePickup.value;
+    if (expressDelivery && storePickup) {
+      weight = 0.2;
+    } else if (expressDelivery && !storePickup) {
+      weight = 0.1;
+    } else if (!expressDelivery && storePickup) {
+      weight = 0.3;
+    } else {
+      weight = 0.4;
+    }
+
+    return weight
+  }
+
   const registerUser = async event => {
     event.preventDefault();
     const form = event.target;
@@ -67,6 +84,7 @@ export default function AccountForm() {
         description: event.target.description.value,
         storePickup: event.target.storePickup.value,
         expressDelivery: event.target.expressDelivery.value,
+        weight: computeWeight(event),
       }),
       headers: {
         'Content-Type': 'application/json'

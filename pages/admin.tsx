@@ -49,7 +49,7 @@ const Admin = (props: AdminProps) => {
   const saveProducts = async event => {
     setSubmitting(true);
 
-    const res = await fetch('http://127.0.0.1:5000/api/save_products', {
+    const res = await fetch('https://sahvana-admin.herokuapp.com/api/save_products', {
       headers: {
         'Content-Type': 'application/json'
       },

@@ -243,7 +243,9 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
           imageFile3,
           imageFile4
         
-        ]}),
+        ],
+        weight: 
+      }),
       headers: {
         'Content-Type': 'application/json'
       },
@@ -437,7 +439,6 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
                     variant="outlined"
                     fullWidth
                     label="Preço Promocional"
-                    required
                   />
                 </Grid>
                 <Grid item xs={12}>
