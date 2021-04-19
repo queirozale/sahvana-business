@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SignUp: NextPage = () => {
+const SendMail: NextPage = () => {
   const classes = useStyles();
   const [state, handleSubmit] = useForm("xrgrzjyo");
   const [open, setOpen] = useState(true);
@@ -116,4 +116,4 @@ const SignUp: NextPage = () => {
   );
 };
 
-export default SignUp;
+export default SendMail;

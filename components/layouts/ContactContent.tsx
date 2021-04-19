@@ -1,7 +1,7 @@
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core/styles';
-import SignUp from '../modules/Contact/SendMail';
+import SendMail from '../modules/Contact/SendMail';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -35,7 +35,7 @@ function ContactContent(props: ContentProps) {
 
   return (
     <Paper className={classes.paper} elevation={0}>
-      <SignUp />
+      <SendMail />
     </Paper>
   );
 }
