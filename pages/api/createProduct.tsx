@@ -50,7 +50,7 @@ export default async (
         !product.subcategory ||
         !product.has_variant ||
         !product.date ||
-        !product.email ||
+        !product.email
       ) {
         res.status(400).json({ error: "Missing body parameter" });
         return;
