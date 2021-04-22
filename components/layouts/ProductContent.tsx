@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { NextPage } from 'next';
 import Router from 'next/router';
+import { useSession } from 'next-auth/client';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -119,18 +120,33 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const fetcher = (...args: [input: RequestInfo, init?: RequestInit | undefined]) => fetch(...args).then(res => res.json());
 
 const Products: NextPage = () => {
   const classes = useStyles();
   const [ edit, setEdit ] = useState(false);
-  const { data, error } = useSWR('https://sahvana-admin.herokuapp.com/api/find_product', fetcher);
   const [deletedRows, setDeletedRows] = useState(Array());
   const [search, setSearch] = useState("");
   
   const [open, setOpen] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
   const [infoData, setInfoData] = useState<Data>(null);
+  const [ session, loading ] = useSession();
+  
+  const fetcher = async () => {
+    const res = await fetch('https://sahvana-admin.herokuapp.com/api/find_product', {
+      body: JSON.stringify({
+        email: session.user.email,
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST'
+    });
+    
+    return await res.json();
+  };
+  
+  const { data, error } = useSWR('https://sahvana-admin.herokuapp.com/api/find_product', fetcher);
   
   function CustomToolbar() {
     return (

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { NextPage } from 'next';
 import Router from 'next/router';
+import { useSession } from 'next-auth/client';
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -19,11 +20,8 @@ import Select from '@material-ui/core/Select';
 import Box from '@material-ui/core/Box';
 
 import ImageUploadCard from '../ImageUpload';
-
-
 import tagOptions from './TagOptions';
 
-import ImageUpload from "../ImageUpload";
 
 const styles = (theme: Theme) => 
 createStyles({
@@ -105,7 +103,7 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
   const subcategoriesOptionsMale = tagOptions.subcategoriesOptionsMale;
   const subcategoriesOptionsFemale = tagOptions.subcategoriesOptionsFemale;
   const subcategoriesOptionsUnissex = tagOptions.subcategoriesOptionsUnissex;
-  // const [variantPrices, setVariantPrices] = useState({});
+  const [ session, loading ] = useSession();
 
   const handleCheckBox = () => {
     setVariant(!variant);
@@ -244,6 +242,8 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
           imageFile4
         
         ],
+        date: new Date(),
+        email: session.user.email
       }),
       headers: {
         'Content-Type': 'application/json'

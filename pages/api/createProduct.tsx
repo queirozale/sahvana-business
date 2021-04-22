@@ -28,6 +28,8 @@ interface ProductInterface {
   variantPrices: object;
   variantInventories: object;
   image: Array<string>;
+  date: Date;
+  email: string;
 }
 
 export default async (
@@ -46,7 +48,9 @@ export default async (
         !product.gender ||
         !product.category ||
         !product.subcategory ||
-        !product.has_variant
+        !product.has_variant ||
+        !product.date ||
+        !product.email ||
       ) {
         res.status(400).json({ error: "Missing body parameter" });
         return;
