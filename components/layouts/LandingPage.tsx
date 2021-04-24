@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundRepeat: 'no-repeat',
     },
     root: {
-      display: 'flex'
+      display: 'flex',
     },
     title: {
       fontFamily: 'Karla',
