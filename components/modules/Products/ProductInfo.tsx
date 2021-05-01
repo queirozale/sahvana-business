@@ -96,13 +96,14 @@ export interface ProductInfoProps extends Omit<DrawerProps, 'classes'>, WithStyl
     gender: string;
     category: string;
     subcategory: string;
+    tags: string;
     has_variant: boolean;
     variantType1: string;
-    inputOption1: string;
+    inputOption1: Array<string>;
     variantType2: string;
-    inputOption2: string;
+    inputOption2: Array<string>;
     variantType3: string;
-    inputOption3: string;
+    inputOption3: Array<string>;
     variantPrices: object;
     variantInventories: object;
     imageFiles: Array<string>;
@@ -118,10 +119,9 @@ const ProductInfo: NextPage = (props: ProductInfoProps) => {
   const [variant, setVariant] = useState(data.has_variant);
   const [options, setOptions] = useState([1]);
   const [variantTypes, setVariantTypes] = useState({1: '', 2: '', 3: ''})
-  const [options1, setOptions1] = useState([]);
-  const [options2, setOptions2] = useState([]);
-  const [options3, setOptions3] = useState([]);
-  const [optionValues, setOptionValues] = useState([]);
+  const [options1, setOptions1] = useState(data.inputOption1);
+  const [options2, setOptions2] = useState(data.inputOption2);
+  const [options3, setOptions3] = useState(data.inputOption3);
   const [collection, setCollection] = useState('');
   const [category, setCategory] = useState('');
   const [subcategory, setSubcategory] = useState('');
@@ -198,17 +198,19 @@ const ProductInfo: NextPage = (props: ProductInfoProps) => {
     return optionsCombinations;
   };
 
-  const handleOptionChange = (e, option) => {
-    if (option === 1) {
-      setOptions1(e.target.value.split(','));
-    } else if (option === 2) {
-      setOptions2(e.target.value.split(','));
-    } else {
-      setOptions3(e.target.value.split(','));
-    }
+  const optionValues = generateOptionsCombinations();
 
-    setOptionValues(generateOptionsCombinations());
-  };
+  // const handleOptionChange = (e, option) => {
+  //   if (option === 1) {
+  //     setOptions1(e.target.value.split(','));
+  //   } else if (option === 2) {
+  //     setOptions2(e.target.value.split(','));
+  //   } else {
+  //     setOptions3(e.target.value.split(','));
+  //   }
+
+  //   setOptionValues(generateOptionsCombinations());
+  // };
 
   const handleCollectionChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setCollection(event.target.value as string);
@@ -267,19 +269,9 @@ const ProductInfo: NextPage = (props: ProductInfoProps) => {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField
-                    id="description"
-                    name="description"
-                    label="Descrição"
-                    multiline
-                    rows={6}
-                    variant="outlined"
-                    fullWidth
-                    autoFocus
-                    defaultValue={data.description}
-                    disabled
-                    required
-                  />
+                  <Box display="flex" justifyContent="left" border={1} className={classes.mediaArea} borderRadius={5}>
+                    <div dangerouslySetInnerHTML={{__html: data.description}}></div>
+                  </Box>
                 </Grid>
                 <Grid item xs={12}>
                 <Typography className={classes.title} component="h5" variant="h6" align="left">
@@ -304,64 +296,18 @@ const ProductInfo: NextPage = (props: ProductInfoProps) => {
                   <Typography className={classes.title} component="h5" variant="h6" align="left">
                     Tags
                   </Typography>
-                  <Select
-                    id="gender"
-                    name="gender"
-                    value={collection}
-                    onChange={handleCollectionChange}
-                    inputProps={{ 'aria-label': 'Without label' }}
-                    fullWidth
-                    displayEmpty
-                    variant="outlined"
-                    disabled
-                  >
-                    <MenuItem value="">
-                      <em>{data.gender}</em>
-                    </MenuItem>
-                    <MenuItem value={"Masculino"}>Masculino</MenuItem>
-                    <MenuItem value={"Feminino"}>Feminino</MenuItem>
-                    <MenuItem value={"Unissex"}>Unissex</MenuItem>
-                  </Select>
-                </Grid>
-                <Grid item xs={12}>
-                  <Select
-                    id="category"
-                    name="category"
-                    value={category}
-                    onChange={handleCategoryChange}
-                    inputProps={{ 'aria-label': 'Without label' }}
-                    fullWidth
-                    displayEmpty
-                    variant="outlined"
-                    disabled
-                  >
-                    <MenuItem value="">
-                      <em>{data.category}</em>
-                    </MenuItem>
-                    {categoriesItems.map(option => (
-                        <MenuItem key={option} value={option}>{option}</MenuItem>
-                    ))}
-                  </Select>
-                </Grid>
-                <Grid item xs={12}>
-                  <Select
-                    id="subcategory"
-                    name="subcategory"
-                    value={subcategory}
-                    onChange={handleSubcategoryChange}
-                    inputProps={{ 'aria-label': 'Without label' }}
-                    fullWidth
-                    displayEmpty
-                    variant="outlined"
-                    disabled
-                  >
-                    <MenuItem value="">
-                      <em>{data.subcategory}</em>
-                    </MenuItem>
-                    {subcategoriesItems.map(option => (
-                      <MenuItem key={option} value={option}>{option}</MenuItem>
-                    ))}
-                  </Select>
+                  <TextField
+                      id={"tags"}
+                      name={"tags"}
+                      variant="outlined"
+                      fullWidth
+                      label="Tags"
+                      autoFocus
+                      required
+                      defaultValue={data.tags}
+                      disabled
+                      autoComplete='off'
+                    />
                 </Grid>
               </Grid>
             </Paper>
@@ -438,13 +384,14 @@ const ProductInfo: NextPage = (props: ProductInfoProps) => {
                           <Select
                             id={"variantType" + key}
                             name={"variantType" + key}
-                            defaultValue={variantTypes[key].variantType}
+                            value={variantValues[key].variantType}
                             onChange={e => handleChange(e, option+1)}
                             inputProps={{ 'aria-label': 'Without label' }}
                             fullWidth
                             displayEmpty
                             variant="outlined"
                             disabled
+                            
                           >
                             <MenuItem value="">
                               <em>{variantValues[key].variantType}</em>
@@ -461,10 +408,9 @@ const ProductInfo: NextPage = (props: ProductInfoProps) => {
                           variant="outlined"
                           fullWidth
                           label="Separe as opções com vírgula"
-                          onChange={(e) => handleOptionChange(e, 1)}
                           autoFocus
                           required
-                          defaultValue={variantValues[key].inputOption}
+                          value={variantValues[key].inputOption}
                           disabled
                           autoComplete='off'
                         />
@@ -513,8 +459,9 @@ const ProductInfo: NextPage = (props: ProductInfoProps) => {
                         name={"price_" + item}
                         variant="outlined"
                         fullWidth
-                        defaultValue={originalPrice}
+                        defaultValue={data.variantPrices[item]}
                         required
+                        disabled
                       />
                     </Grid>
                     <Grid item xs={12} sm={4}>
@@ -524,8 +471,9 @@ const ProductInfo: NextPage = (props: ProductInfoProps) => {
                         variant="outlined"
                         fullWidth
                         label="Quantidade"
-                        defaultValue="0"
+                        defaultValue={data.variantInventories[item]}
                         required
+                        disabled
                       />
                     </Grid>
                   </React.Fragment>
