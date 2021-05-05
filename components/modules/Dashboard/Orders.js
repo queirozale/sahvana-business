@@ -6,6 +6,8 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 import Title from './Title';
 import useSWR from 'swr';
 import { useSession } from 'next-auth/client';
@@ -85,6 +87,9 @@ export default function Orders() {
               </TableRow>
             ))}
           </TableBody>
+        )}
+        {!data && (
+          <CircularProgress />
         )}
       </Table>
       <div className={classes.seeMore}>

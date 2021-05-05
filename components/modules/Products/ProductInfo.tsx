@@ -200,18 +200,6 @@ const ProductInfo: NextPage = (props: ProductInfoProps) => {
 
   const optionValues = generateOptionsCombinations();
 
-  // const handleOptionChange = (e, option) => {
-  //   if (option === 1) {
-  //     setOptions1(e.target.value.split(','));
-  //   } else if (option === 2) {
-  //     setOptions2(e.target.value.split(','));
-  //   } else {
-  //     setOptions3(e.target.value.split(','));
-  //   }
-
-  //   setOptionValues(generateOptionsCombinations());
-  // };
-
   const handleCollectionChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setCollection(event.target.value as string);
     setCategoriesItems(categoriesOptions[event.target.value as string]);
@@ -269,6 +257,9 @@ const ProductInfo: NextPage = (props: ProductInfoProps) => {
                   />
                 </Grid>
                 <Grid item xs={12}>
+                  <Typography className={classes.title} component="h4" variant="h5" align="left">
+                    Descrição
+                  </Typography>
                   <Box display="flex" justifyContent="left" border={1} className={classes.mediaArea} borderRadius={5}>
                     <div dangerouslySetInnerHTML={{__html: data.description}}></div>
                   </Box>
@@ -296,18 +287,60 @@ const ProductInfo: NextPage = (props: ProductInfoProps) => {
                   <Typography className={classes.title} component="h5" variant="h6" align="left">
                     Tags
                   </Typography>
-                  <TextField
-                      id={"tags"}
-                      name={"tags"}
-                      variant="outlined"
-                      fullWidth
-                      label="Tags"
-                      autoFocus
-                      required
-                      defaultValue={data.tags}
-                      disabled
-                      autoComplete='off'
-                    />
+                  <Select
+                    id="gender"
+                    name="gender"
+                    value={data.gender}
+                    onChange={handleCollectionChange}
+                    inputProps={{ 'aria-label': 'Without label' }}
+                    fullWidth
+                    displayEmpty
+                    variant="outlined"
+                    disabled
+                  >
+                    <MenuItem value="">
+                      <em>{data.gender}</em>
+                    </MenuItem>
+                    <MenuItem value={"Masculino"}>Masculino</MenuItem>
+                    <MenuItem value={"Feminino"}>Feminino</MenuItem>
+                    <MenuItem value={"Unissex"}>Unissex</MenuItem>
+                  </Select>
+                </Grid>
+                <Grid item xs={12}>
+                  <Select
+                    id="category"
+                    name="category"
+                    value={data.category}
+                    onChange={handleCategoryChange}
+                    inputProps={{ 'aria-label': 'Without label' }}
+                    fullWidth
+                    displayEmpty
+                    variant="outlined"
+                    disabled
+                  >
+                    <MenuItem value="">
+                      <em>{data.category}</em>
+                    </MenuItem>
+                    <MenuItem value={data.category}>{data.category}</MenuItem>
+                  </Select>
+                </Grid>
+                <Grid item xs={12}>
+                  <Select
+                    id="subcategory"
+                    name="subcategory"
+                    value={data.subcategory}
+                    onChange={handleSubcategoryChange}
+                    inputProps={{ 'aria-label': 'Without label' }}
+                    fullWidth
+                    displayEmpty
+                    variant="outlined"
+                    disabled
+                  >
+                    <MenuItem value="">
+                      <em>{data.subcategory}</em>
+                    </MenuItem>
+                    <MenuItem value={data.subcategory}>{data.subcategory}</MenuItem>
+                  </Select>
                 </Grid>
               </Grid>
             </Paper>

@@ -18,7 +18,7 @@ import Slide from '@material-ui/core/Slide';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { DataGrid, GridToolbarContainer  } from '@material-ui/data-grid';
+import { DataGrid, GridToolbarContainer, GridSortDirection } from '@material-ui/data-grid';
 
 
 import AddProductForm from '../modules/Products/AddProductForm';
@@ -218,6 +218,7 @@ const Products: NextPage = () => {
   const columns = [
     { field: '_id', headerName: 'ID', width: 70, hide: true },
     { field: 'title', headerName: 'Título', width: 150 },
+    // { field: 'created_at', headerName: 'Data', width: 150 },
     { field: 'gender', headerName: 'Gênero', width: 150 },
     { field: 'category', headerName: 'Categoria', width: 150 },
     { field: 'subcategory', headerName: 'Sub-Categoria', width: 150 },
@@ -271,6 +272,12 @@ const Products: NextPage = () => {
               :
               undefined
             }
+            // sortModel={[
+            //   {
+            //     field: 'created_at',
+            //     sort: 'desc' as GridSortDirection,
+            //   },
+            // ]}
             />
         </Grid>
       </Grid>

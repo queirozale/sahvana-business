@@ -1,10 +1,13 @@
 import React from 'react';
+import useSWR from 'swr';
+import { useSession } from 'next-auth/client';
+
 import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 import Title from './Title';
-import useSWR from 'swr';
-import { useSession } from 'next-auth/client';
 
 function preventDefault(event) {
   event.preventDefault();
@@ -56,6 +59,9 @@ export default function Deposits() {
       <Typography component="p" variant="h4">
         {data && (
           formatter.format(data.total_sales)
+        )}
+        {!data && (
+          <CircularProgress />
         )}
       </Typography>
       {/* <Typography color="textSecondary" className={classes.depositContext}>

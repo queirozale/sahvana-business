@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { useTheme } from '@material-ui/core/styles';
-import { LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer } from 'recharts';
-import Title from './Title';
 import useSWR from 'swr';
 import { useSession } from 'next-auth/client';
+
+import { useTheme } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer } from 'recharts';
+
+import Title from './Title';
 
 // Generate Sales Data
 function createData(time, amount) {
@@ -67,6 +70,9 @@ export default function Chart() {
             <Line type="monotone" dataKey="amount" stroke={theme.palette.primary.main} dot={false} />
           </LineChart>
         </ResponsiveContainer>
+      )}
+      {!data && (
+        <CircularProgress />
       )}
     </React.Fragment>
   );

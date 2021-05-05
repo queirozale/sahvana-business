@@ -195,13 +195,18 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
     event.preventDefault();
     const form = event.target;
 
-    const inputOption1 = event.target.inputOption1? event.target.inputOption1.value : null;
+    const optionList = (x) => {
+      const optList = x.split(',');
+      return optList.slice(0, optList.length - 1)
+    };
+
+    const inputOption1 = event.target.inputOption1? optionList(event.target.inputOption1.value) : [];
     const variantType1 = event.target.variantType1? event.target.variantType1.value : null;
 
-    const inputOption2 = event.target.inputOption2? event.target.inputOption2.value : null;
+    const inputOption2 = event.target.inputOption2? optionList(event.target.inputOption2.value) : [];
     const variantType2 = event.target.variantType2? event.target.variantType2.value : null;
 
-    const inputOption3 = event.target.inputOption3? event.target.inputOption3.value : null;
+    const inputOption3 = event.target.inputOption3? optionList(event.target.inputOption3.value) : [];
     const variantType3 = event.target.variantType3? event.target.variantType3.value : null;
 
     var variantPrices = {}
