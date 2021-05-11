@@ -217,14 +217,13 @@ const Products: NextPage = () => {
 
   const columns = [
     { field: '_id', headerName: 'ID', width: 70, hide: true },
-    { field: 'title', headerName: 'Título', width: 150 },
-    // { field: 'created_at', headerName: 'Data', width: 150 },
+    { field: 'title', headerName: 'Título', width: 200 },
+    { field: 'created_at', headerName: 'Data', width: 180 },
     { field: 'gender', headerName: 'Gênero', width: 150 },
     { field: 'category', headerName: 'Categoria', width: 150 },
     { field: 'subcategory', headerName: 'Sub-Categoria', width: 150 },
     { field: 'total_inventory', headerName: 'Estoque Total', width: 150, type: 'number' },
     { field: 'original_price', headerName: 'Preço Original', width: 150, type: 'number' },
-    { field: 'promotional_price', headerName: 'Preço Promocional', width: 200, type: 'number' },
   ];
 
   return (
@@ -272,12 +271,12 @@ const Products: NextPage = () => {
               :
               undefined
             }
-            // sortModel={[
-            //   {
-            //     field: 'created_at',
-            //     sort: 'desc' as GridSortDirection,
-            //   },
-            // ]}
+            sortModel={[
+              {
+                field: 'created_at',
+                sort: 'desc' as GridSortDirection,
+              },
+            ]}
             />
         </Grid>
       </Grid>
