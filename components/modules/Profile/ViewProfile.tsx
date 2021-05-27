@@ -10,6 +10,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import Router from 'next/router';
 import { useSession } from 'next-auth/client';
@@ -68,6 +69,7 @@ export default function Profile(props: ProfileProps) {
   const [editMode, setEditMode] = useState(false);
   const [storePickup, setStorePickup] = useState(false);
   const [expressDelivery, setExpressDelivery] = useState(false);
+  const [sahvanaDelivery, setSahvanaDelivery] = useState(false);
   const [ session, loading ] = useSession();
   const [serverState, setServerState] = useState({
     submitting: false,
@@ -93,6 +95,10 @@ export default function Profile(props: ProfileProps) {
 
   const handleCheckDelivery = () => {
     setExpressDelivery(!expressDelivery);
+  };
+
+  const handleSahvanaDelivery = () => {
+    setSahvanaDelivery(!sahvanaDelivery);
   };
 
   const computeWeight = (event) => {
@@ -226,6 +232,7 @@ export default function Profile(props: ProfileProps) {
                     InputLabelProps={{
                       shrink: true,
                     }}
+                    required
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -242,6 +249,7 @@ export default function Profile(props: ProfileProps) {
                     InputLabelProps={{
                       shrink: true,
                     }}
+                    required
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -258,6 +266,7 @@ export default function Profile(props: ProfileProps) {
                     InputLabelProps={{
                       shrink: true,
                     }}
+                    required
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -274,6 +283,7 @@ export default function Profile(props: ProfileProps) {
                     InputLabelProps={{
                       shrink: true,
                     }}
+                    required
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -290,13 +300,14 @@ export default function Profile(props: ProfileProps) {
                     InputLabelProps={{
                       shrink: true,
                     }}
+                    required
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
                     id="description"
                     name="description"
-                    label="Descrição"
+                    label="Apresente-se aqui"
                     style={{ margin: 8 }}
                     defaultValue={userData.description}
                     fullWidth
@@ -319,17 +330,35 @@ export default function Profile(props: ProfileProps) {
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <FormControlLabel
+                      disabled control={<Checkbox color="primary" id="mail" name="mail"
+                      checked={true}
+                      />}
+                      label="Correios"
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <FormControlLabel
                       control={<Checkbox color="primary" id="storePickup" name="storePickup" 
                       value={storePickup} onChange={handleCheckPickup} />}
-                      label="Retirada em loja"
+                      label="Retirada em loja *"
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <FormControlLabel
                       control={<Checkbox color="primary" id="expressDelivery" name="expressDelivery" 
                       value={expressDelivery} onChange={handleCheckDelivery} />}
-                      label="Expresso (grande Vitória)"
+                      label="Entrega via motoboy *"
                     />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Tooltip title="Utilize o nosso contrato com os correios e nossa frota de motoboys, por R$4,99 por pedido" 
+                    aria-label="add">
+                      <FormControlLabel
+                        control={<Checkbox color="primary" id="sahvanaDelivery" name="sahvanaDelivery" 
+                        value={sahvanaDelivery} onChange={handleSahvanaDelivery} />}
+                        label="Entrega da Sahvana *"
+                      />
+                    </Tooltip>
                   </Grid>
                   <Grid item xs={12} style={{textAlign: "center"}}>
                     <Button type="submit" className={classes.btn}>
@@ -354,6 +383,24 @@ export default function Profile(props: ProfileProps) {
                   <>
                     <Grid item xs={12} sm={6}>
                       <TextField
+                        id="mail"
+                        name="mail"
+                        label="Correios"
+                        style={{ margin: 8 }}
+                        defaultValue={"Sim"}
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                        disabled
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        required
+                        disabled
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
                         id="storePickup"
                         name="storePickup"
                         label="Retirar na loja"
@@ -366,13 +413,14 @@ export default function Profile(props: ProfileProps) {
                         InputLabelProps={{
                           shrink: true,
                         }}
+                        required
                       />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <TextField
                         id="expressDelivery"
                         name="expressDelivery"
-                        label="Entrega expresso"
+                        label="Entrega via motoboy"
                         style={{ margin: 8 }}
                         defaultValue={userData? handleBool(userData.expressDelivery) : ""}
                         fullWidth
@@ -382,7 +430,28 @@ export default function Profile(props: ProfileProps) {
                         InputLabelProps={{
                           shrink: true,
                         }}
+                        required
                       />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Tooltip title="Utilize o nosso contrato com os correios e nossa frota de motoboys, por R$4,99 por pedido" 
+                      aria-label="add">
+                        <TextField
+                          id="sahvanaDelivery"
+                          name="sahvanaDelivery"
+                          label="Entrega da Sahvana"
+                          style={{ margin: 8 }}
+                          defaultValue={userData? handleBool(userData.expressDelivery) : ""}
+                          fullWidth
+                          margin="normal"
+                          variant="outlined"
+                          disabled
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                          required
+                        />
+                      </Tooltip>
                     </Grid>
                   </>
                 )}
@@ -491,6 +560,22 @@ export default function Profile(props: ProfileProps) {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
+                  <TextField
+                    id="mail"
+                    name="mail"
+                    label="Correios"
+                    style={{ margin: 8 }}
+                    defaultValue={"Sim"}
+                    fullWidth
+                    margin="normal"
+                    variant="outlined"
+                    disabled
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    required
+                    disabled
+                  />
                   <FormControlLabel
                     control={<Checkbox color="primary" id="storePickup" name="storePickup" 
                     value={storePickup} onChange={handleCheckPickup} />}
@@ -501,9 +586,19 @@ export default function Profile(props: ProfileProps) {
                   <FormControlLabel
                     control={<Checkbox color="primary" id="expressDelivery" name="expressDelivery" 
                     value={expressDelivery} onChange={handleCheckDelivery} />}
-                    label="Expresso (grande Vitória)"
+                    label="Entrega via motoboy"
                   />
                 </Grid>
+                <Grid item xs={12} sm={6}>
+                    <Tooltip title="Utilize o nosso contrato com os correios e nossa frota de motoboys, por R$4,99 por pedido" 
+                    aria-label="add">
+                      <FormControlLabel
+                        control={<Checkbox color="primary" id="sahvanaDelivery" name="sahvanaDelivery" 
+                        value={sahvanaDelivery} onChange={handleSahvanaDelivery} />}
+                        label="Entrega da Sahvana *"
+                      />
+                    </Tooltip>
+                  </Grid>
                 <Grid item xs={12} style={{textAlign: "center"}}>
                   <Button type="submit" className={classes.btn}>
                     SALVAR

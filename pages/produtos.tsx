@@ -197,7 +197,8 @@ function Home(props: PaperbaseProps) {
                 activations={{
                   'Perfil': false,
                   'Contato': false,
-                  'Cadastro': true,
+                  'MeusProdutos': true,
+                  'AdicionarProdutos': false,
                   'Histórico': false,
                   'Pedidos': false
                 }}
@@ -209,7 +210,8 @@ function Home(props: PaperbaseProps) {
               activations={{
                 'Perfil': false,
                 'Contato': false,
-                'Cadastro': true,
+                'MeusProdutos': true,
+                'AdicionarProdutos': false,
                 'Histórico': false,
                 'Pedidos': false
               }}
@@ -219,7 +221,7 @@ function Home(props: PaperbaseProps) {
           <div className={classes.app}>
             <Header onDrawerToggle={handleDrawerToggle} title={'Produtos'} />
             <main className={classes.main}>
-              <Products />
+              <Products openAdd={false} />
             </main>
             <footer className={classes.footer}>
               <Copyright />

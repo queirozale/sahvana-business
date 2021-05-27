@@ -198,7 +198,8 @@ function Home(props: PaperbaseProps) {
                 activations={{
                   'Perfil': false,
                   'Contato': false,
-                  'Cadastro': false,
+                  'MeusProdutos': false,
+                  'AdicionarProdutos': false,
                   'Histórico': false,
                   'Pedidos': false
                 }}
@@ -210,7 +211,8 @@ function Home(props: PaperbaseProps) {
               activations={{
                 'Perfil': false,
                 'Contato': false,
-                'Cadastro': false,
+                'MeusProdutos': false,
+                'AdicionarProdutos': false,
                 'Histórico': false,
                 'Pedidos': false
               }}

@@ -14,6 +14,7 @@ import ListAltIcon from '@material-ui/icons/ListAlt';
 import PersonIcon from '@material-ui/icons/Person';
 import HistoryIcon from '@material-ui/icons/History';
 import PresentToAllIcon from '@material-ui/icons/PresentToAll';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import Link from '@material-ui/core/Link';
 import { useSession } from 'next-auth/client';
 
@@ -68,7 +69,8 @@ export interface NavigatorProps extends Omit<DrawerProps, 'classes'>, WithStyles
   activations: {
     Perfil: boolean;
     Contato: boolean;
-    Cadastro: boolean;
+    MeusProdutos: boolean;
+    AdicionarProdutos: boolean;
     Histórico: boolean;
     Pedidos: boolean;
   };
@@ -77,7 +79,8 @@ export interface NavigatorProps extends Omit<DrawerProps, 'classes'>, WithStyles
 interface ProductData {
   Perfil: boolean;
   Contato: boolean;
-  Cadastro: boolean;
+  MeusProdutos: boolean;
+  AdicionarProdutos: boolean;
   Histórico: boolean;
   Pedidos: boolean;
 };
@@ -124,7 +127,8 @@ function Navigator(props: NavigatorProps) {
     {
       id: 'Produtos',
       children: [
-        { id: 'Cadastro', icon: <ListAltIcon />, active: activeIcons.Cadastro  },
+        { id: 'Meus produtos', icon: <ListAltIcon />, active: activeIcons.MeusProdutos  },
+        { id: 'Adicionar produtos', icon: <AddCircleIcon />, active: activeIcons.AdicionarProdutos  },
         { id: 'Histórico', icon: <HistoryIcon />, active: activeIcons.Histórico  },
         { id: 'Pedidos', icon: <PresentToAllIcon />, active: activeIcons.Pedidos  },
       ],
@@ -134,7 +138,8 @@ function Navigator(props: NavigatorProps) {
   const routes: Routes = {
     'Perfil': 'perfil',
     'Contato': 'contato',
-    'Cadastro': 'produtos',
+    'Meus produtos': 'produtos',
+    'Adicionar produtos': 'produtos_adicionar',
     'Histórico': 'historico',
     'Pedidos': 'pedidos'
   }
