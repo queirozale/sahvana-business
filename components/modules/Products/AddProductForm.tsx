@@ -18,11 +18,13 @@ import { DrawerProps } from '@material-ui/core/Drawer';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import Box from '@material-ui/core/Box';
+import Tooltip from '@material-ui/core/Tooltip';
 import ChipInput from 'material-ui-chip-input';
 
 import ImageUploadCard from '../ImageUpload';
 import tagOptions from './TagOptions';
 import utils from './Utils';
+import { DataUsageSharp } from '@material-ui/icons';
 
 
 const styles = (theme: Theme) => 
@@ -100,21 +102,28 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
     'subcategory': ''
   }); // Classification names
   const [classificationItems, setClassificationItems] = useState({
-    'collection': [],
+    'collection': ['Masculino', 'Feminino', 'Genderless'],
     'category': [],
     'subcategory': []
+    // 'category': tagOptions.categoriesOptions,
+    // 'subcategory': {
+    //   'Masculino': tagOptions.subcategoriesOptionsMale,
+    //   'Feminino': tagOptions.subcategoriesOptionsFemale,
+    //   'Genderless': tagOptions.subcategoriesOptionsGenderless
+    // }
   }); // Classification values
+
+  // tag options
+  const categoriesOptions = tagOptions.categoriesOptions;
+  const subcategoriesOptionsMale = tagOptions.subcategoriesOptionsMale;
+  const subcategoriesOptionsFemale =  tagOptions.subcategoriesOptionsFemale;
+  const subcategoriesOptionsGenderless = tagOptions.subcategoriesOptionsGenderless;
+
   const [originalPrice, setOriginalPrice] = useState('');
   const [image1, setImage1] = useState(null);
   const [image2, setImage2] = useState(null);
   const [image3, setImage3] = useState(null);
   const [image4, setImage4] = useState(null);
-  
-  // tags options
-  const categoriesOptions = tagOptions.categoriesOptions;
-  const subcategoriesOptionsMale = tagOptions.subcategoriesOptionsMale;
-  const subcategoriesOptionsFemale = tagOptions.subcategoriesOptionsFemale;
-  const subcategoriesOptionsUnissex = tagOptions.subcategoriesOptionsUnissex;
 
   const handleCheckBox = () => {
     setVariant(!variant);
@@ -126,7 +135,34 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
     }
   };
 
-  const handleRemoveOption = () => {
+  const handleRemoveOption = (option) => {
+    var instantOptionsData = {};
+    if (option === 1) {
+      setOptionValues({...optionValues, [1]: []});
+      instantOptionsData = {
+        1: [],
+        2: optionValues[2],
+        3: optionValues[3]
+      };
+    } else if (option === 2) {
+      setOptionValues({...optionValues, [2]: []});
+      instantOptionsData = {
+        1: optionValues[1],
+        2: [],
+        3: optionValues[3]
+      };
+    } else {
+      setOptionValues({...optionValues, [3]: []});
+      instantOptionsData = {
+        1: optionValues[1],
+        2: optionValues[2],
+        3: []
+      };
+    }
+    
+    var combinations = utils.generateOptionsCombinations(instantOptionsData);
+    setVariantValues(combinations);
+
     setOptions(options.slice(0, options.length-1));
   };
 
@@ -134,39 +170,66 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
     setVariantTypes({...variantTypes, [option]: event.target.value as string});
   };
 
+  
   const handleOptionChange = (e, option) => {
+    var instantOptionsData = {};
     if (option === 1) {
       setOptionValues({...optionValues, [1]: e});
+      instantOptionsData = {
+        1: e,
+        2: optionValues[2],
+        3: optionValues[3]
+      };
     } else if (option === 2) {
       setOptionValues({...optionValues, [2]: e});
+      instantOptionsData = {
+        1: optionValues[1],
+        2: e,
+        3: optionValues[3]
+      };
     } else {
       setOptionValues({...optionValues, [3]: e});
+      instantOptionsData = {
+        1: optionValues[1],
+        2: optionValues[2],
+        3: e
+      };
     }
-
-    setVariantValues(utils.generateOptionsCombinations(optionValues));
+    
+    var combinations = utils.generateOptionsCombinations(instantOptionsData);
+    setVariantValues(combinations);
   };
 
   const handleCollectionChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setClassification({...classification, ['collection']: event.target.value as string});
-    setClassificationItems({...classificationItems, ['collection']: categoriesOptions[event.target.value as string]});
+    if (event.target.value as string === "") {
+      setClassificationItems({...classificationItems, ['category']: []});
+    } else {
+      setClassificationItems({...classificationItems, ['category']: categoriesOptions[event.target.value as string]});
+    }
   };
 
   const handleCategoryChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setClassification({...classification, ['category']: event.target.value as string});
-    var collection = classification['category'];
+    var collection = classification['collection'];
 
-    if (collection === "Masculino") {
-      setClassificationItems({...classificationItems, ['category']: subcategoriesOptionsMale[event.target.value as string]});
-    } else if (collection === "Feminino") {
-      setClassificationItems({...classificationItems, ['category']: subcategoriesOptionsFemale[event.target.value as string]});
+    if (event.target.value as string === "") {
+      setClassificationItems({...classificationItems, ['subcategory']: []});
     } else {
-      setClassificationItems({...classificationItems, ['category']: subcategoriesOptionsUnissex[event.target.value as string]});
+      if (collection === "Masculino") {
+        setClassificationItems({...classificationItems, ['subcategory']: subcategoriesOptionsMale[event.target.value as string]});
+      } else if (collection === "Feminino") {
+        setClassificationItems({...classificationItems, ['subcategory']: subcategoriesOptionsFemale[event.target.value as string]});
+      } else {
+        setClassificationItems({...classificationItems, ['subcategory']: subcategoriesOptionsGenderless[event.target.value as string]});
+      }
     }
   };
 
   const handleSubcategoryChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setClassification({...classification, ['subcategory']: event.target.value as string});
   };
+
 
   const handleOriginalPriceChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setOriginalPrice(event.target.value as string);
@@ -187,12 +250,7 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
   const setImageFile4 = (selectedFile) => {
     setImage4(selectedFile);
   };
-
-  const handleClickMe = () => {
-    console.log(optionValues);
-    console.log(variantValues);
-  }
-
+  
   const handleSubmit = () => {
     utils.createProduct;
   };
@@ -241,7 +299,7 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
                 </Grid>
                 <Grid item xs={12}>
                   <Typography className={classes.title} component="h5" variant="h6" align="left">
-                    Media
+                    Imagens
                   </Typography>
                   <Box display="flex" justifyContent="center" border={1} className={classes.mediaArea} borderRadius={5}>
                     <Grid container>
@@ -260,10 +318,15 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
                     </Grid>
                   </Box>
                 </Grid>
+                <Grid item xs={4}>
+                  <Tooltip title="As classificações indicam onde os seus produtos irão aparecer no nosso shopping" 
+                  aria-label="add">
+                    <Typography className={classes.title} component="h5" variant="h6" align="left">
+                      Classificações*
+                    </Typography>
+                  </Tooltip>
+                </Grid>
                 <Grid item xs={12}>
-                  <Typography className={classes.title} component="h5" variant="h6" align="left">
-                    Tags
-                  </Typography>
                   <Select
                     id="gender"
                     name="gender"
@@ -275,11 +338,11 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
                     variant="outlined"
                   >
                     <MenuItem value="">
-                      <em>Coleção</em>
+                      <em>Gênero</em>
                     </MenuItem>
-                    <MenuItem value={"Masculino"}>Masculino</MenuItem>
-                    <MenuItem value={"Feminino"}>Feminino</MenuItem>
-                    <MenuItem value={"Unissex"}>Unissex</MenuItem>
+                    {classificationItems['collection'].map(option => (
+                        <MenuItem key={option} value={option}>{option}</MenuItem>
+                    ))}
                   </Select>
                 </Grid>
                 <Grid item xs={12}>
@@ -326,7 +389,7 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
           <Grid item xs={12}>
             <Paper className={classes.paperSecondRow}>
               <Typography className={classes.title} component="h4" variant="h5" align="left">
-                Variantes
+                Estoque
               </Typography>
               <Grid container spacing={4}>
                 <Grid item xs={12} sm={4}>
@@ -404,9 +467,6 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
                           </Select>
                         </Grid>
                         <Grid item xs={12} sm={8}>
-                        <Button onClick={handleClickMe}>
-                          CLICK ME
-                        </Button>
                         <ChipInput
                           defaultValue={optionValues[option]}
                           onChange={(e) => handleOptionChange(e, option)}
@@ -427,7 +487,7 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
                         </Button>
                       )}
                       {option > 1 && (
-                        <Button onClick={handleRemoveOption}>
+                        <Button onClick={() => handleRemoveOption(option)}>
                           Remover
                         </Button>
                       )}
@@ -441,34 +501,21 @@ const AddProductForm: NextPage = (props: AddProductFormProps) => {
           <Grid item xs={12}>
             <Paper className={classes.paperSecondRow}>
               <Grid container spacing={4}>
-                <Grid item xs={12} sm={4}>
+                <Grid item xs={12} sm={6}>
                   Variante
                 </Grid>
-                <Grid item xs={12} sm={4}>
-                  Preço
-                </Grid>
-                <Grid item xs={12} sm={4}>
+                <Grid item xs={12} sm={6}>
                   Quantidade
                 </Grid>
                 {variantValues.length > 0 && 
                 variantValues.map((item) => (
                   <React.Fragment key={item}>
-                    <Grid item xs={12} sm={4}>
+                    <Grid item xs={12} sm={6}>
                       <InputLabel>
                         {item}
                       </InputLabel>
                     </Grid>
-                    <Grid item xs={12} sm={4}>
-                      <TextField
-                        id={"price_" + item}
-                        name={"price_" + item}
-                        variant="outlined"
-                        fullWidth
-                        defaultValue={originalPrice}
-                        required
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={4}>
+                    <Grid item xs={12} sm={6}>
                       <TextField
                         id={"inventory_" + item}
                         name={"inventory_" + item}

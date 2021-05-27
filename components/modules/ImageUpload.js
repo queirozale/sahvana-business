@@ -102,11 +102,19 @@ class ImageUploadCard extends React.Component {
   // };
   constructor(props) {
     super(props);
-    this.state = {
-      mainState: "initial", // initial, search, gallery, uploaded
-      imageUploaded: 0,
-      selectedFile: null
-    };
+    if (props.selectedFile) {
+      this.state = {
+        mainState: "uploaded",
+        imageUploaded: 1,
+        selectedFile: props.selectedFile
+      };
+    } else {
+      this.state = {
+        mainState: "initial", // initial, search, gallery, uploaded
+        imageUploaded: 0,
+        selectedFile: null
+      };
+    }
   };
   
 
@@ -146,22 +154,7 @@ class ImageUploadCard extends React.Component {
 
     return (
       <React.Fragment>
-        {/* <CardContent> */}
           <Grid container justify="center" alignItems="center">
-            {/* <input
-              accept="image/*"
-              className={classes.input}
-              id="contained-button-file"
-              multiple
-              type="file"
-              onChange={this.handleUploadClick}
-            />
-            <label htmlFor="contained-button-file">
-              <Fab component="span" className={classes.button}>
-                <AddPhotoAlternateIcon />
-              </Fab>
-            </label> */}
-
             <Button
               variant="contained"
               component="label"
@@ -179,7 +172,6 @@ class ImageUploadCard extends React.Component {
               />
             </Button>
           </Grid>
-        {/* </CardContent> */}
       </React.Fragment>
     );
   }
@@ -205,6 +197,7 @@ class ImageUploadCard extends React.Component {
 
   handleImageSearch(url) {
     var filename = url.substring(url.lastIndexOf("/") + 1);
+    console.log(url);
     console.log(filename);
     this.setState({
       mainState: "uploaded",
@@ -315,7 +308,6 @@ class ImageUploadCard extends React.Component {
       selectedFile: null,
       imageUploaded: 0
     });
-    // this.props.setImage(null);
   };
 
   render() {

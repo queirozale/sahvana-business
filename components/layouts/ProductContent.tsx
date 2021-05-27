@@ -20,8 +20,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { DataGrid, GridToolbarContainer, GridSortDirection } from '@material-ui/data-grid';
 
-
-import AddProductForm from '../modules/Products/AddProductForm';
 import ProductInfo from '../modules/Products/ProductInfo';
 
 import useSWR from 'swr';
@@ -120,14 +118,17 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+interface ProductsProps {
+  openAdd: boolean;
+}
 
-const Products: NextPage = () => {
+const Products = (props: ProductsProps) => {
   const classes = useStyles();
   const [ edit, setEdit ] = useState(false);
   const [deletedRows, setDeletedRows] = useState(Array());
   const [search, setSearch] = useState("");
-  
-  const [open, setOpen] = useState(false);
+  const openAdd = props.openAdd;
+  const [open, setOpen] = useState(openAdd);
   const [showInfo, setShowInfo] = useState(false);
   const [infoData, setInfoData] = useState<Data>(null);
   const [ session, loading ] = useSession();
@@ -217,8 +218,8 @@ const Products: NextPage = () => {
 
   const columns = [
     { field: '_id', headerName: 'ID', width: 70, hide: true },
+    { field: 'updated_at', headerName: 'Data', width: 180 },
     { field: 'title', headerName: 'Título', width: 200 },
-    { field: 'created_at', headerName: 'Data', width: 180 },
     { field: 'gender', headerName: 'Gênero', width: 150 },
     { field: 'category', headerName: 'Categoria', width: 150 },
     { field: 'subcategory', headerName: 'Sub-Categoria', width: 150 },
@@ -273,7 +274,7 @@ const Products: NextPage = () => {
             }
             sortModel={[
               {
-                field: 'created_at',
+                field: 'updated_at',
                 sort: 'desc' as GridSortDirection,
               },
             ]}
@@ -298,7 +299,7 @@ const Products: NextPage = () => {
               </Typography>
             </Toolbar>
           </AppBar>
-          <AddProductForm />
+          <ProductInfo />
         </div>
       </Dialog>
 

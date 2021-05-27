@@ -17,7 +17,7 @@ const categoriesOptions = {
     "Jóias",
     "Acessório",
   ],
-  "Unissex": [
+  "Genderless": [
     "Roupa",
     "Calçado",
     "Bolsa",
@@ -143,7 +143,7 @@ const subcategoriesOptionsFemale = {
   ]
 };
 
-const subcategoriesOptionsUnissex = {
+const subcategoriesOptionsGenderless = {
   'Roupa': [
     'Camiseta',
     'Regata',
@@ -233,5 +233,5 @@ export default {
   categoriesOptions, 
   subcategoriesOptionsMale, 
   subcategoriesOptionsFemale,
-  subcategoriesOptionsUnissex
+  subcategoriesOptionsGenderless
  };

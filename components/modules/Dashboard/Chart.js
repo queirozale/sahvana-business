@@ -20,7 +20,7 @@ const vendors = {
   'contato@usetimeless.com.br': 'Timeless',
   'Cesar.ferrari29@gmail.com': 'O P Ü S',
   'amanda_loss.v@hotmail.com': 'Feather Jeans',
-  'queirozalessandro1@gmail.com': 'Feather Jeans',
+  'queirozalessandro1@gmail.com': 'Brida',
   'sahvana.dev@gmail.com': 'Brida'
 }
 
