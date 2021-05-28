@@ -7,7 +7,6 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Link from '@material-ui/core/Link';
-import { flexbox } from '@material-ui/system';
 
 const useStyles = makeStyles((theme) => ({
     sectionFour: {
@@ -30,8 +29,8 @@ const useStyles = makeStyles((theme) => ({
         border: '2.5px solid #F2790F',
         borderRadius: '50%',
         position: 'absolute',
-        right: '-400px',
-        top: '-200px'
+        right: '-450px',
+        top: '-210px'
       },
       titleCircle: {
         height: '48px',
@@ -85,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
       return (
         <div className={classes.sectionFour}>
           <div className={classes.containerContent}>
-            <div className={classes.decorCircle}></div>
+            <div className={classes.decorCircle}></div>           
             <div className={classes.titleCircle}></div>
             <spam className={classes.title}>Depoimentos</spam>
             <div className={classes.decorBar}></div>

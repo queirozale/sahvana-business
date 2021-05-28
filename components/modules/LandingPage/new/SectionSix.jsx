@@ -47,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
         color: '#000000',
         transitionDuration: '0.3s',
         cursor: 'pointer',
+        textTransform: 'none',
         "&:hover": {
             transitionDuration: '0.3s',
             backgroundColor: '#000000',
@@ -64,10 +65,10 @@ const useStyles = makeStyles((theme) => ({
             <div className={classes.containerContent}>
                 <div className={classes.containerRecs}>
                     <div className={classes.recText}>Seja uma<br></br> loja parceira.</div>
-                    <div className={classes.recButton}>Cadastrar loja</div>
+                    <Button className={classes.recButton}>Cadastrar loja</Button>
                 </div>
                 <div className={classes.imgLogo}>
-                    <img src="logo2.png" widht="290" height="290"/>
+                    <img src="logoSolo.png" widht="290" height="290"/>
                  </div>
             </div>
         </div>

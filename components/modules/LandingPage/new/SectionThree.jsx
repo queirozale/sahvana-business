@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
       subText: {
         fontFamily: 'Poppins',
         fontWeight: 'normal',
-        fontSize: '28px',
+        fontSize: '26px',
         color: '#000000',
       },
       buttonMore: {
@@ -65,6 +65,7 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: '300',
         cursor: 'pointer',
         transitionDuration: '0.3s',
+        textTransform: 'none',
         "&:hover": {
           transitionDuration: '0.3s',
           backgroundColor: '#000000',
@@ -106,7 +107,7 @@ const useStyles = makeStyles((theme) => ({
               <div className={classes.title}>Venda mais para<br></br> novos clientes</div>
               <div className={classes.decorBar}></div>
               <div className={classes.subText}>Se destaque em nosso shopping e<br></br> conquiste clientes <strong>de todo o Brasil.</strong></div>
-              <button className={classes.buttonMore}>Cadastre sua loja</button>
+              <Button className={classes.buttonMore}>Cadastre sua loja</Button>
               <div className={classes.decorRec}></div>
             </div>
             <div className={classes.recIcon}>

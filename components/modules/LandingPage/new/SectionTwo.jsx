@@ -61,7 +61,8 @@ const useStyles = makeStyles((theme) => ({
     left: '5px',
     width: '576px',
     height: '246px',
-    border: '2px solid #C7C7C7'
+    border: '2px solid #C7C7C7',
+    zIndex: '-1'
   },
   textRec: {
     alignSelf: 'center',
@@ -97,7 +98,7 @@ const useStyles = makeStyles((theme) => ({
           <div className={classes.decorBar}></div>
           <div className={classes.containerRecs}>
             <div className={classes.rec}>
-              <div className={classes.decorRec}></div>
+            <div className={classes.decorRec}></div>
               <div className={classes.textRec}>
                 <div className={classes.recTitle}>Marketplace</div>
                 <div className={classes.subtitle}>Um canal de venda <strong>a<br></br> mais</strong> para você expor os<br></br> seus produtos.</div>

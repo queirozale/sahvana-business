@@ -28,25 +28,31 @@ const useStyles = makeStyles((theme) => ({
     color: 'black'
   },
   logo: {
-    height: '45px'
+    height: '85px'
   },
   menuNavBar: {
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center',
-    fontFamily: 'Poppins',
-    fontSize: '15px',
-    fontWeight: '700',
+    alignItems: 'center'
   },
   funcLink: {
-    paddingRight: '50px',
-    cursor: 'pointer',
-    color: '#000000',
+    textTransform: 'none',
+    fontFamily: 'Poppins',
+    fontWeight: '700',
+    marginRight: '25px',
+    '&:hover': {
+      backgroundColor: 'transparent',
+    }
+
   },
   funcCad: {
-    paddingRight: '50px',
-    cursor: 'pointer',
-    color: '#000000',
+    textTransform: 'none',
+    fontFamily: 'Poppins',
+    fontWeight: '700',
+    marginRight: '55px',
+    '&:hover': {
+      backgroundColor: 'transparent',
+    }
   },
   logButton: {
     height: '42px',
@@ -62,7 +68,6 @@ const useStyles = makeStyles((theme) => ({
       color: 'white'
     }
   }
-  
 }));
 
 export default function ButtonAppBar() {
@@ -72,10 +77,10 @@ export default function ButtonAppBar() {
     <div className={classes.root}>
       <AppBar className={classes.appBar} position="static">
         <Toolbar className={classes.containerContent}>
-          <img className={classes.logo} src="./sahvana_logo.png"/>
+          <img className={classes.logo} src="./logo_nav.png"/>
           <div className={classes.menuNavBar}>
-            <div className={classes.funcLink}>Como funciona</div>
-            <div className={classes.funcCad}>Cadastrar loja</div>
+            <Button className={classes.funcLink}>Como funciona</Button>
+            <Button className={classes.funcCad}>Cadastrar loja</Button>
           <Button className={classes.logButton}color="inherit">ENTRAR</Button>
           </div>
         </Toolbar>

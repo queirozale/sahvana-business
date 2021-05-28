@@ -22,11 +22,11 @@ const useStyles = makeStyles((theme) => ({
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
       filter: 'contrast(1)',
+      position: 'relative',
   },
     title: {
-      width: '700px',
       textAlign: 'center',
-      fontSize: '72px',
+      fontSize: '80px',
       color: '#FFFFFF',
       fontFamily: 'Poppins',
       fontWeight: 'bold',
@@ -60,9 +60,11 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '18px',
     fontFamily: 'Poppins',
     fontWeight: '300',
+    lineHeight: '46px',
     paddingLeft: '15px', 
     paddingRight: '15px',
     cursor: 'pointer',
+    textTransform: 'none',
     transitionDuration: '0.3s',
     "&:hover": {
       transitionDuration: '0.3s',
@@ -72,16 +74,15 @@ const useStyles = makeStyles((theme) => ({
     },
     },
     decorCircle: {
-      overflow: 'hidden',
       height: '500px',
       width: '500px',
       backgroundColor: 'trasparent',
       border: '2.5px solid #F2790F',
       borderRadius: '50%',
       position: 'absolute',
-      right: '0',
-      bottom: '0',
-      transform: 'translate(25%, 60%)'
+      right: '-100px',
+      bottom: '-200px',
+      overflowX: 'hidden'
     },
   }));
 
@@ -97,7 +98,7 @@ const useStyles = makeStyles((theme) => ({
         <div className={classes.subTittle}>
           Sua loja vendendo como nunca em um shopping de moda online.
         </div>
-        <button className={classes.buttonMore}>Saiba mais</button>
+        <a name="section2"className={classes.buttonMore}>Saiba mais</a>
         <div className={classes.decorCircle}></div>
       </div>
     );

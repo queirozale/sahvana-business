@@ -11,7 +11,7 @@ import SectionFive from '../modules/LandingPage/new/SectionFive';
 import SectionSix from '../modules/LandingPage/new/SectionSix';
 
 const useStyles = makeStyles((theme) => ({
-  
+
 }));
 
 const LadingPage = () => {

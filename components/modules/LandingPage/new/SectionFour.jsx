@@ -73,7 +73,8 @@ const useStyles = makeStyles((theme) => ({
         top: '5px',
         height: '425px',
         width: '632px',
-        border: '2px solid #C7C7C7'
+        border: '2px solid #C7C7C7',
+        zIndex: '-1'
       },
       recText: {
         width: '537px',
@@ -96,7 +97,8 @@ const useStyles = makeStyles((theme) => ({
         fontFamily: 'Poppins',
         fontWeight: '800',
         fontSize: '42px',
-        color: '#FD7600'
+        color: '#FD7600',
+        paddingBottom: '10px'
       },
       subtitleRec: {
         fontFamily: 'Poppins',
@@ -120,7 +122,12 @@ const useStyles = makeStyles((theme) => ({
         fontSize: '20px',
         fontWeight: '300',
         color: 'white',
-        marginBottom: '23px'
+        marginBottom: '23px',
+        textTransform: 'none',
+        "&:hover": {
+          transitionDuration: '0.3s',
+          backgroundColor: '#000000',
+        },
       }
     }));
   
@@ -130,8 +137,26 @@ const useStyles = makeStyles((theme) => ({
       const [selected, setSelected] = useState('Atendimento');
 
       const explanationDict = {
-        'Atendimento': 'Um atendimento bom',
-        'Campanhas': 'Uma campanha boa',
+        'Atendimento': {
+          'text': 'Temos uma equipe pronta para dar o melhor atendimento ao seu cliente. Aqui, você só é acionado se for realmente necessário.',
+          'img': 'ate_icon.png'
+        },
+        'Campanhas': {
+          'text': 'Se beneficie das nossas campanhas e promoções. Além disso, você também pode criar as suas próprias campanhas.',
+          'img': 'camp_img.png'
+        },
+        'Impulsionamento': {
+          'text':'Entre em contato com a nossa equipe especializada em marketing digital para impulsionar a sua loja e seus produtos. Seja mais visto e venda mais!',
+          'img': 'impuls_img.png'
+        },
+        'Pós-Venda': {
+          'text': 'Conte com o nosso sistema de pós-venda para garantir a melhor experiência de seus clientes. Cuidamos da tudo, desde a recuperação de carrinhos até uma troca de produto.',
+          'img': 'posvenda_img.png'
+        },
+        'Gestão': {
+        'text': 'Aproveite da nossa plataforma para gerir a sua loja e seus pedidos de forma fácil. A nossa tecnologia é toda desenvolvida para facilitar a gestão do seu negócio de moda.',
+        'img': 'gestao_img.png'
+        }
       };
 
       const handleClickAtendimento = () => {
@@ -140,6 +165,18 @@ const useStyles = makeStyles((theme) => ({
 
       const handleClickCampanhas = () => {
         setSelected('Campanhas');
+      };
+
+      const handleClickImpulsionamento = () => {
+        setSelected('Impulsionamento');
+      };
+
+      const handleClickPosVenda = () => {
+        setSelected('Pós-Venda');
+      };
+
+      const handleClickGestao = () => {
+        setSelected('Gestão');
       };
   
       return (
@@ -154,19 +191,17 @@ const useStyles = makeStyles((theme) => ({
                 <div className={classes.decorRec}></div>
                 <div className={classes.recText}>
                   <div className={classes.titleRec}>{selected}</div>
-                  <div className={classes.subtitleRec}>{explanationDict[selected]}</div>
+                  <div className={classes.subtitleRec}>{explanationDict[selected].text}</div>
                 </div>
               </div>
               <div className={classes.selectRecs}>
-                <div className={classes.select}>Atendimento</div>
-                <div className={classes.select}>Campanhas</div>
-                <div className={classes.select}>Impulsionamento</div>
-                <div className={classes.select}>Pós-venda</div>
-                <div className={classes.select}>Gestão</div>
-                <Button onClick={handleClickAtendimento}>Atendimento</Button>
-                <Button onClick={handleClickCampanhas}>Campanhas</Button>
+                <Button className={classes.select} onClick={handleClickAtendimento}>Atendimento</Button>
+                <Button className={classes.select} onClick={handleClickCampanhas}>Campanhas</Button>
+                <Button className={classes.select} onClick={handleClickImpulsionamento}>Impulsionamento</Button>
+                <Button className={classes.select} onClick={handleClickPosVenda}>Pós-venda</Button>
+                <Button className={classes.select} onClick={handleClickGestao}>Gestão</Button>
               </div>
-              <div className={classes.circleRec}></div>
+              <img src={explanationDict[selected].img} className={classes.circleRec}></img>
             </div>
           </div>
         </div>
