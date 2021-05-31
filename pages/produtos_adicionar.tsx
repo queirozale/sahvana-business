@@ -14,8 +14,10 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Navigator from '../components/layouts/Navigator';
 import Header from '../components/layouts/Header';
-import WorkingContent from '../components/layouts/WorkingContent';
+import Products from '../components/layouts/ProductContent';
 import LandingPage from '../components/layouts/LandingPage';
+
+import ProductInfo from '../components/modules/Products/ProductInfo';
 
 import { useSession } from 'next-auth/client';
 
@@ -162,7 +164,7 @@ const styles = createStyles({
   },
   main: {
     flex: 1,
-    padding: theme.spacing(6, 4),
+    // padding: theme.spacing(6, 4),
     background: '#eaeff1',
   },
   footer: {
@@ -198,30 +200,30 @@ function Home(props: PaperbaseProps) {
                   'Perfil': false,
                   'Contato': false,
                   'MeusProdutos': false,
-                  'AdicionarProdutos': false,
-                  'Histórico': true,
+                  'AdicionarProdutos': true,
+                  'Histórico': false,
                   'Pedidos': false
                 }}
               />
             </Hidden>
             <Hidden xsDown implementation="css">
               <Navigator 
-              PaperProps={{ style: { width: drawerWidth } }} 
+              PaperProps={{ style: { width: drawerWidth } }}
               activations={{
                 'Perfil': false,
                 'Contato': false,
                 'MeusProdutos': false,
-                'AdicionarProdutos': false,
-                'Histórico': true,
+                'AdicionarProdutos': true,
+                'Histórico': false,
                 'Pedidos': false
               }}
-              />
+               />
             </Hidden>
           </nav>
           <div className={classes.app}>
-            <Header onDrawerToggle={handleDrawerToggle} title={'Histórico'} />
+            <Header onDrawerToggle={handleDrawerToggle} title={'Produtos'} />
             <main className={classes.main}>
-              <WorkingContent />
+              <ProductInfo />
             </main>
             <footer className={classes.footer}>
               <Copyright />
@@ -233,12 +235,11 @@ function Home(props: PaperbaseProps) {
   } else if (loading) {
     return (
       <CircularProgress />
-    );
-  }
-  else {
-    return (
+    )
+  } else {
+    return(
       <LandingPage />
-    );
+    )
   }
 
 }

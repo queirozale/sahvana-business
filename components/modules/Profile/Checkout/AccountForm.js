@@ -11,6 +11,7 @@ import Button from '@material-ui/core/Button';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import Tooltip from '@material-ui/core/Tooltip';
 import Router from 'next/router';
 
 import ImageUpload from "../../ImageUpload";
@@ -174,10 +175,9 @@ export default function AccountForm() {
           </Grid>
           <Grid item xs={12}>
             <TextField
-              required
               id="description"
               name="description"
-              label="Fale um pouco sobre a sua loja"
+              label="Apresente-se aqui"
               multiline
               rows={6}
               variant="outlined"

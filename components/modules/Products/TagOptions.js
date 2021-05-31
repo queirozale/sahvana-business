@@ -1,38 +1,38 @@
 const categoriesOptions = {
   "Masculino": [
-    "Roupas",
+    "Roupa",
     "Calçado",
-    "Bolsas",
+    "Bolsa",
     "Treino",
-    "Acessórios",
+    "Acessório",
     "Underwear"
   ],
   "Feminino": [
-    "Roupas",
+    "Roupa",
     "Calçado",
-    "Bolsas",
+    "Bolsa",
     "Moda praia",
     "Fitness",
     "Bijoux",
     "Jóias",
-    "Acessórios",
+    "Acessório",
   ],
-  "Unissex": [
-    "Roupas",
+  "Genderless": [
+    "Roupa",
     "Calçado",
-    "Bolsas",
+    "Bolsa",
     "Treino",
-    "Acessórios",
+    "Acessório",
     "Underwear",
     "Moda praia",
     "Fitness",
     "Bijoux",
-    "Jóias",
+    "Jóia",
   ]
 };
 
 const subcategoriesOptionsMale = {
-  'Roupas': [
+  'Roupa': [
     'Camiseta',
     'Regata',
     'Calça',
@@ -47,7 +47,7 @@ const subcategoriesOptionsMale = {
     'Sapato',
     'Sapatênis'
   ],
-  'Bolsas': [
+  'Bolsa': [
     'Bags',
     'Carteira',
     'Pochete',
@@ -59,12 +59,12 @@ const subcategoriesOptionsMale = {
     'Short',
     'Tênis'
   ],
-  'Acessórios': [
+  'Acessório': [
     'Boné',
     'Cinto',
     'Chapéu',
     'Óculos',
-    'Pequenos acessórios',
+    'Pequeno acessório',
     'Relógio'
   ],
   'Underwear': [
@@ -74,26 +74,29 @@ const subcategoriesOptionsMale = {
 };
 
 const subcategoriesOptionsFemale = {
-  'Roupas': [
+  'Roupa': [
     'Blusa',
     'Saia',
     'Calça',
     'Short',
-    'Macacões',
-    'Casacos',
-    'Vestidos',
-    'Kimono'
+    'Macacão',
+    'Casaco',
+    'Vestido',
+    'Kimono',
+    'Cropped', 
+    'Colete', 
+    'Conjunto'
   ],
   'Calçado': [
     'Sapato',
     'Bota',
     'Sandália',
-    'Flatas',
+    'Flats',
     'Tênis'
   ],
-  'Bolsas': [
-    'Bags',
-    'Bolsas',
+  'Bolsa': [
+    'Bag',
+    'Bolsa',
     'Carteira',
     'Pochete',
     'Mochila',
@@ -105,7 +108,7 @@ const subcategoriesOptionsFemale = {
     'Calcinha',
     'Maiô e body',
     'Top',
-    'Saídas de praia'
+    'Saída de praia'
   ],
   'Fitness': [
     'Blusa',
@@ -118,30 +121,30 @@ const subcategoriesOptionsFemale = {
     'Anel',
     'Brinco',
     'Colar',
-    'Pulseiras & braceletes',
-    'Acessórios para cabelo'
+    'Pulseira & bracelete',
+    'Acessório para cabelo'
   ],
-  'Jóias': [
+  'Jóia': [
     'Anel',
     'Brinco',
     'Colar',
-    'Pulseiras & braceletes',
-    'Acessórios para cabelo'
+    'Pulseira & bracelete',
+    'Acessório para cabelo'
   ],
-  'Acessórios': [
-    'Acessórios de cabelo',
-    'Cachecol & lenços',
+  'Acessório': [
+    'Acessório de cabelo',
+    'Cachecol & lenço',
     'Tiara',
     'Cinto',
     'Chapéu',
     'Óculos',
-    'Pequenos acessórios',
+    'Pequeno acessório',
     'Relógio'
   ]
 };
 
-const subcategoriesOptionsUnissex = {
-  'Roupas': [
+const subcategoriesOptionsGenderless = {
+  'Roupa': [
     'Camiseta',
     'Regata',
     'Calça',
@@ -152,9 +155,9 @@ const subcategoriesOptionsUnissex = {
     'Blusa',
     'Saia',
     'Short',
-    'Macacões',
-    'Casacos',
-    'Vestidos',
+    'Macacão',
+    'Casaco',
+    'Vestido',
     'Kimono'
   ],
   'Calçado': [
@@ -164,14 +167,14 @@ const subcategoriesOptionsUnissex = {
     'Sapatênis',
     'Bota',
     'Sandália',
-    'Flatas',
+    'Flats',
   ],
-  'Bolsas': [
-    'Bags',
+  'Bolsa': [
+    'Bag',
     'Carteira',
     'Pochete',
     'Mochila',
-    'Bolsas',
+    'Bolsa',
     'Bolsa de praia',
     'Necessaire'
   ],
@@ -181,15 +184,15 @@ const subcategoriesOptionsUnissex = {
     'Short',
     'Tênis'
   ],
-  'Acessórios': [
+  'Acessório': [
     'Boné',
     'Cinto',
     'Chapéu',
     'Óculos',
-    'Pequenos acessórios',
+    'Pequeno acessório',
     'Relógio',
-    'Acessórios de cabelo',
-    'Cachecol & lenços',
+    'Acessório de cabelo',
+    'Cachecol & lenço',
     'Tiara',
   ],
   'Underwear': [
@@ -201,7 +204,7 @@ const subcategoriesOptionsUnissex = {
     'Calcinha',
     'Maiô e body',
     'Top',
-    'Saídas de praia'
+    'Saída de praia'
   ],
   'Fitness': [
     'Blusa',
@@ -214,15 +217,15 @@ const subcategoriesOptionsUnissex = {
     'Anel',
     'Brinco',
     'Colar',
-    'Pulseiras & braceletes',
+    'Pulseira & bracelete',
     'Acessórios para cabelo'
   ],
-  'Jóias': [
+  'Jóia': [
     'Anel',
     'Brinco',
     'Colar',
-    'Pulseiras & braceletes',
-    'Acessórios para cabelo'
+    'Pulseira & bracelete',
+    'Acessório para cabelo'
   ],
 }
 
@@ -230,5 +233,5 @@ export default {
   categoriesOptions, 
   subcategoriesOptionsMale, 
   subcategoriesOptionsFemale,
-  subcategoriesOptionsUnissex
+  subcategoriesOptionsGenderless
  };
