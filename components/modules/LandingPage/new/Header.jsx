@@ -6,54 +6,85 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import Link from '@material-ui/core/Link';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
-  menuButton: {
-    marginRight: theme.spacing(10),
+  appBar:{
+    boxShadow: 'none',
+    height: '100px',
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white'
   },
-  title: {
-    flexGrow: 1,
+  containerContent: {
+    width: '1280px',
+    height: '100px',
+    display: 'flex',
+    justifyContent: 'space-between',
+    color: 'black'
   },
   logo: {
-    maxHeight: '35px',
+    height: '85px'
   },
-  appBar: {
-    background: '#ffffff',
+  menuNavBar: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
+  funcLink: {
+    textTransform: 'none',
+    fontFamily: 'Poppins',
+    fontWeight: '700',
+    marginRight: '25px',
+    '&:hover': {
+      backgroundColor: 'transparent',
+    }
+
+  },
+  funcCad: {
+    textTransform: 'none',
+    fontFamily: 'Poppins',
+    fontWeight: '700',
+    marginRight: '55px',
+    '&:hover': {
+      backgroundColor: 'transparent',
+    }
+  },
+  logButton: {
+    height: '42px',
+    widht: '107px',
+    fontFamily: 'Poppins',
+    fontSize: '18px',
+    fontWeight: 'bold',
+    border: '2px solid #000000',
+    borderRadius: '4px',
+    '&:hover': {
+      backgroundColor: '#FD7600',
+      border: '2px solid #FD7600',
+      color: 'white'
+    }
+  }
 }));
 
-const Header = () => {
+export default function ButtonAppBar() {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      <AppBar className={classes.appBar} position="fixed" elevation={0}>
-        <Toolbar>
-            <Link href="https://sahvana.com/">
-              <img src="sahvana_logo.png" className={classes.logo} />
-            </Link>
-            <Typography variant="h6" className={classes.title}>
-              
-            </Typography>
-            <div>
-              <Link href="#">
-                <Button className={classes.menuButton}>Como funciona</Button>
-              </Link>
-              <Link href="#">
-                <Button className={classes.menuButton}>Cadastrar Loja</Button>
-              </Link>
-              <Link href="#">
-                <Button variant="outlined" className={classes.menuButton}>ENTRAR</Button>
-              </Link> 
-            </div>
+      <AppBar className={classes.appBar} position="static">
+        <Toolbar className={classes.containerContent}>
+          <img className={classes.logo} src="./logo_nav.png"/>
+          <div className={classes.menuNavBar}>
+            <Button className={classes.funcLink}>Como funciona</Button>
+            <Button className={classes.funcCad}>Cadastrar loja</Button>
+          <Button className={classes.logButton}color="inherit">ENTRAR</Button>
+          </div>
         </Toolbar>
       </AppBar>
     </div>
   );
-};
-
-export default Header;
+}
