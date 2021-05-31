@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -8,6 +8,10 @@ import Paper from '@material-ui/core/Paper';
 import Chart from './Chart';
 import Deposits from './Deposits';
 import Orders from './Orders';
+import NoData from './NewVendor';
+
+import useSWR from 'swr';
+import { useSession } from 'next-auth/client';
 
 const drawerWidth = 240;
 
@@ -72,6 +76,22 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard() {
   const classes = useStyles();
+  const [ session, loading ] = useSession();
+
+  const fetcher = async () => {
+    const res = await fetch('https://sahvana-admin.herokuapp.com/api/sales', {
+        body: JSON.stringify({
+            email: session.user.email,
+          }),
+          headers: {
+              'Content-Type': 'application/json'
+            },
+            method: 'POST'
+          });
+  
+    return await res.json();
+  };
+  const { data, error} = useSWR('https://sahvana-admin.herokuapp.com/api/sales', fetcher);
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   return (
@@ -81,24 +101,28 @@ export default function Dashboard() {
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
-            {/* Chart */}
-            <Grid item xs={12} md={8} lg={9}>
-              <Paper className={fixedHeightPaper}>
-                <Chart />
-              </Paper>
-            </Grid>
-            {/* Recent Deposits */}
-            <Grid item xs={12} md={4} lg={3}>
-              <Paper className={fixedHeightPaper}>
-                <Deposits />
-              </Paper>
-            </Grid>
-            {/* Recent Orders */}
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <Orders />
-              </Paper>
-            </Grid>
+            {data && (
+              <React.Fragment>
+                <Grid item xs={12} md={8} lg={9}>
+                  <Paper className={fixedHeightPaper}>
+                    <Chart data={data} />
+                  </Paper>
+                </Grid>
+                <Grid item xs={12} md={4} lg={3}>
+                  <Paper className={fixedHeightPaper}>
+                    <Deposits data={data} />
+                  </Paper>
+                </Grid>
+                <Grid item xs={12}>
+                  <Paper className={classes.paper}>
+                    <Orders data={data} />
+                  </Paper>
+                </Grid>
+              </React.Fragment>
+            )}
+            {!data && (
+              <NoData />
+            )}
           </Grid>
         </Container>
       </main>

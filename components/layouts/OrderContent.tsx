@@ -34,7 +34,7 @@ const styles = (theme: Theme) =>
     const { classes } = props;
 
     const fetcher = async () => {
-      const res = await fetch('http://127.0.0.1:5000/api/last_orders', {
+      const res = await fetch('https://sahvana-admin.herokuapp.com/api/last_orders', {
         body: JSON.stringify({
           n_last: 10,
         }),
@@ -47,7 +47,7 @@ const styles = (theme: Theme) =>
       return await res.json();
     };
     
-    const { data, error } = useSWR('http://127.0.0.1:5000/api/last_orders', fetcher);
+    const { data, error } = useSWR('https://sahvana-admin.herokuapp.com/api/last_orders', fetcher);
 
     const handleTest = () => {
       console.log(data);

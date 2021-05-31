@@ -19,35 +19,9 @@ const useStyles = makeStyles({
   },
 });
 
-const vendors = {
-  'jdrumond96@gmail.com': 'Brida',
-  'amandareblin@hotmail.com': 'Aroom e Venice',
-  'usepampz@gmail.com': 'Pampz',
-  'contato@usetimeless.com.br': 'Timeless',
-  'Cesar.ferrari29@gmail.com': 'O P Ü S',
-  'amanda_loss.v@hotmail.com': 'Feather Jeans',
-  'queirozalessandro1@gmail.com': 'Feather Jeans',
-  'sahvana.dev@gmail.com': 'Brida'
-}
-
-export default function Deposits() {
+export default function Deposits(props) {
   const classes = useStyles();
-  const [ session, loading ] = useSession();
-  const fetcher = async () => {
-    const res = await fetch('https://sahvana-admin.herokuapp.com/api/total_sales', {
-        body: JSON.stringify({
-            Vendor: vendors[session.user.email],
-          }),
-          headers: {
-              'Content-Type': 'application/json'
-            },
-            method: 'POST'
-          });
-  
-    return await res.json();
-  };
-  
-  const { data, error} = useSWR('https://sahvana-admin.herokuapp.com/api/total_sales', fetcher);
+  const data = props.data;
 
   var formatter = new Intl.NumberFormat('pt-BR', {
     style: 'currency',
@@ -59,7 +33,7 @@ export default function Deposits() {
       <Title>Vendas totais</Title>
       <Typography component="p" variant="h4">
         {data && (
-          formatter.format(data.total_sales)
+          formatter.format(data.sum_sales)
         )}
         {!data && (
           <CircularProgress />
