@@ -93,7 +93,8 @@ createStyles({
   },
   btn: {
     backgroundColor: "rgb(242, 121, 15, 0.7)",
-    color: "white"
+    color: "white",
+    marginLeft: theme.spacing(2),
   },
   media: {
     maxWidth: 250
@@ -121,6 +122,8 @@ export interface ProductInfoProps extends Omit<DrawerProps, 'classes'>, WithStyl
     variantPrices: object;
     variantInventories: object;
     imageFiles: Array<string>;
+    created_at: string;
+    updated_at: string;
     id: string;
     id_: string;
   }
@@ -410,11 +413,10 @@ const ProductInfo: NextPage = (props: ProductInfoProps) => {
       x[variantValues[i]] = originalPrice;
     };
 
-    setVariantPrices(x);
+    return x;
   }
 
   const getProductData = (isNew: boolean) => {
-    getVariantPrices();
 
     var productData = {
       title: title,
@@ -434,7 +436,7 @@ const ProductInfo: NextPage = (props: ProductInfoProps) => {
       inputOption2: optionValues[2],
       variantType3: variantTypes[3],
       inputOption3: optionValues[3],
-      variantPrices: variantPrices,
+      variantPrices: getVariantPrices(),
       variantInventories: variantInventories,
       imageFiles: [
         image1,
@@ -443,14 +445,16 @@ const ProductInfo: NextPage = (props: ProductInfoProps) => {
         image4
       
       ],
-      created_at: new Date(),
-      updated_at: new Date(),
-      email: session.user.email
+      email: session.user.email,
+      updated_at: utils.todayDateString()
     };
 
     if (!isNew) {
       productData['_id'] = data.id;
-    };
+      productData['created_at'] = data.created_at;
+    } else {
+      productData['created_at'] = utils.todayDateString();
+    }
 
     return productData;
   };
@@ -515,11 +519,37 @@ const ProductInfo: NextPage = (props: ProductInfoProps) => {
     Router.reload();
   };
 
+  const deleteProduct = async event => {
+    event.preventDefault();
+    setServerState({...serverState, ['submitting']: true});
 
-  const handleTest = () => {
     const productData = getProductData(false);
-    console.log(productData)
-  }
+
+    const res = await fetch('https://sahvana-admin.herokuapp.com/api/delete_product', {
+
+      body: JSON.stringify({
+        "_id": productData["_id"]
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST'
+    });
+  
+    const result = await res.text();
+    if (res.status === 200){
+      setServerState({
+        submitting: false,
+        succeeded: true
+      });
+    } else {
+      setServerState({
+        submitting: false,
+        succeeded: false
+      });
+    }
+    Router.reload();
+  };
 
   return (
     <React.Fragment>
@@ -541,6 +571,11 @@ const ProductInfo: NextPage = (props: ProductInfoProps) => {
                   <Button onClick={handleEdit} className={classes.btn}>
                     {editMode? "Voltar" : "Editar"}
                   </Button>
+                  {editMode && (
+                    <Button onClick={deleteProduct} className={classes.btn}>
+                      Deletar
+                    </Button>
+                  )}
                 </Grid>
               )}
               <Typography className={classes.title} component="h4" variant="h5" align="left">
@@ -891,7 +926,7 @@ const ProductInfo: NextPage = (props: ProductInfoProps) => {
               variant="contained"
               className={classes.submitBtn}
               >
-                {editMode? "Editar" : "Cadastrar"}
+                {editMode? "Salvar" : "Cadastrar"}
               </Button>
             </Grid>
           )}

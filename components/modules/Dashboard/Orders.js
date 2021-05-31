@@ -7,10 +7,9 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Button from '@material-ui/core/Button';
 
 import Title from './Title';
-import useSWR from 'swr';
-import { useSession } from 'next-auth/client';
 
 // Generate Order Data
 function createData(id, date, name, shipTo, product, amount) {
@@ -28,35 +27,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const vendors = {
-  'jdrumond96@gmail.com': 'Brida',
-  'amandareblin@hotmail.com': 'Aroom e Venice',
-  'usepampz@gmail.com': 'Pampz',
-  'contato@usetimeless.com.br': 'Timeless',
-  'Cesar.ferrari29@gmail.com': 'O P Ü S',
-  'amanda_loss.v@hotmail.com': 'Feather Jeans',
-  'queirozalessandro1@gmail.com': 'Feather Jeans',
-  'sahvana.dev@gmail.com': 'Brida'
-}
-
-export default function Orders() {
+export default function Orders(props) {
   const classes = useStyles();
-  const [ session, loading ] = useSession();
-  const fetcher = async () => {
-    const res = await fetch('https://sahvana-admin.herokuapp.com/api/orders', {
-        body: JSON.stringify({
-            Vendor: vendors[session.user.email],
-          }),
-          headers: {
-              'Content-Type': 'application/json'
-            },
-            method: 'POST'
-          });
-  
-    return await res.json();
-  };
-  
-  const { data, error} = useSWR('https://sahvana-admin.herokuapp.com/api/orders', fetcher);
+  const data = props.data;
 
   var formatter = new Intl.NumberFormat('pt-BR', {
     style: 'currency',
@@ -70,21 +43,21 @@ export default function Orders() {
         <TableHead>
           <TableRow>
             <TableCell>Data</TableCell>
-            <TableCell>Nome</TableCell>
-            <TableCell>Enviar para</TableCell>
+            <TableCell>Cliente</TableCell>
             <TableCell>Produto</TableCell>
-            <TableCell align="right">Total vendido</TableCell>
+            <TableCell>Variante</TableCell>
+            <TableCell align="right">Preço</TableCell>
           </TableRow>
         </TableHead>
         {data && (
           <TableBody>
-            {data.data.map((row) => (
-              <TableRow key={row.id}>
-                <TableCell>{row.date}</TableCell>
+            {data.last_sales.map((row) => (
+              <TableRow key={row._id}>
+                <TableCell>{row.updated_at.slice(0, 10)}</TableCell>
                 <TableCell>{row.name}</TableCell>
-                <TableCell>{row.shipTo}</TableCell>
-                <TableCell>{row.product}</TableCell>
-                <TableCell align="right">{formatter.format(row.amount)}</TableCell>
+                <TableCell>{row.title}</TableCell>
+                <TableCell>{row.variant_title}</TableCell>
+                <TableCell align="right">{formatter.format(row.price)}</TableCell>
               </TableRow>
             ))}
           </TableBody>

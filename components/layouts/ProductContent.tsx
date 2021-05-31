@@ -49,6 +49,7 @@ const useStyles = makeStyles(() => ({
   },
   table: {
     minWidth: 500,
+    minHeight: 670,
     backgroundColor: 'white'
   },
   titleIcon: {
@@ -139,7 +140,7 @@ const Products = (props: ProductsProps) => {
         email: session.user.email,
       }),
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       method: 'POST'
     });
@@ -258,7 +259,7 @@ const Products = (props: ProductsProps) => {
             className={classes.table}
             rows={data} 
             columns={columns} 
-            pageSize={5} 
+            pageSize={10} 
             getRowId={(data) => data._id} 
             checkboxSelection={edit}
             onRowSelected={e => handleRowSelection(e)}
