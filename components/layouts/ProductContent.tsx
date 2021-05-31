@@ -139,7 +139,7 @@ const Products = (props: ProductsProps) => {
         email: session.user.email,
       }),
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       method: 'POST'
     });

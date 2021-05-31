@@ -17,6 +17,8 @@ import Header from '../components/layouts/Header';
 import WorkingContent from '../components/layouts/WorkingContent';
 import LandingPage from '../components/layouts/LandingPage';
 
+import OrderContent from '../components/layouts/OrderContent';
+
 import { useSession } from 'next-auth/client';
 
 function Copyright() {
