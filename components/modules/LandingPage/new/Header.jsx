@@ -6,6 +6,8 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import { signIn, signOut, useSession } from 'next-auth/client';
+import Link from '@material-ui/core/Link';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,12 +68,14 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: '#FD7600',
       border: '2px solid #FD7600',
       color: 'white'
-    }
-  }
+    },
+    marginLeft: theme.spacing(2)
+  },
 }));
 
 export default function ButtonAppBar() {
   const classes = useStyles();
+  const [ session, loading ] = useSession();
 
   return (
     <div className={classes.root}>
@@ -81,7 +85,17 @@ export default function ButtonAppBar() {
           <div className={classes.menuNavBar}>
             <Button className={classes.funcLink}>Como funciona</Button>
             <Button className={classes.funcCad}>Cadastrar loja</Button>
-          <Button className={classes.logButton}color="inherit">ENTRAR</Button>
+            {!session &&
+              <Button onClick={() => signIn("auth0")} color="inherit" className={classes.logButton}>Entrar</Button>
+            }
+            {session && 
+              <div>
+                <Link href="/perfil">
+                  <Button className={classes.logButton}>Acessar</Button>
+                </Link>
+                <Button onClick={() => signOut()} color="inherit" className={classes.logButton}>Sair</Button>
+              </div>
+            }
           </div>
         </Toolbar>
       </AppBar>
