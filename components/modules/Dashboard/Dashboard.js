@@ -101,7 +101,8 @@ export default function Dashboard() {
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
-            {data && (
+            {data &&
+            (
               <React.Fragment>
                 <Grid item xs={12} md={8} lg={9}>
                   <Paper className={fixedHeightPaper}>
@@ -119,10 +120,8 @@ export default function Dashboard() {
                   </Paper>
                 </Grid>
               </React.Fragment>
-            )}
-            {!data && (
-              <NoData />
-            )}
+            )
+          }
           </Grid>
         </Container>
       </main>
