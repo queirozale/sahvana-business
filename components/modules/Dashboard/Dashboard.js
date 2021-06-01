@@ -9,6 +9,7 @@ import Chart from './Chart';
 import Deposits from './Deposits';
 import Orders from './Orders';
 import NoData from './NewVendor';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import useSWR from 'swr';
 import { useSession } from 'next-auth/client';
@@ -121,7 +122,10 @@ export default function Dashboard() {
                 </Grid>
               </React.Fragment>
             )
-          }
+            }
+            {!data && (
+              <CircularProgress />
+            )}
           </Grid>
         </Container>
       </main>
