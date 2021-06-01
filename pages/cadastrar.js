@@ -3,8 +3,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -13,10 +11,11 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Router from 'next/router';
-import LinearProgress from '@material-ui/core/LinearProgress';
 import Snackbar from '@material-ui/core/Snackbar';
-import ChipInput from 'material-ui-chip-input';
-import MuiAlert from '@material-ui/lab/Alert';
+import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
 function Copyright() {
   return (
@@ -57,22 +56,38 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp() {
   const classes = useStyles();
-  const [serverState, setServerState] = useState({
-    submitting: true,
-    succeeded: false
-  });
   const [open, setOpen] = useState(true);
+  const [message, setMessage] = useState(null);
+  const [serverState, setServerState] = useState({
+    submitting: false,
+    succeeded: null
+  });
+  const [checked, setChecked] = useState(false);
+  const [text, setText] = useState(null);
+  const transcript = {
+    "User created": "Usuário criado com sucesso",
+    "Password is too weak": "Senha muito fraca",
+    "User already exists": "Usuário já existente",
+    "Error": "Erro ao cadastrar usuário"
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    Router.reload();
+  };
 
   const handleSubmit = async event => {
     event.preventDefault();
     setServerState({...serverState, ['submitting']: true});
+    setText("Carregando...");
 
     const res = await fetch('https://sahvana-admin.herokuapp.com/api/create_user', {
       body: JSON.stringify({
         email: event.target.email.value,
         name: event.target.name.value,
         nickname: event.target.vendor.value,
-        password: event.target.password.value
+        password: event.target.password.value,
+        data_migration: checked
       }),
       headers: {
         'Content-Type': 'application/json'
@@ -80,7 +95,10 @@ export default function SignUp() {
       method: 'POST'
     });
 
-    const result = await res.text();
+    const result = await res.json();
+    setMessage(result);
+    setText(null);
+
     if (res.status === 200){
       setServerState({
         submitting: false,
@@ -92,9 +110,11 @@ export default function SignUp() {
         succeeded: false
       });
     }
-    Router.reload();
+  };
 
-  }
+  const handleCheck = () => {
+    setChecked(!checked);
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -154,6 +174,17 @@ export default function SignUp() {
                 autoComplete="current-password"
               />
             </Grid>
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={<Checkbox value="allowExtraEmails" color="primary" />}
+                value={checked}
+                onChange={handleCheck}
+                label="Importar os dados já existentes?"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              {text}
+            </Grid>
           </Grid>
           <Button
             type="submit"
@@ -172,6 +203,24 @@ export default function SignUp() {
             </Grid>
           </Grid>
         </form>
+          {serverState.submitting && (
+            <LinearProgress />
+          )}
+          {serverState.succeeded && (
+            <div>
+              <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity={message.message == "User created"? "success" : "error"}>
+                  {transcript[message.message]}
+                  {checked?
+                  message.data_migration == "Success"? ". Dados migrados com sucesso" : ". Erro na migração de dados"
+                  :
+                  null
+                  }
+                </Alert>
+              </Snackbar>
+            </div>
+
+          )}
       </div>
       <Box mt={5}>
         <Copyright />
