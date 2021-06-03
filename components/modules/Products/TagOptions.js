@@ -16,6 +16,7 @@ const categoriesOptions = {
     "Bijoux",
     "Jóias",
     "Acessório",
+    "Moda Íntima"
   ],
   "Genderless": [
     "Roupa",
@@ -140,6 +141,9 @@ const subcategoriesOptionsFemale = {
     'Óculos',
     'Pequeno acessório',
     'Relógio'
+  ],
+  'Moda Íntima': [
+    'Sleep Wear e Lingerie'
   ]
 };
 
